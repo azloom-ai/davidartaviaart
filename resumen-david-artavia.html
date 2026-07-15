@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resumen — David Artavia Art</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #faf7f3;
+      color: #1c1c1c;
+      padding: 40px 24px 60px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #1a4a5e;
+    }
+    .badge {
+      display: inline-block;
+      background: #eef5f9;
+      border: 1px solid #c8d8e0;
+      color: #1a4a5e;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: #1a4a5e;
+      margin-bottom: 6px;
+    }
+    .header p {
+      font-size: 13px;
+      color: #7a7069;
+    }
+    .meta {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      font-size: 12px;
+      color: #7a7069;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .meta-item strong { color: #1a4a5e; }
+
+    /* Secciones */
+    .seccion {
+      background: #fff;
+      border: 1px solid #e0d8ce;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+    .seccion-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: #f5f0ea;
+      border-bottom: 1px solid #e0d8ce;
+    }
+    .seccion-icon { font-size: 18px; }
+    .seccion-titulo {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a4a5e;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+    .seccion-body {
+      padding: 16px 18px;
+      font-size: 14px;
+      color: #444;
+      line-height: 1.7;
+    }
+
+    /* Puntos a definir */
+    .pendientes {
+      background: #fff8f0;
+      border: 1px solid #f0dcc8;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .pendientes .seccion-header {
+      background: #fceedd;
+      border-bottom: 1px solid #f0dcc8;
+    }
+    .pendientes .seccion-titulo { color: #c8723a; }
+    .pendientes ol {
+      list-style: none;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pendientes ol li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      color: #555;
+      line-height: 1.5;
+    }
+    .num {
+      width: 22px; height: 22px; min-width: 22px;
+      background: #c8723a;
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 1px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid #e0d8ce;
+      font-size: 11px;
+      color: #bbb;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 24px 14px 40px; }
+      .header h1 { font-size: 22px; }
+      .seccion-body { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="badge">Pre-Diagnóstico · Ecommerce</div>
+    <h1>David Artavia Art</h1>
+    <p>Resumen ejecutivo del cuestionario de onboarding</p>
+    <div class="meta">
+      <div class="meta-item">📅 <strong>Reunión:</strong> Jueves 5 junio · 10:00 am</div>
+      <div class="meta-item">🌐 <strong>Modalidad:</strong> Virtual</div>
+      <div class="meta-item">📍 <strong>Playa Jacó, Costa Rica</strong></div>
+    </div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="seccion-icon">🎯</span>
+      <span class="seccion-titulo">Perfil del proyecto</span>
+    </div>
+    <div class="seccion-body">
+      Desarrollo de un ecommerce para la venta de obras de arte originales del artista costarricense David Artavia, especializado en temática tropical y surrealista. El proyecto incluye una plataforma para mostrar y vender más de 30 obras originales de manera efectiva y atractiva.
+    </div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="seccion-icon">📦</span>
+      <span class="seccion-titulo">Catálogo y productos</span>
+    </div>
+    <div class="seccion-body">
+      Más de <strong>30 obras originales</strong> en óleos y acrílicos. No maneja prints ni variantes. La gestión de murales y comisiones se realiza por <strong>contacto directo</strong> con el artista.
+    </div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="seccion-icon">💳</span>
+      <span class="seccion-titulo">Pagos y envíos</span>
+    </div>
+    <div class="seccion-body">
+      Método de pago: <strong>Stripe</strong>. Logística con <strong>courier propio</strong> — modelo de cobro de envío pendiente de definir. Requiere <strong>factura electrónica</strong> (NSE).
+    </div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="seccion-icon">🎨</span>
+      <span class="seccion-titulo">Diseño y marca</span>
+    </div>
+    <div class="seccion-body">
+      Sin logo ni paleta de colores definida. Idioma del sitio por confirmar (probablemente español). Dominio propio pendiente de registrar.
+    </div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="seccion-icon">⚙️</span>
+      <span class="seccion-titulo">Funciones requeridas</span>
+    </div>
+    <div class="seccion-body">
+      Requiere <strong>galería separada</strong> de la tienda. Blog, reseñas e integración con Instagram aún sin definir.
+    </div>
+  </div>
+
+  <div class="pendientes">
+    <div class="seccion-header">
+      <span class="seccion-icon">⚠️</span>
+      <span class="seccion-titulo">Puntos a definir en la reunión</span>
+    </div>
+    <ol>
+      <li><div class="num">1</div>Diseño de logo y paleta de colores</li>
+      <li><div class="num">2</div>Tamaños y precios de las obras originales</li>
+      <li><div class="num">3</div>Modelo de cobro de envío</li>
+      <li><div class="num">4</div>Funcionalidades adicionales — blog y reseñas</li>
+      <li><div class="num">5</div>Dominio e idiomas del sitio</li>
+      <li><div class="num">6</div>Logística de murales y comisiones</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    azloom.tech · hello@azloom.tech · Reunión David Artavia Art
+  </div>
+
+</body>
+</html>

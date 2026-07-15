@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Propuesta — David Artavia Art</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #faf7f3;
+      color: #1c1c1c;
+      padding: 32px 28px 40px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #1a4a5e;
+    }
+    .badge {
+      display: inline-block;
+      background: #eef5f9;
+      border: 1px solid #c8d8e0;
+      color: #1a4a5e;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: #1a4a5e;
+      margin-bottom: 4px;
+    }
+    .header p { font-size: 12px; color: #7a7069; }
+    .meta {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .meta-item { font-size: 11px; color: #7a7069; }
+    .meta-item strong { color: #1a4a5e; }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      color: #1a4a5e;
+      margin: 16px 0 10px;
+    }
+
+    /* Alcance */
+    .alcance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-bottom: 7px;
+    }
+    .alcance-item {
+      background: #fff;
+      border: 1px solid #e0d8ce;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .alcance-icon { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+    .alcance-item strong { display: block; font-size: 11.5px; color: #1c1c1c; margin-bottom: 2px; }
+    .alcance-item span { font-size: 10.5px; color: #7a7069; line-height: 1.4; }
+
+    .anim-box {
+      background: #eef5f9;
+      border: 1px solid #c8d8e0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    .anim-box strong { font-size: 11.5px; color: #1a4a5e; display: block; margin-bottom: 3px; }
+    .anim-box span { font-size: 11px; color: #555; line-height: 1.5; }
+
+    /* Salto de página */
+    .page-break { page-break-after: always; break-after: page; }
+
+    /* Tabla */
+    .tabla {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e0d8ce;
+      margin-bottom: 8px;
+    }
+    .tabla thead tr { background: #1a4a5e; color: white; }
+    .tabla thead th {
+      padding: 9px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      text-align: left;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .tabla tbody tr { border-bottom: 1px solid #f0ebe4; }
+    .tabla tbody tr:last-child { border-bottom: none; }
+    .tabla tbody td {
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #444;
+    }
+    .tabla tbody tr:nth-child(even) { background: #faf7f3; }
+    .subtag {
+      font-size: 10px;
+      color: #aaa;
+      display: block;
+      margin-top: 1px;
+    }
+
+    /* Total */
+    .total-box {
+      background: #1a4a5e;
+      color: white;
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .total-box .label { font-size: 12px; opacity: .85; }
+    .total-box .monto { font-family: 'Playfair Display', serif; font-size: 26px; }
+    .total-box .sub { font-size: 10px; opacity: .7; margin-top: 2px; }
+
+    .nota-precio {
+      background: #fff8f0;
+      border: 1px solid #f0dcc8;
+      border-radius: 7px;
+      padding: 9px 13px;
+      font-size: 11px;
+      color: #7a5a3a;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    .nota-precio strong { color: #c8723a; }
+
+    /* Mantenimiento */
+    .mant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .mant-card {
+      background: #fff;
+      border: 1px solid #e0d8ce;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .mant-card h3 { font-size: 12px; font-weight: 600; color: #1a4a5e; margin-bottom: 4px; }
+    .mant-card .precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #c8723a;
+      margin-bottom: 6px;
+    }
+    .mant-card ul { list-style: none; }
+    .mant-card ul li {
+      font-size: 11px;
+      color: #666;
+      padding: 3px 0;
+      border-bottom: 1px solid #f5f0ea;
+      display: flex;
+      gap: 6px;
+      line-height: 1.4;
+    }
+    .mant-card ul li:last-child { border-bottom: none; }
+    .mant-card ul li::before { content: '✓'; color: #3d6b4f; font-weight: 600; flex-shrink: 0; }
+
+    /* Footer */
+    .footer {
+      margin-top: 20px;
+      padding-top: 12px;
+      border-top: 1px solid #e0d8ce;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #bbb;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    @media (max-width: 520px) {
+      .alcance-grid { grid-template-columns: 1fr; }
+      .mant-grid { grid-template-columns: 1fr; }
+      body { padding: 20px 14px; }
+    }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      body { background: white; padding: 18px 22px; max-width: 100%; }
+      .alcance-item { break-inside: avoid; }
+      .mant-card { break-inside: avoid; }
+      .total-box { break-inside: avoid; }
+      .mant-grid { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PÁGINA 1 -->
+  <div class="header">
+    <div class="badge">Propuesta Comercial · azloom.tech</div>
+    <h1>David Artavia Art</h1>
+    <p>Desarrollo de ecommerce de arte — propuesta personalizada</p>
+    <div class="meta">
+      <div class="meta-item">📅 <strong>Junio 2026</strong></div>
+      <div class="meta-item">🌐 <strong>Bilingüe ES/EN</strong></div>
+      <div class="meta-item">🎯 <strong>Target: Canadá y USA</strong></div>
+    </div>
+  </div>
+
+  <h2>¿Qué incluye el proyecto?</h2>
+  <div class="alcance-grid">
+    <div class="alcance-item">
+      <div class="alcance-icon">🖼️</div>
+      <div>
+        <strong>Tienda de originales y Giclée</strong>
+        <span>Catálogo completo con ficha de cada obra: foto en alta resolución, descripción, dimensiones, técnica, precio y disponibilidad. Filtros por categoría y tamaño.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">🏛️</div>
+      <div>
+        <strong>Galería de obras vendidas</strong>
+        <span>Portafolio visual independiente de la tienda para mostrar colecciones anteriores y piezas emblemáticas.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">🧱</div>
+      <div>
+        <strong>Sección de murales</strong>
+        <span>Galería con fotos de proceso y resultado final, descripción del proyecto y formulario para solicitar cotización.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">📦</div>
+      <div>
+        <strong>Paquetes y upsell</strong>
+        <span>Paquetes de obras pequeñas con precio especial. Estructura preparada para escalar a rompecabezas en una segunda fase.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">💳</div>
+      <div>
+        <strong>Pagos: PayPal, SINPE, Stripe y transferencia</strong>
+        <span>Cuatro métodos de pago para clientes locales e internacionales. Checkout optimizado para minimizar abandono de carrito.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">💬</div>
+      <div>
+        <strong>Botón de WhatsApp</strong>
+        <span>Botón flotante en todo el sitio para consultas directas sobre comisiones y obras especiales.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">📱</div>
+      <div>
+        <strong>Integración con Instagram</strong>
+        <span>Feed de @davidartaviaart_ actualizado automáticamente, manteniendo el contenido fresco sin trabajo extra.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">🌎</div>
+      <div>
+        <strong>Bilingüe español e inglés</strong>
+        <span>Sitio completo en ambos idiomas con cambio instantáneo, optimizado para coleccionistas de Canadá y Estados Unidos.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">👤</div>
+      <div>
+        <strong>Biografía del artista</strong>
+        <span>Historia de David, proceso creativo, inspiraciones tropicales y surrealistas, y selección de obras más representativas.</span>
+      </div>
+    </div>
+    <div class="alcance-item">
+      <div class="alcance-icon">📊</div>
+      <div>
+        <strong>Panel de administración</strong>
+        <span>Gestión de pedidos, control de inventario y seguimiento de ventas desde un panel intuitivo.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="anim-box">
+    <span style="font-size:18px;">✨</span>
+    <div>
+      <strong>Diseño con movimiento e interacción — optimizado para celular y tablet</strong>
+      <span>El sitio contará con animaciones fluidas, transiciones entre secciones, efectos al hacer scroll y microinteracciones acordes al arte de David — no solo una tienda, sino una galería digital viva con la misma calidad visual en cualquier dispositivo.</span>
+    </div>
+  </div>
+
+  <!-- SALTO DE PÁGINA -->
+  <div class="page-break"></div>
+
+  <!-- PÁGINA 2 -->
+  <h2>Inversión</h2>
+  <table class="tabla">
+    <thead>
+      <tr><th>Módulos incluidos</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Diseño UI/UX personalizado<span class="subtag">Maqueta, paleta de colores, tipografía</span></td></tr>
+      <tr><td>Desarrollo frontend (Next.js + Tailwind)<span class="subtag">Sitio bilingüe, responsive, rápido</span></td></tr>
+      <tr><td>Tienda + carrito + checkout<span class="subtag">PayPal, SINPE, Stripe y transferencia bancaria</span></td></tr>
+      <tr><td>Galería, murales y biografía<span class="subtag">Secciones de portafolio y about</span></td></tr>
+      <tr><td>Panel de administración<span class="subtag">Gestión de pedidos, inventario y seguimiento de ventas</span></td></tr>
+      <tr><td>Integración Instagram + WhatsApp<span class="subtag">Feed automático y botón flotante de contacto</span></td></tr>
+      <tr><td>Paquetes y upsell<span class="subtag">Lógica de paquetes de obras pequeñas</span></td></tr>
+      <tr><td>Configuración dominio + hosting + SSL<span class="subtag">Dominio, certificado de seguridad y puesta en marcha</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="total-box">
+    <div>
+      <div class="label">Inversión total del proyecto</div>
+      <div class="sub">Pago en 2 cuotas: 50% inicio · 50% entrega</div>
+      <div class="sub" style="margin-top:3px; opacity:.6;">Ref. hoy (₡466/$): ₡978,600 · El monto en colones se calcula al tipo de cambio del día de pago</div>
+    </div>
+    <div style="text-align:right">
+      <div class="monto">$2,100</div>
+    </div>
+  </div>
+
+  <div class="nota-precio">
+    <strong>Nota:</strong> Los precios no incluyen costos de terceros como dominio (~$15/año) ni comisiones de PayPal/Stripe. El rompecabezas y productos físicos adicionales se cotizan en una segunda fase.
+  </div>
+
+  <h2>Mantenimiento mensual</h2>
+  <div class="mant-grid">
+    <div class="mant-card">
+      <h3>Plan Esencial</h3>
+      <div class="precio">$80/mes</div>
+      <ul>
+        <li>Actualizaciones de seguridad</li>
+        <li>Subida de hasta 5 obras nuevas</li>
+        <li>Soporte por WhatsApp (48h)</li>
+        <li>Backup mensual automático</li>
+        <li>Hosting y dominio incluido</li>
+      </ul>
+    </div>
+    <div class="mant-card" style="border-color:#1a4a5e; position:relative;">
+      <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#1a4a5e;color:white;font-size:9px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;">Recomendado</div>
+      <h3>Plan Crecimiento</h3>
+      <div class="precio">$150/mes</div>
+      <ul>
+        <li>Todo el plan esencial</li>
+        <li>Obras ilimitadas</li>
+        <li>Soporte prioritario (24h)</li>
+        <li>Cambios de diseño menores</li>
+        <li>Reporte mensual de ventas y visitas</li>
+        <li>SEO mensual: títulos, descripciones, velocidad y posicionamiento en Google para búsquedas como "arte costarricense" o "tropical paintings"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>azloom.tech · hello@azloom.tech</span>
+    <span>Propuesta válida por 30 días · Junio 2026</span>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reunión David Artavia — Preguntas Clave</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #faf7f3;
+      color: #1c1c1c;
+      padding: 28px 36px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #1a4a5e;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .header-left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: #1a4a5e;
+      margin-bottom: 2px;
+    }
+    .header-left p { font-size: 12px; color: #7a7069; }
+    .header-right {
+      text-align: right;
+      font-size: 11px;
+      color: #7a7069;
+      line-height: 1.6;
+    }
+    .header-right strong { color: #c8723a; font-size: 12px; }
+
+    .intro {
+      background: #eef5f9;
+      border-left: 4px solid #1a4a5e;
+      padding: 8px 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 12px;
+      color: #444;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .seccion { margin-bottom: 0; }
+    .seccion-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 7px;
+    }
+    .seccion-icon {
+      width: 24px; height: 24px;
+      background: #1a4a5e;
+      color: white;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .seccion-titulo {
+      font-size: 11px;
+      font-weight: 600;
+      color: #1a4a5e;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .preguntas { list-style: none; }
+    .preguntas li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      background: #fff;
+      border: 1px solid #e0d8ce;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .check {
+      width: 13px; height: 13px; min-width: 13px;
+      border: 1.5px solid #c0b8ae;
+      border-radius: 3px;
+      margin-top: 1px;
+    }
+
+    .nota {
+      background: #fff8f0;
+      border: 1px solid #f0dcc8;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 11.5px;
+      color: #7a5a3a;
+      line-height: 1.5;
+    }
+    .nota strong { color: #c8723a; }
+
+    .notas-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+    .notas-campo {
+      width: 100%;
+      border: 1.5px dashed #c0b8ae;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #333;
+      background: #fffdf9;
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+    }
+    .notas-campo:focus { border-color: #1a4a5e; background: #fff; }
+    .notas-campo::placeholder { color: #ccc; }
+
+    .footer {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid #e0d8ce;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #aaa;
+    }
+
+    /* Print */
+    @media print {
+      body { background: white; padding: 32px; }
+      .preguntas li { break-inside: avoid; }
+      .seccion { break-inside: avoid; }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      body { padding: 16px 14px; }
+      .header { flex-direction: column; gap: 8px; }
+      .header-right { text-align: left; }
+      .header-left h1 { font-size: 18px; }
+      .grid { grid-template-columns: 1fr; gap: 16px; }
+      .seccion-titulo { font-size: 12px; }
+      .preguntas li { font-size: 13px; padding: 8px 10px; }
+      .notas-campo { font-size: 13px; rows: 3; }
+      .intro { font-size: 12px; }
+      .nota { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Reunión David Artavia</h1>
+      <p>Preguntas clave para la sesión de descubrimiento</p>
+    </div>
+    <div class="header-right">
+      <strong>Jueves 5 junio · 10:00 am</strong><br>
+      Reunión virtual<br>
+      azloom.tech
+    </div>
+  </div>
+
+  <div class="intro">
+    💡 <strong>Objetivo de la reunión:</strong> Entender el negocio de David, validar las respuestas del formulario y definir el alcance real del proyecto antes de presentar una propuesta.
+  </div>
+
+  <div class="grid">
+
+    <!-- Negocio -->
+    <div class="seccion">
+      <div class="seccion-header">
+        <div class="seccion-icon">🎨</div>
+        <div class="seccion-titulo">El negocio</div>
+      </div>
+      <ul class="preguntas">
+        <li><div class="check"></div>¿Cuál es tu canal de venta principal hoy?</li>
+        <li><div class="check"></div>¿Quién es tu cliente ideal — local, extranjero, coleccionista?</li>
+        <li><div class="check"></div>¿Cuántas obras vendés por mes aproximadamente?</li>
+        <li><div class="check"></div>¿Tenés fotos profesionales de tus obras?</li>
+      </ul>
+      <div class="notas-label">Notas</div>
+      <textarea class="notas-campo" rows="2" placeholder="Escribí aquí durante la reunión..."></textarea>
+    </div>
+
+    <!-- Tienda -->
+    <div class="seccion">
+      <div class="seccion-header">
+        <div class="seccion-icon">🛒</div>
+        <div class="seccion-titulo">La tienda</div>
+      </div>
+      <ul class="preguntas">
+        <li><div class="check"></div>¿Querés administrarla vos o que alguien lo haga por vos?</li>
+        <li><div class="check"></div>¿Tenés referencias de sitios que te gusten?</li>
+        <li><div class="check"></div>¿Necesitás el sitio en inglés también?</li>
+        <li><div class="check"></div>¿Tenés presupuesto estimado para el proyecto?</li>
+      </ul>
+      <div class="notas-label">Notas</div>
+      <textarea class="notas-campo" rows="2" placeholder="Escribí aquí durante la reunión..."></textarea>
+    </div>
+
+    <!-- Logística -->
+    <div class="seccion">
+      <div class="seccion-header">
+        <div class="seccion-icon">📦</div>
+        <div class="seccion-titulo">Logística y pagos</div>
+      </div>
+      <ul class="preguntas">
+        <li><div class="check"></div>¿Tenés experiencia enviando obras al exterior?</li>
+        <li><div class="check"></div>¿Qué courier usás actualmente?</li>
+        <li><div class="check"></div>¿Usás SINPE para cobrar? ¿Estás en Hacienda?</li>
+      </ul>
+      <div class="notas-label">Notas</div>
+      <textarea class="notas-campo" rows="2" placeholder="Escribí aquí durante la reunión..."></textarea>
+    </div>
+
+    <!-- Prioridades -->
+    <div class="seccion">
+      <div class="seccion-header">
+        <div class="seccion-icon">🎯</div>
+        <div class="seccion-titulo">Prioridades</div>
+      </div>
+      <ul class="preguntas">
+        <li><div class="check"></div>¿Tenés fecha límite — exposición, evento?</li>
+        <li><div class="check"></div>¿Las 3 cosas más importantes para el día 1?</li>
+        <li><div class="check"></div>¿Algo que hayas intentado antes que no funcionó?</li>
+      </ul>
+      <div class="notas-label">Notas</div>
+      <textarea class="notas-campo" rows="2" placeholder="Escribí aquí durante la reunión..."></textarea>
+    </div>
+
+  </div>
+
+  <div class="nota">
+    <strong>Recordatorio:</strong> No ofrezcas soluciones todavía — esta reunión es para escuchar. Tomá notas, validá las respuestas del formulario y presentá la propuesta en una segunda reunión con números claros.
+  </div>
+
+  <div class="footer">
+    <span>azloom.tech · hello@azloom.tech</span>
+    <span>Reunión David Artavia Art · Ecommerce</span>
+  </div>
+
+</body>
+</html>

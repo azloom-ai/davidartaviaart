@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuestionario · David Artavia Art</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ocean:   #1a4a5e;
+      --sand:    #f5efe6;
+      --sunset:  #c8723a;
+      --jungle:  #3d6b4f;
+      --light:   #faf7f3;
+      --dark:    #1c1c1c;
+      --muted:   #7a7069;
+      --border:  #e0d8ce;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px 80px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      max-width: 560px;
+    }
+    .header .badge {
+      display: inline-block;
+      background: var(--sand);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 600;
+      color: var(--ocean);
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .header p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .header .meta {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+    .header .meta span::before { margin-right: 5px; }
+    .tip {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 16px;
+      background: var(--sand);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--dark);
+      line-height: 1.5;
+      text-align: left;
+    }
+    .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 28px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--ocean), var(--sunset));
+      border-radius: 99px;
+      transition: width .5s ease;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 40px;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--ocean), var(--jungle), var(--sunset));
+    }
+
+    /* question slides */
+    .question { display: none; animation: fadeUp .35s ease; }
+    .question.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .q-number {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--sunset);
+      margin-bottom: 8px;
+    }
+    .q-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+    .q-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    /* ── Options ── */
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .option:hover { border-color: var(--ocean); background: #f0f6fa; }
+    .option input { display: none; }
+    .option.selected { border-color: var(--ocean); background: #eef5f9; }
+    .option.selected .check { background: var(--ocean); border-color: var(--ocean); }
+    .option.selected .check::after { opacity: 1; }
+    .check {
+      width: 20px; height: 20px; min-width: 20px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      margin-top: 1px;
+      position: relative;
+      transition: background .2s, border-color .2s;
+    }
+    .check::after {
+      content: '';
+      position: absolute;
+      top: 4px; left: 4px;
+      width: 8px; height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    /* checkbox variant */
+    .option.multi .check { border-radius: 5px; }
+    .option.multi.selected .check::after {
+      content: '✓';
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: auto; height: auto;
+      font-size: 11px; font-weight: 700;
+      color: #fff; opacity: 1;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .option-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    .option-text span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Text / Textarea ── */
+    .form-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--dark);
+      background: #fff;
+      resize: vertical;
+      transition: border-color .2s;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--ocean); }
+    .form-input::placeholder { color: #bbb; }
+
+    /* ── Buttons ── */
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 28px;
+      gap: 12px;
+    }
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-back {
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+    }
+    .btn-back:hover { border-color: var(--ocean); color: var(--ocean); }
+    .btn-next {
+      background: var(--ocean);
+      color: #fff;
+      margin-left: auto;
+    }
+    .btn-next:hover { background: #15394d; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,74,94,.25); }
+    .btn-submit {
+      background: linear-gradient(135deg, var(--jungle), var(--ocean));
+      color: #fff;
+      margin-left: auto;
+      padding: 13px 28px;
+    }
+    .btn-submit:hover { opacity: .92; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+
+    /* ── Thank you ── */
+    #thankyou {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+    #thankyou .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    #thankyou h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--ocean);
+      margin-bottom: 10px;
+    }
+    #thankyou p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 540px) {
+      body { padding: 24px 12px 60px; }
+      .header { margin-bottom: 24px; }
+      .header h1 { font-size: 22px; }
+      .header p { font-size: 14px; }
+      .header .meta { flex-wrap: wrap; gap: 8px; justify-content: center; }
+      .tip { font-size: 12px; padding: 10px 13px; }
+      .card { padding: 24px 18px; border-radius: 14px; }
+      .q-title { font-size: 17px; }
+      .q-sub { font-size: 12px; }
+      .option { padding: 12px 13px; gap: 10px; }
+      .option-text strong { font-size: 13px; }
+      .option-text span { font-size: 11px; }
+      .btn { font-size: 13px; padding: 11px 18px; }
+      .actions { margin-top: 20px; }
+      #thankyou h2 { font-size: 22px; }
+      #thankyou p { font-size: 14px; }
+      .progress-wrap { margin-bottom: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="badge">David Artavia Art &nbsp;·&nbsp; Proyecto Web</div>
+    <h1>Cuéntanos sobre tu tienda de arte</h1>
+    <p>Estas preguntas nos ayudan a diseñar exactamente el ecommerce que tu obra merece.</p>
+    <div class="meta">
+      <span>🕐 3 minutos</span>
+      <span>📋 20 preguntas</span>
+      <span>🔒 Información confidencial</span>
+    </div>
+    <div class="tip">
+      <span class="tip-icon">💡</span>
+      <span>En algunas preguntas podés <strong>elegir varias opciones</strong> a la vez — marcalas todas las que apliquen.</span>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="progressText">Pregunta 1 de 20</span>
+      <span id="progressPct">5%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:5%"></div>
+    </div>
+  </div>
+
+  <div class="card" id="formCard">
+
+    <!-- Q1 -->
+    <div class="question active" data-q="1">
+      <div class="q-number">Sección 1 · Catálogo</div>
+      <div class="q-title">¿Cuántas obras originales tienes disponibles para vender ahora?</div>
+      <div class="q-sub">Esto nos ayuda a dimensionar la tienda y la galería.</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q1" value="1-5"><div class="check"></div><div class="option-text"><strong>1 – 5 obras</strong><span>Catálogo pequeño, inicio suave</span></div></label>
+        <label class="option"><input type="radio" name="q1" value="6-15"><div class="check"></div><div class="option-text"><strong>6 – 15 obras</strong><span>Catálogo mediano, buena variedad</span></div></label>
+        <label class="option"><input type="radio" name="q1" value="16-30"><div class="check"></div><div class="option-text"><strong>16 – 30 obras</strong><span>Catálogo amplio</span></div></label>
+        <label class="option"><input type="radio" name="q1" value="30+"><div class="check"></div><div class="option-text"><strong>Más de 30 obras</strong><span>Necesitamos buena navegación y filtros</span></div></label>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question" data-q="2">
+      <div class="q-number">Sección 1 · Catálogo</div>
+      <div class="q-title">¿Cómo quieres manejar los prints?</div>
+      <div class="q-sub">Elige la opción que mejor describe tu operación actual.</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q2" value="pod"><div class="check"></div><div class="option-text"><strong>Print-on-demand</strong><span>Se imprime al recibir el pedido, sin inventario</span></div></label>
+        <label class="option"><input type="radio" name="q2" value="stock"><div class="check"></div><div class="option-text"><strong>Stock físico</strong><span>Ya tengo prints impresos y listos</span></div></label>
+        <label class="option"><input type="radio" name="q2" value="ambos"><div class="check"></div><div class="option-text"><strong>Ambas opciones</strong><span>Mezcla de stock y bajo pedido</span></div></label>
+        <label class="option"><input type="radio" name="q2" value="nse"><div class="check"></div><div class="option-text"><strong>Aún no lo tengo claro</strong><span>Podemos definirlo juntos</span></div></label>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question" data-q="3">
+      <div class="q-number">Sección 1 · Catálogo</div>
+      <div class="q-title">¿Los prints vienen en varios tamaños o el cliente elige?</div>
+      <div class="q-sub">Esto define si necesitamos variantes de producto en la tienda.</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q3" value="fijos"><div class="check"></div><div class="option-text"><strong>Tamaños fijos</strong><span>Ofrezco 2 o 3 tamaños estándar por obra</span></div></label>
+        <label class="option"><input type="radio" name="q3" value="elige"><div class="check"></div><div class="option-text"><strong>El cliente elige</strong><span>Puede pedir el tamaño que quiera</span></div></label>
+        <label class="option"><input type="radio" name="q3" value="uno"><div class="check"></div><div class="option-text"><strong>Un solo tamaño por obra</strong><span>Cada print tiene su tamaño definido</span></div></label>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question" data-q="4">
+      <div class="q-number">Sección 1 · Catálogo</div>
+      <div class="q-title">¿Ofreces diferentes materiales para los prints?</div>
+      <div class="q-sub">Selecciona todos los que apliquen.</div>
+      <div class="options">
+        <label class="option multi"><input type="checkbox" name="q4" value="canvas"><div class="check"></div><div class="option-text"><strong>Canvas / lienzo</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q4" value="papel"><div class="check"></div><div class="option-text"><strong>Papel fotográfico / fine art</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q4" value="madera"><div class="check"></div><div class="option-text"><strong>Madera / tabla</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q4" value="otro"><div class="check"></div><div class="option-text"><strong>Otro material</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q4" value="no"><div class="check"></div><div class="option-text"><strong>Solo un tipo de material</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question" data-q="5">
+      <div class="q-number">Sección 1 · Catálogo</div>
+      <div class="q-title">¿Los murales y comisiones se gestionan por la tienda o por contacto directo?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q5" value="tienda"><div class="check"></div><div class="option-text"><strong>Por la tienda</strong><span>El cliente llena un formulario y paga en el sitio</span></div></label>
+        <label class="option"><input type="radio" name="q5" value="contacto"><div class="check"></div><div class="option-text"><strong>Por contacto directo</strong><span>WhatsApp, email o Instagram primero</span></div></label>
+        <label class="option"><input type="radio" name="q5" value="ninguno"><div class="check"></div><div class="option-text"><strong>No ofrezco murales ni comisiones</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question" data-q="6">
+      <div class="q-number">Sección 2 · Precios</div>
+      <div class="q-title">¿Tienes precio definido para las obras originales?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q6" value="si"><div class="check"></div><div class="option-text"><strong>Sí, precio visible</strong><span>Muestro el precio directo en la tienda</span></div></label>
+        <label class="option"><input type="radio" name="q6" value="consulta"><div class="check"></div><div class="option-text"><strong>Precio a consultar</strong><span>El cliente escribe para saber el precio</span></div></label>
+        <label class="option"><input type="radio" name="q6" value="mixto"><div class="check"></div><div class="option-text"><strong>Mixto</strong><span>Algunas con precio, otras a consultar</span></div></label>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="question" data-q="7">
+      <div class="q-number">Sección 2 · Precios</div>
+      <div class="q-title">¿Manejas descuentos o promociones?</div>
+      <div class="q-sub">Selecciona todos los que apliquen.</div>
+      <div class="options">
+        <label class="option multi"><input type="checkbox" name="q7" value="volumen"><div class="check"></div><div class="option-text"><strong>Descuento por volumen</strong><span>2+ obras = precio especial</span></div></label>
+        <label class="option multi"><input type="checkbox" name="q7" value="temporada"><div class="check"></div><div class="option-text"><strong>Promociones de temporada</strong><span>Navidad, ferias, etc.</span></div></label>
+        <label class="option multi"><input type="checkbox" name="q7" value="cupon"><div class="check"></div><div class="option-text"><strong>Cupones de descuento</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q7" value="no"><div class="check"></div><div class="option-text"><strong>No, precio fijo siempre</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question" data-q="8">
+      <div class="q-number">Sección 3 · Envíos</div>
+      <div class="q-title">¿Cómo prefieres cobrar el envío?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q8" value="automatico"><div class="check"></div><div class="option-text"><strong>Automático por peso/destino</strong><span>El sistema calcula el costo en tiempo real</span></div></label>
+        <label class="option"><input type="radio" name="q8" value="fija"><div class="check"></div><div class="option-text"><strong>Tarifa fija</strong><span>Mismo precio de envío para todos</span></div></label>
+        <label class="option"><input type="radio" name="q8" value="gratis"><div class="check"></div><div class="option-text"><strong>Envío gratis a partir de cierto monto</strong></div></label>
+        <label class="option"><input type="radio" name="q8" value="mixto"><div class="check"></div><div class="option-text"><strong>Mixto según zona</strong><span>CR gratis, internacional con costo</span></div></label>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question" data-q="9">
+      <div class="q-number">Sección 3 · Envíos</div>
+      <div class="q-title">¿Con qué courier trabajas actualmente?</div>
+      <div class="q-sub">Selecciona todos los que uses.</div>
+      <div class="options">
+        <label class="option multi"><input type="checkbox" name="q9" value="correos"><div class="check"></div><div class="option-text"><strong>Correos de Costa Rica</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q9" value="dhl"><div class="check"></div><div class="option-text"><strong>DHL</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q9" value="fedex"><div class="check"></div><div class="option-text"><strong>FedEx</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q9" value="propio"><div class="check"></div><div class="option-text"><strong>Entrega propia / local</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q9" value="otro"><div class="check"></div><div class="option-text"><strong>Otro</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question" data-q="10">
+      <div class="q-number">Sección 4 · Pagos</div>
+      <div class="q-title">¿Qué métodos de pago necesitas en la tienda?</div>
+      <div class="q-sub">Selecciona todos los que quieras activar.</div>
+      <div class="options">
+        <label class="option multi"><input type="checkbox" name="q10" value="sinpe"><div class="check"></div><div class="option-text"><strong>SINPE Móvil</strong><span>Solo para clientes en CR</span></div></label>
+        <label class="option multi"><input type="checkbox" name="q10" value="paypal"><div class="check"></div><div class="option-text"><strong>PayPal</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q10" value="stripe"><div class="check"></div><div class="option-text"><strong>Stripe (tarjeta crédito/débito)</strong></div></label>
+        <label class="option multi"><input type="checkbox" name="q10" value="transferencia"><div class="check"></div><div class="option-text"><strong>Transferencia bancaria</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="question" data-q="11">
+      <div class="q-number">Sección 4 · Pagos</div>
+      <div class="q-title">¿Necesitas factura electrónica para tus ventas?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q11" value="si"><div class="check"></div><div class="option-text"><strong>Sí, es obligatorio</strong><span>Estoy registrado ante Hacienda</span></div></label>
+        <label class="option"><input type="radio" name="q11" value="no"><div class="check"></div><div class="option-text"><strong>No por ahora</strong></div></label>
+        <label class="option"><input type="radio" name="q11" value="nse"><div class="check"></div><div class="option-text"><strong>No sé, necesito orientación</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="question" data-q="12">
+      <div class="q-number">Sección 5 · Diseño</div>
+      <div class="q-title">¿Tienes logo en alta resolución listo para usar?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q12" value="si"><div class="check"></div><div class="option-text"><strong>Sí, tengo logo en PNG/SVG</strong></div></label>
+        <label class="option"><input type="radio" name="q12" value="necesito"><div class="check"></div><div class="option-text"><strong>Necesito que me lo diseñen</strong></div></label>
+        <label class="option"><input type="radio" name="q12" value="ajuste"><div class="check"></div><div class="option-text"><strong>Tengo algo pero necesita ajustes</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="question" data-q="13">
+      <div class="q-number">Sección 5 · Diseño</div>
+      <div class="q-title">¿Qué paleta de colores te imaginas para el sitio?</div>
+      <div class="q-sub">Elige el estilo que más conecta con tu arte.</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q13" value="oscuro"><div class="check"></div><div class="option-text"><strong>Oscuro y elegante</strong><span>Fondo negro o gris, obras que brillan solas</span></div></label>
+        <label class="option"><input type="radio" name="q13" value="claro"><div class="check"></div><div class="option-text"><strong>Claro y minimalista</strong><span>Blanco/crema, como una galería real</span></div></label>
+        <label class="option"><input type="radio" name="q13" value="tropical"><div class="check"></div><div class="option-text"><strong>Cálido y tropical</strong><span>Tonos arena, verde selva, azul oceáno</span></div></label>
+        <label class="option"><input type="radio" name="q13" value="libre"><div class="check"></div><div class="option-text"><strong>Los dejos libres</strong><span>Confío en el criterio del equipo</span></div></label>
+      </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="question" data-q="14">
+      <div class="q-number">Sección 5 · Diseño</div>
+      <div class="q-title">¿En qué idioma(s) quieres el sitio?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q14" value="es"><div class="check"></div><div class="option-text"><strong>Solo español</strong></div></label>
+        <label class="option"><input type="radio" name="q14" value="en"><div class="check"></div><div class="option-text"><strong>Solo inglés</strong></div></label>
+        <label class="option"><input type="radio" name="q14" value="ambos"><div class="check"></div><div class="option-text"><strong>Español e inglés</strong><span>Dos versiones del sitio</span></div></label>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="question" data-q="15">
+      <div class="q-number">Sección 5 · Diseño</div>
+      <div class="q-title">¿Tienes dominio propio ya registrado?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q15" value="si"><div class="check"></div><div class="option-text"><strong>Sí, ya tengo mi dominio</strong></div></label>
+        <label class="option"><input type="radio" name="q15" value="no"><div class="check"></div><div class="option-text"><strong>No, necesito uno</strong></div></label>
+        <label class="option"><input type="radio" name="q15" value="nse"><div class="check"></div><div class="option-text"><strong>No sé qué es eso</strong><span>Te explicamos sin problema</span></div></label>
+      </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="question" data-q="16">
+      <div class="q-number">Sección 6 · Funciones extra</div>
+      <div class="q-title">¿Quieres un blog o sección de noticias en el sitio?</div>
+      <div class="q-sub">Ideal para contar el proceso creativo, eventos, exposiciones.</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q16" value="si"><div class="check"></div><div class="option-text"><strong>Sí, me interesa</strong></div></label>
+        <label class="option"><input type="radio" name="q16" value="no"><div class="check"></div><div class="option-text"><strong>No por ahora</strong></div></label>
+        <label class="option"><input type="radio" name="q16" value="quizas"><div class="check"></div><div class="option-text"><strong>Quizás más adelante</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="question" data-q="17">
+      <div class="q-number">Sección 6 · Funciones extra</div>
+      <div class="q-title">¿Quieres galería separada de la tienda para obras no en venta?</div>
+      <div class="q-sub">Un portafolio de trabajos vendidos, encargos anteriores, etc.</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q17" value="si"><div class="check"></div><div class="option-text"><strong>Sí, quiero galería + tienda</strong></div></label>
+        <label class="option"><input type="radio" name="q17" value="no"><div class="check"></div><div class="option-text"><strong>No, solo la tienda</strong></div></label>
+        <label class="option"><input type="radio" name="q17" value="integrado"><div class="check"></div><div class="option-text"><strong>Todo integrado en la tienda</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="question" data-q="18">
+      <div class="q-number">Sección 6 · Funciones extra</div>
+      <div class="q-title">¿Quieres que los clientes puedan dejar reseñas de productos?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q18" value="si"><div class="check"></div><div class="option-text"><strong>Sí, ayuda a la confianza</strong></div></label>
+        <label class="option"><input type="radio" name="q18" value="no"><div class="check"></div><div class="option-text"><strong>No, prefiero no tenerlas</strong></div></label>
+        <label class="option"><input type="radio" name="q18" value="moderadas"><div class="check"></div><div class="option-text"><strong>Sí, pero con moderación previa</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="question" data-q="19">
+      <div class="q-number">Sección 6 · Funciones extra</div>
+      <div class="q-title">¿Necesitas integración con Instagram para mostrar tu feed?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q19" value="si"><div class="check"></div><div class="option-text"><strong>Sí, quiero mostrar mi Instagram</strong></div></label>
+        <label class="option"><input type="radio" name="q19" value="no"><div class="check"></div><div class="option-text"><strong>No, no es necesario</strong></div></label>
+        <label class="option"><input type="radio" name="q19" value="nse"><div class="check"></div><div class="option-text"><strong>No sé, ¿qué recomiendas?</strong></div></label>
+      </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="question" data-q="20">
+      <div class="q-number">Sección 7 · Cierre</div>
+      <div class="q-title">¿Tienes alguna fecha límite o algo importante que quieras que sepamos?</div>
+      <div class="q-sub">Plazo deseado, presupuesto aproximado, o cualquier detalle extra.</div>
+      <textarea class="form-input" name="q20" rows="4" placeholder="Ej: Quiero tener el sitio listo para una exposición en agosto, mi presupuesto es de $XXX..."></textarea>
+    </div>
+
+    <!-- Thank you -->
+    <div id="thankyou">
+      <div class="icon">🎨</div>
+      <h2>¡Muchas gracias, David!</h2>
+      <p>Tus respuestas ya están guardadas. Las revisamos juntos con todo el detalle el <strong>jueves a las 10:00 am</strong> en nuestra reunión virtual. ¡Nos vemos ahí!</p>
+    </div>
+
+    <!-- Nav buttons -->
+    <div class="actions" id="navActions">
+      <button class="btn btn-back" id="btnBack" onclick="prevQ()" style="visibility:hidden">← Anterior</button>
+      <button class="btn btn-next" id="btnNext" onclick="nextQ()">Siguiente →</button>
+    </div>
+
+  </div><!-- /card -->
+
+  <script>
+    const TOTAL = 20;
+    let current = 1;
+
+    function getQuestion(n) { return document.querySelector(`.question[data-q="${n}"]`); }
+
+    function updateProgress() {
+      const pct = Math.round((current / TOTAL) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent = `Pregunta ${current} de ${TOTAL}`;
+      document.getElementById('progressPct').textContent = pct + '%';
+      document.getElementById('btnBack').style.visibility = current > 1 ? 'visible' : 'hidden';
+      const btnNext = document.getElementById('btnNext');
+      if (current === TOTAL) {
+        btnNext.textContent = 'Enviar respuestas ✓';
+        btnNext.className = 'btn btn-submit';
+      } else {
+        btnNext.textContent = 'Siguiente →';
+        btnNext.className = 'btn btn-next';
+      }
+    }
+
+    function showQ(n) {
+      document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+      getQuestion(n).classList.add('active');
+    }
+
+    function nextQ() {
+      if (current < TOTAL) {
+        getQuestion(current).classList.remove('active');
+        current++;
+        getQuestion(current).classList.add('active');
+        updateProgress();
+      } else {
+        submitForm();
+      }
+    }
+
+    function prevQ() {
+      if (current > 1) {
+        getQuestion(current).classList.remove('active');
+        current--;
+        getQuestion(current).classList.add('active');
+        updateProgress();
+      }
+    }
+
+    // ── Reemplaza esta URL con tu webhook de n8n ──
+    const N8N_WEBHOOK = 'https://azloomtech.app.n8n.cloud/webhook/david-artavia';
+
+    function collectAnswers() {
+      const labels = {
+        q1:  'Cantidad de obras originales',
+        q2:  'Modelo de prints',
+        q3:  'Tamaños de prints',
+        q4:  'Materiales disponibles',
+        q5:  'Gestión de murales/comisiones',
+        q6:  'Precios de originales',
+        q7:  'Descuentos y promociones',
+        q8:  'Modelo de cobro de envío',
+        q9:  'Courier utilizado',
+        q10: 'Métodos de pago',
+        q11: 'Factura electrónica',
+        q12: 'Logo disponible',
+        q13: 'Paleta de colores',
+        q14: 'Idiomas del sitio',
+        q15: 'Dominio propio',
+        q16: 'Blog o noticias',
+        q17: 'Galería separada',
+        q18: 'Reseñas de productos',
+        q19: 'Integración con Instagram',
+        q20: 'Fecha límite y comentarios',
+      };
+
+      const answers = { submitted_at: new Date().toISOString(), cliente: 'David Artavia' };
+
+      for (let i = 1; i <= 20; i++) {
+        const name = `q${i}`;
+        const radios = document.querySelectorAll(`input[name="${name}"][type="radio"]:checked`);
+        const checks = document.querySelectorAll(`input[name="${name}"][type="checkbox"]:checked`);
+        const textarea = document.querySelector(`textarea[name="${name}"]`);
+
+        let value = '';
+        if (radios.length)   value = radios[0].value;
+        else if (checks.length) value = Array.from(checks).map(c => c.value).join(', ');
+        else if (textarea)   value = textarea.value.trim();
+
+        answers[labels[name]] = value || '—';
+      }
+      return answers;
+    }
+
+    async function submitForm() {
+      const btnNext = document.getElementById('btnNext');
+      btnNext.textContent = 'Enviando...';
+      btnNext.disabled = true;
+
+      const data = collectAnswers();
+
+      try {
+        await fetch(N8N_WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+      } catch (e) {
+        // Si el webhook falla igual mostramos el agradecimiento
+        console.warn('Webhook error:', e);
+      }
+
+      document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+      document.getElementById('navActions').style.display = 'none';
+      document.getElementById('thankyou').style.display = 'block';
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressText').textContent = '¡Completado!';
+      document.getElementById('progressPct').textContent = '100%';
+    }
+
+    // Click-to-select for radio options
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', function() {
+        const input = this.querySelector('input');
+        if (input.type === 'radio') {
+          const name = input.name;
+          document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+            r.closest('.option').classList.remove('selected');
+          });
+          input.checked = true;
+          this.classList.add('selected');
+        } else {
+          input.checked = !input.checked;
+          this.classList.toggle('selected', input.checked);
+        }
+      });
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Artavia Art — Original Paintings · Giclée Prints · Murals · Costa Rica</title>
+<meta name="description" content="Original tropical and surrealist paintings, museum-quality Giclée prints, and custom murals by Costa Rican artist David Artavia. Ships to USA and Canada.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & VARIABLES ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --dark:       #0C0C0A;
+  --dark-2:     #141412;
+  --cream:      #F8F5F0;
+  --cream-2:    #EDEAE4;
+  --text:       #1A1916;
+  --muted:      #7A7A72;
+  --gold:       #B87333;
+  --gold-l:     #D4955A;
+  --teal:       #2C7B73;
+  --teal-l:     #3EA89E;
+  --white:      #FFFFFF;
+  --ff-d:       'Cormorant Garamond', Georgia, serif;
+  --ff-b:       'Inter', system-ui, sans-serif;
+  --max:        1200px;
+  --nav-h:      68px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-b);
+  color: var(--text);
+  background: var(--cream);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+a { text-decoration: none; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ── NAV ────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  transition: background .4s, box-shadow .4s;
+}
+nav.scrolled {
+  background: rgba(12,12,10,.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 rgba(255,255,255,.06);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+.nav-logo img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.nav-logo-text {
+  font-family: var(--ff-d);
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: #fff;
+  line-height: 1;
+}
+.nav-logo-text small {
+  display: block;
+  font-family: var(--ff-b);
+  font-size: .58rem;
+  font-weight: 400;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold-l);
+  margin-top: 4px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.65);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold-l); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.lang-btn {
+  font-family: var(--ff-b);
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  background: none;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.lang-btn:hover { color: var(--gold-l); border-color: var(--gold-l); }
+.nav-cta {
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--dark);
+  background: var(--gold-l);
+  padding: 9px 22px;
+  border-radius: 3px;
+  transition: background .2s;
+}
+.nav-cta:hover { background: var(--gold); color: #fff; }
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-burger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: #fff;
+  transition: all .3s;
+}
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero-wrap {
+  height: 500vh;
+  position: relative;
+}
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+#heroVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(12,12,10,.55) 0%,
+    rgba(12,12,10,.25) 45%,
+    rgba(12,12,10,.65) 100%);
+  z-index: 1;
+}
+.hero-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px;
+}
+.hero-eyebrow {
+  font-size: .66rem;
+  font-weight: 500;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--gold-l);
+  margin-bottom: 22px;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp .9s .3s ease forwards;
+}
+.hero-title {
+  font-family: var(--ff-d);
+  font-size: clamp(3.6rem, 8vw, 7.5rem);
+  font-weight: 300;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: .02em;
+  margin-bottom: 22px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s .5s ease forwards;
+}
+.hero-title em { font-style: italic; }
+.hero-sub {
+  font-size: clamp(.72rem, 2vw, .85rem);
+  font-weight: 300;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  margin-bottom: 44px;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 1s .7s ease forwards;
+}
+.hero-btn {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.45);
+  padding: 14px 38px;
+  border-radius: 2px;
+  transition: all .3s;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 1s .9s ease forwards;
+}
+.hero-btn:hover { background: var(--gold); border-color: var(--gold); }
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeUp .8s 1.4s ease forwards;
+}
+.hero-scroll-hint span {
+  font-size: .58rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+.scroll-line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--gold-l), transparent);
+  animation: pulse 2s 2s ease-in-out infinite;
+}
+.hero-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 3px;
+  background: rgba(255,255,255,.08);
+  z-index: 3;
+}
+.hero-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, var(--gold), var(--teal-l));
+  transition: width .05s linear;
+}
+
+@media (max-width: 768px) {
+  .hero-wrap { height: 100vh; }
+  .hero-sticky { position: relative; }
+}
+@media (prefers-reduced-motion: reduce) { .hero-wrap { height: 100vh; } }
+
+/* ── MARQUEE ─────────────────────────────────────────────── */
+.marquee {
+  background: var(--dark);
+  padding: 16px 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 35s linear infinite;
+}
+.marquee-text {
+  font-family: var(--ff-d);
+  font-size: .92rem;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.28);
+}
+.marquee-dot { color: var(--gold); margin: 0 26px; }
+
+/* ── SHIPPING BANNER ─────────────────────────────────────── */
+.shipping-banner {
+  background: var(--teal);
+  padding: 10px 20px;
+  text-align: center;
+}
+.shipping-banner p {
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.shipping-banner span { color: rgba(255,255,255,.6); margin: 0 20px; }
+
+/* ── SHARED SECTION UTILS ────────────────────────────────── */
+.container { max-width: var(--max); margin: 0 auto; padding: 0 40px; }
+.eyebrow {
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.section-title {
+  font-family: var(--ff-d);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.12;
+  margin-bottom: 18px;
+}
+.section-title em { font-style: italic; }
+.section-lead {
+  font-size: .92rem;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--muted);
+  max-width: 560px;
+}
+.btn-gold {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--gold);
+  padding: 13px 32px;
+  border-radius: 2px;
+  border: 1px solid var(--gold);
+  transition: background .25s, color .25s;
+}
+.btn-gold:hover { background: var(--dark); color: #fff; }
+.btn-outline {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  padding: 13px 32px;
+  border-radius: 2px;
+  border: 1px solid var(--gold);
+  transition: all .25s;
+}
+.btn-outline:hover { background: var(--gold); color: #fff; }
+.btn-light {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  padding: 13px 32px;
+  border-radius: 2px;
+  border: 1px solid rgba(255,255,255,.38);
+  transition: all .25s;
+}
+.btn-light:hover { background: #fff; color: var(--dark); border-color: #fff; }
+
+/* ── GALLERY SECTION ─────────────────────────────────────── */
+#gallery { background: var(--cream); padding: 110px 0 90px; }
+.gallery-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 56px;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.art-card {
+  background: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 18px rgba(0,0,0,.055);
+  transition: transform .35s ease, box-shadow .35s ease;
+  cursor: pointer;
+}
+.art-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.11);
+}
+.art-card-img { aspect-ratio: 4/3; overflow: hidden; }
+.art-card-img img { transition: transform .6s ease; }
+.art-card:hover .art-card-img img { transform: scale(1.05); }
+.art-card-body { padding: 18px 22px 22px; }
+.art-card-type {
+  font-size: .6rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.art-card-title {
+  font-family: var(--ff-d);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.art-card-info {
+  font-size: .78rem;
+  color: var(--muted);
+}
+.art-card-info strong { color: var(--text); font-weight: 500; }
+.gallery-foot { text-align: center; margin-top: 52px; }
+
+/* ── ABOUT SECTION ───────────────────────────────────────── */
+#about { background: var(--dark); padding: 110px 0; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 90px;
+  align-items: center;
+}
+.about-img-wrap {
+  position: relative;
+  height: 620px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.about-img-wrap img { height: 100%; }
+.about-img-accent {
+  position: absolute;
+  top: -18px; left: -18px;
+  width: 55%; height: 55%;
+  border: 1px solid rgba(184,115,51,.3);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+.about-img-wrap > img { position: relative; z-index: 1; }
+#about .section-title { color: #fff; }
+#about .section-lead {
+  color: rgba(255,255,255,.55);
+  max-width: none;
+  margin-bottom: 0;
+}
+.about-quote {
+  font-family: var(--ff-d);
+  font-size: 1.35rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--gold-l);
+  line-height: 1.65;
+  margin: 30px 0;
+  padding-left: 22px;
+  border-left: 2px solid var(--gold);
+}
+.about-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 44px;
+  padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+.stat-n {
+  font-family: var(--ff-d);
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: #fff;
+  line-height: 1;
+}
+.stat-l {
+  font-size: .65rem;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.38);
+  margin-top: 6px;
+}
+
+/* ── GICLEE SECTION ──────────────────────────────────────── */
+#giclee { background: var(--cream-2); padding: 110px 0 90px; }
+.giclee-head { text-align: center; margin-bottom: 72px; }
+.giclee-head .section-lead { margin: 0 auto; text-align: center; }
+.giclee-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 56px;
+}
+.series-card {
+  background: #fff;
+  border-radius: 2px;
+  padding: 36px 26px;
+  border-bottom: 3px solid transparent;
+  box-shadow: 0 2px 14px rgba(0,0,0,.045);
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+}
+.series-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.09);
+}
+.series-icon { font-size: 2rem; margin-bottom: 20px; line-height: 1; }
+.series-code {
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.series-name {
+  font-family: var(--ff-d);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.series-desc {
+  font-size: .8rem;
+  line-height: 1.75;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.series-meta {
+  padding-top: 18px;
+  border-top: 1px solid #F0EDE8;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.series-works { font-size: .7rem; color: var(--muted); }
+.series-price { font-size: .76rem; font-weight: 500; color: var(--text); }
+.series-price span { color: var(--gold); }
+.giclee-foot { text-align: center; }
+.giclee-note {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+/* ── MURALS SECTION ──────────────────────────────────────── */
+#murals { background: var(--dark-2); padding: 110px 0 90px; }
+.murals-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 56px;
+}
+#murals .section-title { color: #fff; }
+#murals .section-lead { color: rgba(255,255,255,.45); }
+.murals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 290px 290px;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+.mural-cell {
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.mural-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.55));
+  opacity: 0;
+  transition: opacity .3s;
+}
+.mural-cell:hover::after { opacity: 1; }
+.mural-cell img { transition: transform .5s ease; height: 100%; }
+.mural-cell:hover img { transform: scale(1.05); }
+.mural-cell.wide { grid-column: span 2; }
+.murals-foot { text-align: center; }
+
+/* ── COMMISSIONS SECTION ─────────────────────────────────── */
+#commissions { background: var(--cream); padding: 110px 0 90px; }
+.comm-head { text-align: center; margin-bottom: 80px; }
+.comm-head .section-lead { margin: 0 auto; text-align: center; }
+.comm-samples {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 72px;
+}
+.comm-sample {
+  aspect-ratio: 4/3;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.comm-sample img { transition: transform .5s ease; }
+.comm-sample:hover img { transform: scale(1.04); }
+.steps-wrap {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  margin-bottom: 72px;
+}
+.steps-wrap::before {
+  content: '';
+  position: absolute;
+  top: 27px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: var(--cream-2);
+  z-index: 0;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 14px;
+  z-index: 1;
+}
+.step-num {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--cream-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-d);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--gold);
+  margin-bottom: 22px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  transition: border-color .3s, background .3s, color .3s;
+}
+.step:hover .step-num { border-color: var(--gold); background: var(--gold); color: #fff; }
+.step-title {
+  font-family: var(--ff-d);
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.step-desc {
+  font-size: .77rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.step-tag {
+  display: inline-block;
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: rgba(44,123,115,.08);
+  padding: 3px 8px;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+.comm-foot { text-align: center; }
+
+/* ── CONTACT SECTION ─────────────────────────────────────── */
+#contact { background: var(--dark); padding: 110px 0 80px; }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: start;
+}
+#contact .section-title { color: #fff; }
+#contact .section-lead { color: rgba(255,255,255,.5); margin-bottom: 40px; }
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.contact-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(184,115,51,.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: .9rem;
+}
+.contact-label {
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold-l);
+  margin-bottom: 4px;
+}
+.contact-val {
+  font-size: .86rem;
+  color: rgba(255,255,255,.65);
+  transition: color .2s;
+}
+.contact-val:hover { color: #fff; }
+.contact-socials { display: flex; gap: 14px; margin-top: 32px; }
+.soc-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  border: 1px solid rgba(255,255,255,.14);
+  padding: 9px 16px;
+  border-radius: 3px;
+  transition: all .25s;
+}
+.soc-link:hover { color: #fff; border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.05); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-grp { margin-bottom: 18px; }
+.form-grp label {
+  display: block;
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.38);
+  margin-bottom: 8px;
+}
+.form-grp input,
+.form-grp select,
+.form-grp textarea {
+  width: 100%;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 2px;
+  padding: 12px 15px;
+  font-family: var(--ff-b);
+  font-size: .86rem;
+  color: #fff;
+  outline: none;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+}
+.form-grp input::placeholder,
+.form-grp textarea::placeholder { color: rgba(255,255,255,.22); }
+.form-grp input:focus,
+.form-grp select:focus,
+.form-grp textarea:focus { border-color: var(--gold-l); }
+.form-grp select option { background: var(--dark); }
+.form-grp textarea { resize: vertical; min-height: 130px; }
+.form-submit {
+  width: 100%;
+  font-family: var(--ff-b);
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--dark);
+  background: var(--gold-l);
+  border: none;
+  padding: 15px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .25s, color .25s;
+}
+.form-submit:hover { background: var(--gold); color: #fff; }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer {
+  background: var(--dark);
+  border-top: 1px solid rgba(255,255,255,.05);
+  padding: 36px 0;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-brand {
+  font-family: var(--ff-d);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.35);
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+.footer-links a {
+  font-size: .67rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--gold-l); }
+.footer-copy {
+  font-size: .68rem;
+  color: rgba(255,255,255,.2);
+  letter-spacing: .04em;
+}
+
+/* ── WHATSAPP ─────────────────────────────────────────────── */
+.wa-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 90;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(37,211,102,.35);
+  transition: transform .25s, box-shadow .25s;
+}
+.wa-btn:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(37,211,102,.45); }
+.wa-btn svg { width: 28px; height: 28px; }
+
+/* ── REVEAL ANIMATIONS ───────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+.reveal.on { opacity: 1; transform: none; }
+.reveal-l { opacity: 0; transform: translateX(-36px); transition: opacity .9s ease, transform .9s ease; }
+.reveal-l.on { opacity: 1; transform: none; }
+.reveal-r { opacity: 0; transform: translateX(36px); transition: opacity .9s ease, transform .9s ease; }
+.reveal-r.on { opacity: 1; transform: none; }
+.d1 { transition-delay: .08s; }
+.d2 { transition-delay: .18s; }
+.d3 { transition-delay: .28s; }
+.d4 { transition-delay: .38s; }
+.d5 { transition-delay: .48s; }
+
+/* ── KEYFRAMES ───────────────────────────────────────────── */
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .giclee-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps-wrap { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .steps-wrap::before { display: none; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-img-wrap { height: 400px; }
+}
+@media (max-width: 768px) {
+  :root { --nav-h: 60px; }
+  .container { padding: 0 20px; }
+  nav { padding: 0 20px; }
+  .nav-links, .nav-cta, .lang-btn { display: none; }
+  .nav-burger { display: flex; }
+  #gallery, #about, #giclee, #murals, #commissions, #contact { padding: 80px 0; }
+  .gallery-grid, .giclee-grid, .comm-samples { grid-template-columns: 1fr; }
+  .murals-grid { grid-template-columns: 1fr; grid-template-rows: none; }
+  .mural-cell { height: 240px; }
+  .mural-cell.wide { grid-column: span 1; }
+  .steps-wrap { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 56px; }
+  .form-row { grid-template-columns: 1fr; }
+  .gallery-head, .murals-head { flex-direction: column; align-items: flex-start; gap: 22px; }
+  .about-stats { gap: 24px; }
+  .footer-inner { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <!-- LOGO: replace src with actual logo path once confirmed -->
+    <img src="David Artavia pagina web (carpeta cliente)/Logo/IMG_2223.PNG" alt="David Artavia Art" onerror="this.style.display='none'">
+    <div class="nav-logo-text">
+      David Artavia
+      <small data-en="Art · Costa Rica" data-es="Arte · Costa Rica">Art · Costa Rica</small>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#gallery" data-en="Gallery" data-es="Galería">Gallery</a></li>
+    <li><a href="#giclee" data-en="Giclée Prints" data-es="Giclée">Giclée Prints</a></li>
+    <li><a href="#murals" data-en="Murals" data-es="Murales">Murals</a></li>
+    <li><a href="#commissions" data-en="Commissions" data-es="Comisiones">Commissions</a></li>
+    <li><a href="#about" data-en="About" data-es="El Artista">About</a></li>
+    <li><a href="#contact" data-en="Contact" data-es="Contacto">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">ES</button>
+    <a href="#contact" class="nav-cta" data-en="Inquire" data-es="Consultar">Inquire</a>
+  </div>
+  <button class="nav-burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── SHIPPING BANNER ─────────────────────────────────────── -->
+<div class="shipping-banner">
+  <p>
+    <span data-en="Free shipping to USA & Canada" data-es="Envío gratis a USA y Canadá">Free shipping to USA &amp; Canada</span>
+    <span>·</span>
+    <span data-en="Museum-quality Giclée prints" data-es="Giclée de calidad museística">Museum-quality Giclée prints</span>
+    <span>·</span>
+    <span data-en="PayPal · Stripe · SINPE" data-es="PayPal · Stripe · SINPE">PayPal · Stripe · SINPE</span>
+  </p>
+</div>
+
+<!-- ── HERO ────────────────────────────────────────────────── -->
+<section class="hero-wrap" id="hero-wrap">
+  <div class="hero-sticky">
+    <!-- Replace with fotos/video-mar.mp4 or fotos/video-proceso.mp4 as alternative -->
+    <video id="heroVideo" src="fotos/video-obra.mp4"
+           playsinline muted preload="auto" poster="fotos/obra-ola-1.jpg"></video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow" data-en="Costa Rican Fine Art" data-es="Arte Fino Costarricense">Costa Rican Fine Art</p>
+      <h1 class="hero-title">David Artavia <em>Art</em></h1>
+      <p class="hero-sub" data-en="Original Paintings · Giclée Prints · Custom Murals" data-es="Pinturas Originales · Giclée · Murales a la Medida">Original Paintings · Giclée Prints · Custom Murals</p>
+      <a href="#gallery" class="hero-btn" data-en="Explore the Collection" data-es="Ver la Colección">Explore the Collection</a>
+    </div>
+    <div class="hero-scroll-hint">
+      <span data-en="Scroll" data-es="Scroll">Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+    <div class="hero-progress">
+      <div class="hero-progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ─────────────────────────────────────────────── -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-text">Original Paintings<span class="marquee-dot">·</span>Giclée Prints<span class="marquee-dot">·</span>Custom Murals<span class="marquee-dot">·</span>Commissions<span class="marquee-dot">·</span>Costa Rica<span class="marquee-dot">·</span>Tropical Art<span class="marquee-dot">·</span>Surrealism<span class="marquee-dot">·</span>Pacific Coast<span class="marquee-dot">·</span>Fine Art<span class="marquee-dot">·</span>Ships Worldwide<span class="marquee-dot">·</span></span>
+    <span class="marquee-text" aria-hidden="true">Original Paintings<span class="marquee-dot">·</span>Giclée Prints<span class="marquee-dot">·</span>Custom Murals<span class="marquee-dot">·</span>Commissions<span class="marquee-dot">·</span>Costa Rica<span class="marquee-dot">·</span>Tropical Art<span class="marquee-dot">·</span>Surrealism<span class="marquee-dot">·</span>Pacific Coast<span class="marquee-dot">·</span>Fine Art<span class="marquee-dot">·</span>Ships Worldwide<span class="marquee-dot">·</span></span>
+  </div>
+</div>
+
+<!-- ── GALLERY ─────────────────────────────────────────────── -->
+<section id="gallery">
+  <div class="container">
+    <div class="gallery-head">
+      <div>
+        <p class="eyebrow reveal" data-en="Original Works" data-es="Obras Originales">Original Works</p>
+        <h2 class="section-title reveal d1" data-en="Paintings &amp; <em>Originals</em>" data-es="Pinturas &amp; <em>Originales</em>">Paintings &amp; <em>Originals</em></h2>
+        <p class="section-lead reveal d2" data-en="Each piece is a one-of-a-kind original. Oil and acrylic on canvas, infused with the tropical landscapes and ocean life of Costa Rica's Pacific coast." data-es="Cada obra es un original único. Óleo y acrílico sobre lienzo, impregnado de los paisajes tropicales y la vida marina de la costa Pacífica de Costa Rica.">Each piece is a one-of-a-kind original. Oil and acrylic on canvas, infused with the tropical landscapes and ocean life of Costa Rica's Pacific coast.</p>
+      </div>
+      <a href="#contact" class="btn-outline reveal d3" data-en="Inquire About Originals" data-es="Consultar Originales">Inquire About Originals</a>
+    </div>
+
+    <div class="gallery-grid">
+      <!-- NOTE: Replace artwork titles and pricing with actual data from client -->
+      <div class="art-card reveal d1">
+        <div class="art-card-img"><img src="fotos/obra-tiburon.jpg" alt="Shark painting by David Artavia" loading="lazy"></div>
+        <div class="art-card-body">
+          <p class="art-card-type" data-en="Original · Oil on Canvas" data-es="Original · Óleo sobre Lienzo">Original · Oil on Canvas</p>
+          <h3 class="art-card-title">[Título / Title]</h3>
+          <p class="art-card-info" data-en="Contact for dimensions &amp; pricing" data-es="Consultar dimensiones y precio">Contact for dimensions &amp; pricing</p>
+        </div>
+      </div>
+      <div class="art-card reveal d2">
+        <div class="art-card-img"><img src="fotos/obra-ola-1.jpg" alt="Wave painting by David Artavia" loading="lazy"></div>
+        <div class="art-card-body">
+          <p class="art-card-type" data-en="Original · Oil on Canvas" data-es="Original · Óleo sobre Lienzo">Original · Oil on Canvas</p>
+          <h3 class="art-card-title">[Título / Title]</h3>
+          <p class="art-card-info" data-en="Contact for dimensions &amp; pricing" data-es="Consultar dimensiones y precio">Contact for dimensions &amp; pricing</p>
+        </div>
+      </div>
+      <div class="art-card reveal d3">
+        <div class="art-card-img"><img src="fotos/obra-tiburon-ballena.jpg" alt="Whale and shark painting by David Artavia" loading="lazy"></div>
+        <div class="art-card-body">
+          <p class="art-card-type" data-en="Original · Oil on Canvas" data-es="Original · Óleo sobre Lienzo">Original · Oil on Canvas</p>
+          <h3 class="art-card-title">[Título / Title]</h3>
+          <p class="art-card-info" data-en="Contact for dimensions &amp; pricing" data-es="Consultar dimensiones y precio">Contact for dimensions &amp; pricing</p>
+        </div>
+      </div>
+      <div class="art-card reveal d1">
+        <div class="art-card-img"><img src="fotos/obra-caballo-1.jpg" alt="Horse painting by David Artavia" loading="lazy"></div>
+        <div class="art-card-body">
+          <p class="art-card-type" data-en="Original · Oil on Canvas" data-es="Original · Óleo sobre Lienzo">Original · Oil on Canvas</p>
+          <h3 class="art-card-title">[Título / Title]</h3>
+          <p class="art-card-info" data-en="Contact for dimensions &amp; pricing" data-es="Consultar dimensiones y precio">Contact for dimensions &amp; pricing</p>
+        </div>
+      </div>
+      <div class="art-card reveal d2">
+        <div class="art-card-img"><img src="fotos/ballena.jpg" alt="Whale painting by David Artavia" loading="lazy"></div>
+        <div class="art-card-body">
+          <p class="art-card-type" data-en="Original · Oil on Canvas" data-es="Original · Óleo sobre Lienzo">Original · Oil on Canvas</p>
+          <h3 class="art-card-title">[Título / Title]</h3>
+          <p class="art-card-info" data-en="Contact for dimensions &amp; pricing" data-es="Consultar dimensiones y precio">Contact for dimensions &amp; pricing</p>
+        </div>
+      </div>
+      <div class="art-card reveal d3">
+        <div class="art-card-img"><img src="fotos/obra-ola-2.jpg" alt="Wave painting by David Artavia" loading="lazy"></div>
+        <div class="art-card-body">
+          <p class="art-card-type" data-en="Original · Oil on Canvas" data-es="Original · Óleo sobre Lienzo">Original · Oil on Canvas</p>
+          <h3 class="art-card-title">[Título / Title]</h3>
+          <p class="art-card-info" data-en="Contact for dimensions &amp; pricing" data-es="Consultar dimensiones y precio">Contact for dimensions &amp; pricing</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-foot reveal">
+      <a href="#contact" class="btn-gold" data-en="View Full Collection" data-es="Ver Colección Completa">View Full Collection</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal-l">
+        <div class="about-img-accent"></div>
+        <img src="fotos/foto-artista.jpg" alt="David Artavia — Costa Rican artist">
+      </div>
+      <div class="reveal-r">
+        <p class="eyebrow" data-en="The Artist" data-es="El Artista">The Artist</p>
+        <h2 class="section-title" data-en="David <em>Artavia</em>" data-es="David <em>Artavia</em>">David <em>Artavia</em></h2>
+        <blockquote class="about-quote" data-en="&ldquo;My goal is to create artwork that inspires connection, tells a story, and brings a sense of joy and meaning to the spaces it inhabits.&rdquo;" data-es="&ldquo;Mi meta es crear obras que inspiren conexión, cuenten una historia y aporten alegría y significado a los espacios que habitan.&rdquo;">"My goal is to create artwork that inspires connection, tells a story, and brings a sense of joy and meaning to the spaces it inhabits."</blockquote>
+        <p class="section-lead" data-en="I am a Costa Rican artist inspired by the country's tropical landscapes, wildlife, and Pacific coastline. Born in San José and largely self-taught, I discovered my passion for art at an early age. Living close to the ocean and surrounded by nature has deeply influenced my work. Through my paintings and murals, I blend realism with imagination to create vibrant, dreamlike scenes that capture the beauty, emotion, and wonder of the world around us." data-es="Soy un artista costarricense inspirado por los paisajes tropicales del país, su fauna y la costa del Pacífico. Nacido en San José y en gran parte autodidacta, descubrí mi pasión por el arte desde temprana edad. Vivir cerca del océano y rodeado de naturaleza ha influenciado profundamente mi trabajo. A través de mis pinturas y murales, mezclo el realismo con la imaginación para crear escenas vibrantes y oníricas que capturan la belleza y el asombro del mundo que nos rodea.">I am a Costa Rican artist inspired by the country's tropical landscapes, wildlife, and Pacific coastline. Born in San José and largely self-taught, I discovered my passion for art at an early age. Living close to the ocean and surrounded by nature has deeply influenced my work. Through my paintings and murals, I blend realism with imagination to create vibrant, dreamlike scenes that capture the beauty, emotion, and wonder of the world around us.</p>
+        <div class="about-stats">
+          <div>
+            <div class="stat-n" data-count="60">0</div>
+            <div class="stat-l" data-en="Giclée Works" data-es="Obras Giclée">Giclée Works</div>
+          </div>
+          <div>
+            <div class="stat-n" data-count="4">0</div>
+            <div class="stat-l" data-en="Series" data-es="Series">Series</div>
+          </div>
+          <div>
+            <div class="stat-n" data-count="3">0</div>
+            <div class="stat-l" data-en="Countries" data-es="Países">Countries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GICLEE ────────────────────────────────────────────────── -->
+<section id="giclee">
+  <div class="container">
+    <div class="giclee-head">
+      <p class="eyebrow reveal" data-en="Giclée Collection" data-es="Colección Giclée">Giclée Collection</p>
+      <h2 class="section-title reveal d1" data-en="Museum-Quality <em>Prints</em>" data-es="Prints de <em>Calidad Museística</em>">Museum-Quality <em>Prints</em></h2>
+      <p class="section-lead reveal d2" data-en="Archival canvas prints with over 100 years of color permanence. Available in multiple sizes across four thematic series — each print hand-inspected before shipping." data-es="Prints de lienzo archival con más de 100 años de permanencia del color. Disponibles en múltiples tamaños en cuatro series temáticas, cada print revisado a mano antes del envío.">Archival canvas prints with over 100 years of color permanence. Available in multiple sizes across four thematic series — each print hand-inspected before shipping.</p>
+    </div>
+
+    <div class="giclee-grid">
+      <div class="series-card reveal d1">
+        <div class="series-icon">🌊</div>
+        <p class="series-code">Series M</p>
+        <h3 class="series-name" data-en="Ocean &amp; <em>Marine Life</em>" data-es="Océano &amp; <em>Vida Marina</em>">Ocean &amp; <em>Marine Life</em></h3>
+        <p class="series-desc" data-en="Sea turtles, whales, dolphins, and the vibrant life beneath Costa Rica's Pacific waters, painted in vivid surrealist color." data-es="Tortugas marinas, ballenas, delfines y la vibrante vida bajo las aguas del Pacífico costarricense, pintados en vívido color surrealista.">Sea turtles, whales, dolphins, and the vibrant life beneath Costa Rica's Pacific waters, painted in vivid surrealist color.</p>
+        <div class="series-meta">
+          <span class="series-works" data-en="10 works available" data-es="10 obras disponibles">10 works available</span>
+          <span class="series-price" data-en="From <span>₡49,500</span>" data-es="Desde <span>₡49,500</span>">From <span>₡49,500</span></span>
+        </div>
+      </div>
+      <div class="series-card reveal d2">
+        <div class="series-icon">🌴</div>
+        <p class="series-code">Series CR</p>
+        <h3 class="series-name" data-en="Costa <em>Rica</em>" data-es="Costa <em>Rica</em>">Costa <em>Rica</em></h3>
+        <p class="series-desc" data-en="Jaguars, toucans, the Poás volcano, and Costa Rica's lush tropical paradise — a celebration of the country's extraordinary biodiversity." data-es="Jaguares, tucanes, el Volcán Poás y el exuberante paraíso tropical de Costa Rica: una celebración de la extraordinaria biodiversidad del país.">Jaguars, toucans, the Poás volcano, and Costa Rica's lush tropical paradise — a celebration of the country's extraordinary biodiversity.</p>
+        <div class="series-meta">
+          <span class="series-works" data-en="9 works available" data-es="9 obras disponibles">9 works available</span>
+          <span class="series-price" data-en="From <span>₡36,300</span>" data-es="Desde <span>₡36,300</span>">From <span>₡36,300</span></span>
+        </div>
+      </div>
+      <div class="series-card reveal d3">
+        <div class="series-icon">🏖️</div>
+        <p class="series-code">Series P</p>
+        <h3 class="series-name" data-en="Beaches &amp; <em>Landscapes</em>" data-es="Playas &amp; <em>Paisajes</em>">Beaches &amp; <em>Landscapes</em></h3>
+        <p class="series-desc" data-en="The golden sunsets of Esterillos, Jacó, and Playa Hermosa — the beaches of Costa Rica's Pacific coast captured in light and color." data-es="Los atardeceres dorados de Esterillos, Jacó y Playa Hermosa: las playas del Pacífico costarricense capturadas en luz y color.">The golden sunsets of Esterillos, Jacó, and Playa Hermosa — the beaches of Costa Rica's Pacific coast captured in light and color.</p>
+        <div class="series-meta">
+          <span class="series-works" data-en="14 works available" data-es="14 obras disponibles">14 works available</span>
+          <span class="series-price" data-en="From <span>₡36,300</span>" data-es="Desde <span>₡36,300</span>">From <span>₡36,300</span></span>
+        </div>
+      </div>
+      <div class="series-card reveal d4">
+        <div class="series-icon">✨</div>
+        <p class="series-code">Series S</p>
+        <h3 class="series-name" data-en="Surrealism &amp; <em>Spirit</em>" data-es="Surrealismo &amp; <em>Espíritu</em>">Surrealism &amp; <em>Spirit</em></h3>
+        <p class="series-desc" data-en="Dreamlike, ethereal compositions exploring surrealist landscapes, spiritual themes, and the border between imagination and reality." data-es="Composiciones oníricas y etéreas que exploran paisajes surrealistas, temas espirituales y la frontera entre la imaginación y la realidad.">Dreamlike, ethereal compositions exploring surrealist landscapes, spiritual themes, and the border between imagination and reality.</p>
+        <div class="series-meta">
+          <span class="series-works" data-en="23 works available" data-es="23 obras disponibles">23 works available</span>
+          <span class="series-price" data-en="From <span>₡37,400</span>" data-es="Desde <span>₡37,400</span>">From <span>₡37,400</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="giclee-foot reveal">
+      <a href="#contact" class="btn-gold" data-en="Request Full Catalog" data-es="Solicitar Catálogo Completo">Request Full Catalog</a>
+      <p class="giclee-note" data-en="Prices in Costa Rican colones (CRC) · IVA not included · International shipping available" data-es="Precios en colones costarricenses (CRC) · No incluye IVA · Envío internacional disponible">Prices in Costa Rican colones (CRC) · IVA not included · International shipping available</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── MURALS ────────────────────────────────────────────────── -->
+<section id="murals">
+  <div class="container">
+    <div class="murals-head">
+      <div>
+        <p class="eyebrow reveal" data-en="Murals" data-es="Murales">Murals</p>
+        <h2 class="section-title reveal d1" data-en="Spaces Brought <em>to Life</em>" data-es="Espacios <em>con Vida</em>">Spaces Brought <em>to Life</em></h2>
+        <p class="section-lead reveal d2" data-en="From boutique hotels to private homes, David transforms walls into immersive tropical and surrealist experiences. Each mural is designed and painted on-site." data-es="Desde hoteles boutique hasta casas privadas, David transforma paredes en experiencias tropicales y surrealistas inmersivas. Cada mural es diseñado y pintado in situ.">From boutique hotels to private homes, David transforms walls into immersive tropical and surrealist experiences. Each mural is designed and painted on-site.</p>
+      </div>
+      <a href="#contact" class="btn-light reveal d3" data-en="Request a Quote" data-es="Solicitar Cotización">Request a Quote</a>
+    </div>
+
+    <div class="murals-grid">
+      <div class="mural-cell wide reveal d1">
+        <img src="fotos/mural-puravida-1.jpg" alt="Pura Vida mural by David Artavia" loading="lazy">
+      </div>
+      <div class="mural-cell reveal d2">
+        <img src="fotos/mural-mariposas.jpg" alt="Butterfly mural by David Artavia" loading="lazy">
+      </div>
+      <div class="mural-cell reveal d3">
+        <img src="fotos/mural-hojas-1.jpg" alt="Tropical leaves mural by David Artavia" loading="lazy">
+      </div>
+      <div class="mural-cell wide reveal d4">
+        <img src="fotos/mural-playa.jpg" alt="Beach mural by David Artavia" loading="lazy">
+      </div>
+      <div class="mural-cell reveal d1">
+        <img src="fotos/mural-puravida-2.jpg" alt="Pura Vida mural detail by David Artavia" loading="lazy">
+      </div>
+    </div>
+
+    <div class="murals-foot reveal">
+      <a href="#contact" class="btn-light" data-en="Start Your Mural Project" data-es="Iniciar Proyecto de Mural">Start Your Mural Project</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMMISSIONS ───────────────────────────────────────────── -->
+<section id="commissions">
+  <div class="container">
+    <div class="comm-head">
+      <p class="eyebrow reveal" data-en="Custom Commissions" data-es="Comisiones a la Medida">Custom Commissions</p>
+      <h2 class="section-title reveal d1" data-en="Your Vision, <em>His Brush</em>" data-es="Tu Visión, <em>Su Pincel</em>">Your Vision, <em>His Brush</em></h2>
+      <p class="section-lead reveal d2" data-en="David creates custom paintings and murals to order — for your home, business, or as a meaningful gift. The process is collaborative, personal, and transparent from start to finish." data-es="David crea pinturas y murales personalizados por encargo — para tu hogar, negocio o como un regalo significativo. El proceso es colaborativo, personal y transparente de principio a fin.">David creates custom paintings and murals to order — for your home, business, or as a meaningful gift. The process is collaborative, personal, and transparent from start to finish.</p>
+    </div>
+
+    <div class="comm-samples">
+      <div class="comm-sample reveal d1">
+        <img src="David Artavia pagina web (carpeta cliente)/Comisiones/C59ADB8D-3531-4F1F-8467-A4DDCDBE7A26.jpg" alt="Commission example by David Artavia" loading="lazy">
+      </div>
+      <div class="comm-sample reveal d2">
+        <img src="David Artavia pagina web (carpeta cliente)/Comisiones/E983116A-8D2B-43B7-9B36-BFE93E75C5C4.jpg" alt="Commission example by David Artavia" loading="lazy">
+      </div>
+      <div class="comm-sample reveal d3">
+        <img src="fotos/foto-pinceles.jpg" alt="David Artavia at work" loading="lazy">
+      </div>
+    </div>
+
+    <div class="steps-wrap">
+      <div class="step reveal d1">
+        <div class="step-num">1</div>
+        <h3 class="step-title" data-en="Initial Inquiry" data-es="Consulta Inicial">Initial Inquiry</h3>
+        <p class="step-desc" data-en="Fill out the contact form with a brief description of your project — canvas painting, mural, or custom artwork." data-es="Completa el formulario con una descripción breve de tu proyecto: pintura en lienzo, mural u obra personalizada.">Fill out the contact form with a brief description of your project — canvas painting, mural, or custom artwork.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-num">2</div>
+        <h3 class="step-title" data-en="Project Details" data-es="Detalles del Proyecto">Project Details</h3>
+        <p class="step-desc" data-en="David responds via email or WhatsApp to gather dimensions, color palette, inspiration images, and any reference photos." data-es="David responde por email o WhatsApp para conocer dimensiones, paleta de colores, imágenes de inspiración y fotos de referencia.">David responds via email or WhatsApp to gather dimensions, color palette, inspiration images, and any reference photos.</p>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-num">3</div>
+        <h3 class="step-title" data-en="Design &amp; Sketch" data-es="Diseño &amp; Boceto">Design &amp; Sketch</h3>
+        <p class="step-desc" data-en="A concept sketch with up to 3 revisions. If the project moves forward, the fee is credited toward the final price." data-es="Un boceto conceptual con hasta 3 revisiones. Si el proyecto avanza, el monto se acredita al precio final.">A concept sketch with up to 3 revisions. If the project moves forward, the fee is credited toward the final price.</p>
+        <span class="step-tag">$100 Design Fee</span>
+      </div>
+      <div class="step reveal d4">
+        <div class="step-num">4</div>
+        <h3 class="step-title" data-en="Agreement &amp; Deposit" data-es="Acuerdo y Depósito">Agreement &amp; Deposit</h3>
+        <p class="step-desc" data-en="A proposal with scope, timeline, and payment schedule. A 50% non-refundable deposit is required to secure your booking." data-es="Una propuesta con alcance, cronograma y plan de pagos. Se requiere un depósito no reembolsable del 50% para reservar la fecha.">A proposal with scope, timeline, and payment schedule. A 50% non-refundable deposit is required to secure your booking.</p>
+        <span class="step-tag">50% Deposit</span>
+      </div>
+      <div class="step reveal d5">
+        <div class="step-num">5</div>
+        <h3 class="step-title" data-en="Creation &amp; Delivery" data-es="Creación y Entrega">Creation &amp; Delivery</h3>
+        <p class="step-desc" data-en="The artwork is created to the approved design. The remaining 50% balance is due upon completion, before delivery or final approval." data-es="La obra se crea según el diseño aprobado. El 50% restante se paga al finalizar, antes de la entrega o aprobación final.">The artwork is created to the approved design. The remaining 50% balance is due upon completion, before delivery or final approval.</p>
+      </div>
+    </div>
+
+    <div class="comm-foot reveal">
+      <a href="#contact" class="btn-gold" data-en="Start a Commission" data-es="Iniciar una Comisión">Start a Commission</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <p class="eyebrow reveal" data-en="Get in Touch" data-es="Contáctanos">Get in Touch</p>
+        <h2 class="section-title reveal d1" data-en="Let's Create <em>Together</em>" data-es="Creemos <em>Juntos</em>">Let's Create <em>Together</em></h2>
+        <p class="section-lead reveal d2" data-en="Whether you're interested in a Giclée print, an original painting, a custom commission, or a mural — David would love to hear from you." data-es="Ya sea que te interese un print Giclée, una pintura original, una comisión personalizada o un mural, David estaría encantado de saber de ti.">Whether you're interested in a Giclée print, an original painting, a custom commission, or a mural — David would love to hear from you.</p>
+
+        <div class="reveal d3">
+          <div class="contact-item">
+            <div class="contact-icon">📷</div>
+            <div>
+              <p class="contact-label">Instagram</p>
+              <a href="https://instagram.com/davidartaviaart_" target="_blank" rel="noopener" class="contact-val">@davidartaviaart_</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <p class="contact-label">Email</p>
+              <!-- Replace with David's actual email -->
+              <a href="mailto:[EMAIL]" class="contact-val">[EMAIL DEL ARTISTA]</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <p class="contact-label" data-en="Location" data-es="Ubicación">Location</p>
+              <span class="contact-val">Playa Hermosa, Puntarenas · Costa Rica</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-socials reveal d4">
+          <a href="https://instagram.com/davidartaviaart_" target="_blank" rel="noopener" class="soc-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a>
+          <!-- Replace PHONENUMBER with David's WhatsApp number -->
+          <a href="https://wa.me/PHONENUMBER" target="_blank" rel="noopener" class="soc-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.553 4.1 1.523 5.822L0 24l6.335-1.491A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.887 0-3.659-.497-5.193-1.367l-.371-.22-3.862.91.976-3.769-.242-.387A10 10 0 012 12C2 6.478 6.478 2 12 2s10 4.478 10 10-4.478 10-10 10z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal d2">
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-grp">
+              <label data-en="Name" data-es="Nombre">Name</label>
+              <input type="text" name="name" required placeholder="Your name">
+            </div>
+            <div class="form-grp">
+              <label>Email</label>
+              <input type="email" name="email" required placeholder="your@email.com">
+            </div>
+          </div>
+          <div class="form-grp">
+            <label data-en="I'm interested in" data-es="Me interesa">I'm interested in</label>
+            <select name="subject" required>
+              <option value="" disabled selected data-en="Select an option" data-es="Selecciona una opción">Select an option</option>
+              <option value="giclee" data-en="Giclée Print" data-es="Print Giclée">Giclée Print</option>
+              <option value="original" data-en="Original Painting" data-es="Pintura Original">Original Painting</option>
+              <option value="commission" data-en="Custom Commission" data-es="Comisión Personalizada">Custom Commission</option>
+              <option value="mural" data-en="Mural Project" data-es="Proyecto de Mural">Mural Project</option>
+              <option value="other" data-en="Other / General Inquiry" data-es="Otro / Consulta General">Other / General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-grp">
+            <label data-en="Message" data-es="Mensaje">Message</label>
+            <textarea name="message" rows="5" required placeholder="Tell David about your project..."></textarea>
+          </div>
+          <button type="submit" class="form-submit" data-en="Send Message" data-es="Enviar Mensaje">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">David Artavia Art</div>
+      <ul class="footer-links">
+        <li><a href="#gallery" data-en="Gallery" data-es="Galería">Gallery</a></li>
+        <li><a href="#giclee">Giclée</a></li>
+        <li><a href="#murals" data-en="Murals" data-es="Murales">Murals</a></li>
+        <li><a href="#commissions" data-en="Commissions" data-es="Comisiones">Commissions</a></li>
+        <li><a href="#about" data-en="About" data-es="El Artista">About</a></li>
+        <li><a href="https://instagram.com/davidartaviaart_" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+      <p class="footer-copy">© 2026 David Artavia Art · Playa Hermosa, Costa Rica</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── WHATSAPP FLOAT ─────────────────────────────────────────── -->
+<!-- Replace PHONENUMBER with David's actual WhatsApp number (with country code, no +) -->
+<a href="https://wa.me/PHONENUMBER?text=Hi%20David!%20I%20saw%20your%20work%20and%20I%27m%20interested%20in..." class="wa-btn" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.553 4.1 1.523 5.822L0 24l6.335-1.491A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.887 0-3.659-.497-5.193-1.367l-.371-.22-3.862.91.976-3.769-.242-.387A10 10 0 012 12C2 6.478 6.478 2 12 2s10 4.478 10 10-4.478 10-10 10z"/></svg>
+</a>
+
+<!-- ── SCRIPTS ─────────────────────────────────────────────────── -->
+<script>
+/* ── SCROLL VIDEO ─────────────────────────────────────────────── */
+(function () {
+  const video = document.getElementById('heroVideo');
+  const wrap  = document.getElementById('hero-wrap');
+  const fill  = document.getElementById('progressFill');
+  if (!video || !wrap) return;
+
+  const isMobile     = window.matchMedia('(max-width: 768px)').matches;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (isMobile || reducedMotion) {
+    video.autoplay = true;
+    video.loop     = true;
+    video.play().catch(() => {});
+    return;
+  }
+
+  video.pause();
+  video.currentTime = 0;
+  let ready = false;
+  video.addEventListener('loadedmetadata', () => { ready = true; });
+  video.load();
+
+  function update() {
+    if (!ready || !video.duration) return;
+    const rect      = wrap.getBoundingClientRect();
+    const scrolled  = -rect.top;
+    const scrollable = wrap.offsetHeight - window.innerHeight;
+    if (scrolled <= 0)          { video.currentTime = 0; fill.style.width = '0%'; return; }
+    if (scrolled >= scrollable) { video.currentTime = video.duration; fill.style.width = '100%'; return; }
+    const p = scrolled / scrollable;
+    video.currentTime = p * video.duration;
+    fill.style.width  = (p * 100) + '%';
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { update(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+})();
+
+/* ── NAV SCROLL ───────────────────────────────────────────────── */
+(function () {
+  const nav = document.getElementById('nav');
+  function onScroll() {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ── REVEAL ANIMATIONS ─────────────────────────────────────────── */
+(function () {
+  const els = document.querySelectorAll('.reveal, .reveal-l, .reveal-r');
+  const io  = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+})();
+
+/* ── COUNTER ANIMATION ─────────────────────────────────────────── */
+(function () {
+  const counters = document.querySelectorAll('.stat-n[data-count]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el    = e.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.count > 50 ? '+' : '';
+      let current = 0;
+      const step  = Math.ceil(target / 40);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current + (current >= target ? suffix : '');
+        if (current >= target) clearInterval(timer);
+      }, 35);
+      io.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => io.observe(c));
+})();
+
+/* ── LANGUAGE TOGGLE ───────────────────────────────────────────── */
+let currentLang = 'en';
+
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'es' : 'en';
+  setLang(currentLang);
+}
+
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'ES' : 'EN';
+
+  // Simple text elements
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const key = lang === 'es' ? el.dataset.es : el.dataset.en;
+    if (key !== undefined) el.textContent = key;
+  });
+
+  // Elements that need innerHTML (for <em> tags)
+  document.querySelectorAll('[data-en*="<"]').forEach(el => {
+    const key = lang === 'es' ? el.dataset.es : el.dataset.en;
+    if (key !== undefined) el.innerHTML = key;
+  });
+}
+
+/* ── CONTACT FORM ──────────────────────────────────────────────── */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  const origText = btn.textContent;
+  btn.textContent = currentLang === 'es' ? '¡Enviado! ✓' : 'Sent! ✓';
+  btn.style.background = '#2C7B73';
+  btn.style.color = '#fff';
+  setTimeout(() => {
+    btn.textContent = origText;
+    btn.style.background = '';
+    btn.style.color = '';
+    e.target.reset();
+  }, 3000);
+  // TODO: wire to n8n webhook or email service
+}
+</script>
+</body>
+</html>
