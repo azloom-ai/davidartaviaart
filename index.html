@@ -2188,23 +2188,15 @@ function renderSeriesImage() {
 
   updateSeriesPrice();
 
-  // Hide Add to Cart for commissions and murals
+  // Mostrar/ocultar botón según tipo de serie
+  const isHideable = seriesKeyActive === 'commissions' || seriesKeyActive === 'murals' || seriesKeyActive === 'originals';
   const addBtn = document.getElementById('svAddToCart');
-  // Ocultar todo para comisiones, murales y originales
-  if (seriesKeyActive === 'commissions' || seriesKeyActive === 'murals' || seriesKeyActive === 'originals') {
-    document.getElementById('svTitle').style.display = 'none';
-    document.getElementById('svSeriesName').style.display = 'none';
-    const btn = document.getElementById('svContactBtn');
-    if (btn) btn.style.display = 'none';
-    document.getElementById('svAddToCart').style.display = 'none';
-  }
-  addBtn.style.display = (seriesKeyActive === 'commissions' || seriesKeyActive === 'murals' || seriesKeyActive === 'originals') ? 'none' : 'block';
-  // Para comisiones, murales y originales: ocultar TODO menos imagen y número
-  if (seriesKeyActive === 'commissions' || seriesKeyActive === 'murals' || seriesKeyActive === 'originals') {
+
+  if (isHideable) {
+    // Para comisiones, murales y originales: ocultar TODO menos imagen y número
     const title = document.getElementById('svTitle');
     const series = document.getElementById('svSeriesName');
     const contact = document.getElementById('svContactBtn');
-    const addcart = document.getElementById('svAddToCart');
     const tecnica = document.getElementById('svTecnica');
     const medidas = document.getElementById('svMedidas');
     const sizes = document.getElementById('svSizes');
@@ -2213,12 +2205,15 @@ function renderSeriesImage() {
     if (title) title.style.display = 'none';
     if (series) series.style.display = 'none';
     if (contact) contact.style.display = 'none';
-    if (addcart) addcart.style.display = 'none';
+    if (addBtn) addBtn.style.display = 'none';
     if (tecnica) tecnica.style.display = 'none';
     if (medidas) medidas.style.display = 'none';
     if (sizes) sizes.style.display = 'none';
     if (price) price.style.display = 'none';
     if (desc) desc.style.display = 'none';
+  } else {
+    // Para giclées y otros: mostrar botón
+    if (addBtn) addBtn.style.display = 'block';
   }
 }
 
