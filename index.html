@@ -710,9 +710,9 @@ nav.scrolled {
 #murals .section-lead { color: rgba(255,255,255,.45); }
 .murals-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 380px 300px 300px;
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 320px;
+  gap: 16px;
   margin-bottom: 48px;
 }
 .mural-cell {
@@ -732,8 +732,7 @@ nav.scrolled {
 .mural-cell:hover::after { opacity: 1; }
 .mural-cell img { transition: transform .5s ease; min-height: 100%; }
 .mural-cell:hover img { transform: scale(1.05); }
-.mural-cell.wide { grid-column: span 2; }
-.murals-grid .mural-cell:first-child { grid-column: span 2; height: 400px; }
+.mural-cell.wide { grid-column: span 1; }
 .murals-foot { text-align: center; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
 /* ── COMMISSIONS SECTION ─────────────────────────────────── */
@@ -1396,22 +1395,16 @@ footer {
     </div>
 
     <div class="murals-grid">
-      <div class="mural-cell wide reveal d1" onclick="openMuralViewer(0)">
-        <img src="assets/murales/mural-1.jpg" alt="Giant 3D wave floor mural by David Artavia" loading="lazy">
+      <div class="mural-cell reveal d1" onclick="openMuralViewer(0)">
+        <img src="assets/murales/mural-1.jpg" alt="Mural by David Artavia" loading="lazy">
       </div>
       <div class="mural-cell reveal d2" onclick="openMuralViewer(1)">
-        <img src="assets/murales/mural-2.jpg" alt="Jungle wildlife wall mural by David Artavia" loading="lazy">
+        <img src="assets/murales/mural-2.jpg" alt="Mural by David Artavia" loading="lazy">
       </div>
       <div class="mural-cell reveal d3" onclick="openMuralViewer(2)">
-        <img src="assets/murales/mural-3.jpg" alt="Jaguar mural by David Artavia" loading="lazy">
+        <img src="assets/murales/mural-3.jpg" alt="Mural by David Artavia" loading="lazy">
       </div>
-      <div class="mural-cell wide reveal d4" onclick="openMuralViewer(3)">
-        <img src="assets/murales/mural-4.jpg" alt="Coral reef full-wall mural by David Artavia" loading="lazy">
-      </div>
-      <div class="mural-cell reveal d1" onclick="openMuralViewer(4)">
-        <img src="assets/murales/mural-5.jpg" alt="Mural by David Artavia" loading="lazy">
-      </div>
-      </div>
+    </div>
 
     <div class="murals-foot reveal">
       <a href="#" class="btn-outline" style="border-color:rgba(255,255,255,.4); color:#fff;" onclick="openCollectionModal('murals'); return false;" data-en="View All Murals" data-es="Ver Todos los Murales">View All Murals</a>
