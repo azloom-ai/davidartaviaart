@@ -2484,6 +2484,7 @@ function addArtworkToCart() {
     size: currentArtwork.size || '',
     price: currentArtwork.priceUSD,
     priceCRC: currentArtwork.priceCRC,
+    image: currentArtwork.image || seriesItems[seriesIndex].image || seriesItems[seriesIndex].src,
     qty: 1
   };
 
