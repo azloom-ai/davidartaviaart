@@ -464,19 +464,19 @@ nav.scrolled {
 .art-card {
   background: #fff;
   border-radius: 2px;
-  overflow: visible;
+  overflow: hidden;
   box-shadow: 0 2px 18px rgba(0,0,0,.055);
   transition: transform .35s ease, box-shadow .35s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: auto;
+  height: 100%;
 }
 .art-card:hover {
   transform: translateY(-7px);
   box-shadow: 0 14px 40px rgba(0,0,0,.11);
 }
-.art-card-img { aspect-ratio: 2/1.5; overflow: hidden; position: relative; background: #fff; padding: 12px; box-sizing: border-box; }
+.art-card-img { aspect-ratio: 5/4; overflow: hidden; position: relative; background: #fff; padding: 16px; box-sizing: border-box; }
 .art-card-img img { object-fit: contain; width: 100%; min-height: 100%; }
 .art-card-badge {
   position: absolute;
@@ -493,10 +493,10 @@ nav.scrolled {
 }
 .art-card-img img { transition: transform .6s ease; }
 .art-card:hover .art-card-img img { transform: scale(1.05); }
-.art-card-body { padding: 16px 16px 16px; display: flex; flex-direction: column; flex: 1; overflow: visible; }
+.art-card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
 .art-card-body-top { display: flex; flex-direction: column; flex: 1; }
 .art-card-content { flex: 1; }
-.art-card-footer { display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,.05); }
+.art-card-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding-top: 12px; }
 .art-card-type {
   font-size: .6rem;
   font-weight: 500;
