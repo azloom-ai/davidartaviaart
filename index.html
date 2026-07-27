@@ -2212,7 +2212,13 @@ function renderSeriesImage() {
     if (price) price.style.display = 'none';
     if (desc) desc.style.display = 'none';
   } else {
-    // Para giclées y otros: mostrar botón
+    // Para giclées y otros: mostrar TODO
+    const title = document.getElementById('svTitle');
+    const price = document.getElementById('svPrice');
+    const sizes = document.getElementById('svSizes');
+    if (title) title.style.display = 'block';
+    if (price) price.style.display = 'block';
+    if (sizes) sizes.style.display = 'flex';
     if (addBtn) addBtn.style.display = 'block';
   }
 }
