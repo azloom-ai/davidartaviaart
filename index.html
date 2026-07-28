@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>David Artavia Art — Original Paintings · Giclée Prints · Murals · Costa Rica</title>
 <meta name="description" content="Original tropical and surrealist paintings, museum-quality Giclée prints, and custom murals by Costa Rican artist David Artavia. Ships to USA and Canada.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1200,6 +1200,74 @@ footer {
   .sv-close { top: 14px; right: 16px; font-size: 1.7rem; }
   .sv-title { font-size: 1.25rem; }
 }
+
+/* ── PRODUCT VIEW (Obras Originales & Giclée) ──────────────────── */
+.sv-overlay.pd-mode { background: rgba(27,23,32,.9); }
+.sv-overlay.pd-mode .sv-content {
+  max-width: 1080px;
+  max-height: 88vh;
+  background: var(--cream);
+  border-radius: 4px;
+  flex-direction: row;
+  align-items: stretch;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,.5);
+}
+.sv-overlay.pd-mode .sv-img-wrap {
+  flex: 1 1 52%;
+  max-height: none;
+  height: auto;
+  background: var(--cream-2);
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+}
+.sv-overlay.pd-mode .sv-img-wrap img {
+  max-width: 100%;
+  max-height: 88vh;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  box-shadow: none;
+  border-radius: 0;
+  cursor: zoom-in;
+  will-change: transform;
+}
+.sv-overlay.pd-mode .sv-img-wrap.zoomed img { cursor: grab; }
+.sv-overlay.pd-mode .sv-img-wrap.zoomed.dragging img { cursor: grabbing; }
+.sv-zoom-controls { display: none; position: absolute; bottom: 16px; right: 16px; gap: 6px; z-index: 3; }
+.sv-overlay.pd-mode .sv-zoom-controls { display: flex; }
+.sv-zoom-btn {
+  width: 34px; height: 34px; border-radius: 50%; border: none;
+  background: rgba(27,23,32,.7); color: #fff; font-size: 1.15rem; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.sv-zoom-btn:hover { background: var(--gold); }
+.sv-overlay.pd-mode .sv-info {
+  flex: 1 1 48%; display: flex; flex-direction: column;
+  text-align: left; color: var(--text); margin-top: 0;
+  padding: 44px 44px 36px; overflow-y: auto; max-height: 88vh;
+}
+.sv-overlay.pd-mode .sv-counter { color: var(--gold); order: -2; }
+.sv-overlay.pd-mode .sv-series-name {
+  order: -1; color: var(--gold); font-size: .66rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase; margin-top: 0; margin-bottom: 10px;
+}
+.sv-overlay.pd-mode .sv-title { color: var(--text); }
+.sv-overlay.pd-mode #svTecnica,
+.sv-overlay.pd-mode #svMedidas { color: var(--muted) !important; font-size: .82rem !important; }
+.sv-overlay.pd-mode #svDescription { color: var(--text) !important; font-size: .88rem !important; line-height: 1.75 !important; }
+.sv-overlay.pd-mode #svPrice { color: var(--gold); font-size: 1.3rem; }
+.sv-overlay.pd-mode #svPurchaseBlock { border-top: 1px solid rgba(0,0,0,.12) !important; text-align: left !important; margin-top: auto !important; padding-top: 24px !important; }
+.sv-overlay.pd-mode #svPriceRow { color: var(--text) !important; text-align: left !important; }
+@media (max-width: 900px) {
+  .sv-overlay.pd-mode { padding: 0; }
+  .sv-overlay.pd-mode .sv-content { flex-direction: column; max-height: 94vh; width: 94%; overflow-y: auto; }
+  .sv-overlay.pd-mode .sv-img-wrap { flex: none; height: 42vh; }
+  .sv-overlay.pd-mode .sv-info { padding: 26px 22px 30px; overflow-y: visible; max-height: none; }
+  .sv-zoom-controls { display: none !important; }
+}
 </style>
 </head>
 <body>
@@ -1386,7 +1454,7 @@ footer {
         <img src="assets/murales/mural-1.jpg" alt="Mural by David Artavia" loading="lazy">
       </div>
       <div class="mural-cell reveal d2" onclick="openMuralViewer(1)">
-        <img src="assets/murales/mural-2.jpg" alt="Mural by David Artavia" loading="lazy" style="object-position: 25% center;">
+        <img src="assets/murales/mural-2.jpg" alt="Mural by David Artavia" loading="lazy" style="object-position: 43% center;">
       </div>
       <div class="mural-cell reveal d3" onclick="openMuralViewer(2)">
         <img src="assets/murales/mural-3.jpg" alt="Mural by David Artavia" loading="lazy">
@@ -1488,8 +1556,7 @@ footer {
             <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
             <div>
               <p class="contact-label">Email</p>
-              <!-- Replace with David's actual email -->
-              <a href="mailto:[EMAIL]" class="contact-val">[EMAIL DEL ARTISTA]</a>
+              <a href="mailto:Estudioarte.da@gmail.com" class="contact-val">Estudioarte.da@gmail.com</a>
             </div>
           </div>
           <div class="contact-item">
@@ -1514,7 +1581,10 @@ footer {
       </div>
 
       <div class="reveal d2">
-        <form id="contactForm" onsubmit="handleSubmit(event)">
+        <form id="contactForm" action="https://formsubmit.co/Estudioarte.da@gmail.com" method="POST" onsubmit="handleSubmit(event)">
+          <input type="hidden" name="_subject" value="Nueva consulta — davidartaviaart.vercel.app">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
           <div class="form-row">
             <div class="form-grp">
               <label data-en="Name" data-es="Nombre">Name</label>
@@ -1586,7 +1656,13 @@ footer {
   <button class="sv-close" onclick="closeSeriesViewer()" aria-label="Close">&times;</button>
   <button class="sv-nav sv-prev" onclick="navSeries(-1)" aria-label="Previous">↑</button>
   <div class="sv-content">
-    <div class="sv-img-wrap"><img id="svImage" src="" alt=""></div>
+    <div class="sv-img-wrap" id="svImgWrap">
+      <img id="svImage" src="" alt="">
+      <div class="sv-zoom-controls">
+        <button type="button" class="sv-zoom-btn" onclick="svZoomOut()" aria-label="Zoom out">−</button>
+        <button type="button" class="sv-zoom-btn" onclick="svZoomIn()" aria-label="Zoom in">+</button>
+      </div>
+    </div>
     <div class="sv-info">
       <p class="sv-counter" id="svCounter"></p>
       <h4 class="sv-title" id="svTitle"></h4>
@@ -1595,8 +1671,8 @@ footer {
       <div id="svMedidas" style="font-size: 0.85rem; color: #ccc; margin-top: 6px; display: none;"></div>
       <div id="svSizes" style="display: none; flex-wrap: wrap; gap: 8px; margin-top: 14px;"></div>
       <div id="svDescription" style="font-size: 0.9rem; color: #ddd; margin-top: 16px; line-height: 1.5; display: none;"></div>
-      <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.2); text-align: center;">
-        <div style="font-size: 1.3rem; color: #fff; margin-bottom: 16px; font-weight: 600; text-align: center;">
+      <div id="svPurchaseBlock" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.2); text-align: center;">
+        <div id="svPriceRow" style="font-size: 1.3rem; color: #fff; margin-bottom: 16px; font-weight: 600; text-align: center;">
           <span id="svPrice"></span>
         </div>
         <button class="btn-add" id="svAddToCart" onclick="addArtworkToCart()" style="width: 100%; background: var(--gold); color: #fff; border: none; padding: 12px; border-radius: 2px; font-weight: 600; cursor: pointer;" data-en="Add to Cart" data-es="Agregar al carrito">Add to Cart</button>
@@ -1771,18 +1847,40 @@ function setLang(lang) {
 /* ── CONTACT FORM ──────────────────────────────────────────────── */
 function handleSubmit(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
+  const form = e.target;
+  const btn = form.querySelector('.form-submit');
   const origText = btn.textContent;
-  btn.textContent = currentLang === 'es' ? '¡Enviado! ✓' : 'Sent! ✓';
-  btn.style.background = '#2C7B73';
-  btn.style.color = '#fff';
-  setTimeout(() => {
+  btn.disabled = true;
+  btn.textContent = currentLang === 'es' ? 'Enviando...' : 'Sending...';
+
+  fetch(form.action.replace('https://formsubmit.co/', 'https://formsubmit.co/ajax/'), {
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: new FormData(form)
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Form submission failed');
+    return res.json();
+  })
+  .then(() => {
+    btn.textContent = currentLang === 'es' ? '¡Enviado! ✓' : 'Sent! ✓';
+    btn.style.background = '#2C7B73';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.textContent = origText;
+      btn.style.background = '';
+      btn.style.color = '';
+      form.reset();
+    }, 3000);
+  })
+  .catch(() => {
+    btn.disabled = false;
     btn.textContent = origText;
-    btn.style.background = '';
-    btn.style.color = '';
-    e.target.reset();
-  }, 3000);
-  // TODO: wire to n8n webhook or email service
+    alert(currentLang === 'es'
+      ? 'No se pudo enviar el mensaje. Por favor escríbenos por WhatsApp o directamente a Estudioarte.da@gmail.com'
+      : 'The message could not be sent. Please reach out via WhatsApp or directly at Estudioarte.da@gmail.com');
+  });
 }
 
 /* ── COLLECTION MODAL ──────────────────────────────────────────── */
@@ -2131,13 +2229,38 @@ function renderSeriesImage() {
   document.getElementById('svImage').src = it.image || it.src;
   document.getElementById('svImage').alt = title;
   document.getElementById('svTitle').textContent = title;
-  const svSeriesNameEl = document.getElementById('svSeriesName');
-  if (svSeriesNameEl) svSeriesNameEl.style.display = 'none';
   document.getElementById('svCounter').textContent = (seriesIndex + 1) + ' / ' + seriesItems.length;
+  svResetZoom();
 
-  // Descripción oculta a pedido del cliente
+  // Vista de producto (imagen + info lado a lado) para originales y giclée;
+  // murales y comisiones mantienen el visor simple de solo imagen.
+  const isProductView = seriesKeyActive !== 'murals' && seriesKeyActive !== 'commissions';
+  const overlay = document.getElementById('seriesViewer');
+  if (overlay) overlay.classList.toggle('pd-mode', isProductView);
+
+  // Etiqueta de categoría (Obra Original / Print Giclée)
+  const svSeriesNameEl = document.getElementById('svSeriesName');
+  if (svSeriesNameEl) {
+    if (isProductView) {
+      svSeriesNameEl.textContent = seriesKeyActive === 'originals'
+        ? (currentLang === 'es' ? 'Obra Original' : 'Original Artwork')
+        : (currentLang === 'es' ? 'Print Giclée' : 'Giclée Print');
+      svSeriesNameEl.style.display = 'block';
+    } else {
+      svSeriesNameEl.style.display = 'none';
+    }
+  }
+
+  // Descripción (visible solo en la vista de producto)
   const descEl = document.getElementById('svDescription');
-  if (descEl) descEl.style.display = 'none';
+  if (descEl) {
+    if (isProductView && it.description) {
+      descEl.textContent = it.description;
+      descEl.style.display = 'block';
+    } else {
+      descEl.style.display = 'none';
+    }
+  }
 
   // Mostrar técnica si existe
   const tecEl = document.getElementById('svTecnica');
@@ -2174,38 +2297,26 @@ function renderSeriesImage() {
 
   updateSeriesPrice();
 
-  // Mostrar/ocultar botón según tipo de serie
-  const isHideable = seriesKeyActive === 'commissions' || seriesKeyActive === 'murals' || seriesKeyActive === 'originals';
   const addBtn = document.getElementById('svAddToCart');
+  const titleEl = document.getElementById('svTitle');
+  const priceEl = document.getElementById('svPrice');
 
-  if (isHideable) {
-    // Para comisiones, murales y originales: ocultar TODO menos imagen y número
-    const title = document.getElementById('svTitle');
-    const series = document.getElementById('svSeriesName');
+  if (isProductView) {
+    // Originales y Giclée: vista de producto completa
+    if (titleEl) titleEl.style.display = 'block';
+    if (priceEl) priceEl.style.display = 'block';
+    if (addBtn) addBtn.style.display = 'block';
+  } else {
+    // Murales y comisiones: ocultar todo menos imagen y número
     const contact = document.getElementById('svContactBtn');
-    const tecnica = document.getElementById('svTecnica');
-    const medidas = document.getElementById('svMedidas');
-    const sizes = document.getElementById('svSizes');
-    const price = document.getElementById('svPrice');
-    const desc = document.getElementById('svDescription');
-    if (title) title.style.display = 'none';
-    if (series) series.style.display = 'none';
+    if (titleEl) titleEl.style.display = 'none';
     if (contact) contact.style.display = 'none';
     if (addBtn) addBtn.style.display = 'none';
-    if (tecnica) tecnica.style.display = 'none';
-    if (medidas) medidas.style.display = 'none';
-    if (sizes) sizes.style.display = 'none';
-    if (price) price.style.display = 'none';
-    if (desc) desc.style.display = 'none';
-  } else {
-    // Para giclées y otros: mostrar TODO
-    const title = document.getElementById('svTitle');
-    const price = document.getElementById('svPrice');
-    const sizes = document.getElementById('svSizes');
-    if (title) title.style.display = 'block';
-    if (price) price.style.display = 'block';
-    if (sizes) sizes.style.display = 'flex';
-    if (addBtn) addBtn.style.display = 'block';
+    if (tecEl) tecEl.style.display = 'none';
+    if (medEl) medEl.style.display = 'none';
+    if (sizesEl) sizesEl.style.display = 'none';
+    if (priceEl) priceEl.style.display = 'none';
+    if (descEl) descEl.style.display = 'none';
   }
 }
 
@@ -2294,27 +2405,132 @@ document.addEventListener('wheel', e => {
   }
 }, { passive: false });
 
-// Touch swipe navigation
+// Touch swipe navigation + pinch/pan zoom (vista de producto)
 let touchStartY = 0;
+let svPinchActive = false;
+
 document.addEventListener('touchstart', e => {
   const sv = document.getElementById('seriesViewer');
   if (sv && sv.classList.contains('active')) {
-    touchStartY = e.touches[0].clientY;
+    if (e.touches.length === 2) {
+      svPinchActive = true;
+      svPinchStartDist = svTouchDistance(e.touches);
+      svPinchStartZoom = svZoom;
+    } else if (e.touches.length === 1) {
+      touchStartY = e.touches[0].clientY;
+      if (svZoom > 1) {
+        svIsPanning = true;
+        svPanStartX = e.touches[0].clientX - svPanX * svZoom;
+        svPanStartY = e.touches[0].clientY - svPanY * svZoom;
+      }
+    }
   }
 }, { passive: true });
 
 document.addEventListener('touchmove', e => {
   const sv = document.getElementById('seriesViewer');
   if (sv && sv.classList.contains('active')) {
-    const touchEndY = e.touches[0].clientY;
-    const diff = touchStartY - touchEndY;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) navSeries(1); // Swipe up
-      if (diff < 0) navSeries(-1); // Swipe down
-      touchStartY = touchEndY;
+    if (e.touches.length === 2 && svPinchActive) {
+      e.preventDefault();
+      const dist = svTouchDistance(e.touches);
+      if (svPinchStartDist > 0) {
+        svZoom = Math.min(Math.max(svPinchStartZoom * (dist / svPinchStartDist), 1), 4);
+        svApplyZoom();
+      }
+    } else if (e.touches.length === 1) {
+      if (svZoom > 1 && svIsPanning) {
+        e.preventDefault();
+        svPanX = (e.touches[0].clientX - svPanStartX) / svZoom;
+        svPanY = (e.touches[0].clientY - svPanStartY) / svZoom;
+        svApplyZoom();
+      } else if (svZoom === 1) {
+        const touchEndY = e.touches[0].clientY;
+        const diff = touchStartY - touchEndY;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) navSeries(1); // Swipe up
+          if (diff < 0) navSeries(-1); // Swipe down
+          touchStartY = touchEndY;
+        }
+      }
     }
   }
+}, { passive: false });
+
+document.addEventListener('touchend', e => {
+  if (e.touches.length < 2) svPinchActive = false;
+  if (e.touches.length === 0) svIsPanning = false;
 }, { passive: true });
+
+/* ── PRODUCT VIEW ZOOM (botones +/- en desktop, pellizco en móvil) ── */
+let svZoom = 1;
+let svPanX = 0, svPanY = 0;
+let svIsPanning = false;
+let svPanStartX = 0, svPanStartY = 0;
+let svPinchStartDist = 0;
+let svPinchStartZoom = 1;
+
+function svTouchDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function svApplyZoom() {
+  const img = document.getElementById('svImage');
+  const wrap = document.getElementById('svImgWrap');
+  if (!img) return;
+  img.style.transform = `scale(${svZoom}) translate(${svPanX}px, ${svPanY}px)`;
+  if (wrap) wrap.classList.toggle('zoomed', svZoom > 1);
+}
+
+function svResetZoom() {
+  svZoom = 1; svPanX = 0; svPanY = 0;
+  svApplyZoom();
+}
+
+function svZoomIn() {
+  svZoom = Math.min(svZoom + 0.6, 4);
+  svApplyZoom();
+}
+
+function svZoomOut() {
+  svZoom = Math.max(svZoom - 0.6, 1);
+  if (svZoom === 1) { svPanX = 0; svPanY = 0; }
+  svApplyZoom();
+}
+
+(function initSvImageZoom() {
+  const img = document.getElementById('svImage');
+  const wrap = document.getElementById('svImgWrap');
+  if (!img || !wrap) return;
+
+  // Clic para alternar zoom (desktop, solo vista de producto)
+  img.addEventListener('click', () => {
+    const overlay = document.getElementById('seriesViewer');
+    if (!overlay || !overlay.classList.contains('pd-mode')) return;
+    if (svZoom === 1) { svZoom = 2; svApplyZoom(); } else { svResetZoom(); }
+  });
+
+  // Arrastrar con el mouse cuando está ampliada
+  img.addEventListener('mousedown', e => {
+    if (svZoom <= 1) return;
+    svIsPanning = true;
+    wrap.classList.add('dragging');
+    svPanStartX = e.clientX - svPanX * svZoom;
+    svPanStartY = e.clientY - svPanY * svZoom;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!svIsPanning) return;
+    svPanX = (e.clientX - svPanStartX) / svZoom;
+    svPanY = (e.clientY - svPanStartY) / svZoom;
+    svApplyZoom();
+  });
+  document.addEventListener('mouseup', () => {
+    svIsPanning = false;
+    wrap.classList.remove('dragging');
+  });
+})();
 
 function openCollectionModal(kind) {
   const grid = document.getElementById('cmGrid');
