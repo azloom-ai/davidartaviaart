@@ -751,7 +751,7 @@ nav.scrolled {
   overflow: hidden;
   cursor: pointer;
   background: #fff;
-  padding: 10px;
+  padding: 16px;
   box-sizing: border-box;
 }
 .comm-sample img { width: 100%; height: 100%; object-fit: contain; transition: transform .5s ease; }
@@ -1153,7 +1153,7 @@ footer {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 22px;
 }
 .cm-item { cursor: pointer; }
-.cm-item-img { aspect-ratio: 4/3; overflow: hidden; border-radius: 2px; box-shadow: 0 2px 14px rgba(0,0,0,.09); background: #fff; padding: 8px; box-sizing: border-box; }
+.cm-item-img { aspect-ratio: 4/3; overflow: hidden; border-radius: 2px; box-shadow: 0 2px 14px rgba(0,0,0,.09); background: #fff; padding: 16px; box-sizing: border-box; }
 .cm-item-img img { width: 100%; min-height: 100%; object-fit: contain; display: block; }
 .cm-item-mural .cm-item-img { background: none; padding: 0; }
 .cm-item-mural .cm-item-img img { object-fit: cover; min-height: 100%; }
@@ -1236,7 +1236,7 @@ footer {
 .sv-overlay.pd-mode .sv-img-mat {
   display: inline-flex;
   background: #fff;
-  padding: 14px;
+  padding: 16px;
   box-sizing: border-box;
   max-width: 100%;
   max-height: 100%;
@@ -1254,11 +1254,11 @@ footer {
   will-change: transform;
   display: block;
 }
-.sv-overlay.pd-mode.sv-zoomed .sv-img-wrap { padding: 14px; }
+.sv-overlay.pd-mode.sv-zoomed .sv-img-wrap { padding: 16px; }
 .sv-overlay.sv-white-mat:not(.pd-mode) .sv-img-mat {
   display: inline-flex;
   background: #fff;
-  padding: 12px;
+  padding: 16px;
   box-sizing: border-box;
   border-radius: 2px;
 }
@@ -1340,8 +1340,8 @@ footer {
   touch-action: none;
 }
 .sv-lightbox-wrap img {
-  max-width: 94%;
-  max-height: 84vh;
+  max-width: 92%;
+  max-height: 78vh;
   object-fit: contain;
   cursor: zoom-in;
   will-change: transform;
@@ -1349,7 +1349,7 @@ footer {
   border-radius: 2px;
 }
 @media (max-width: 760px) {
-  .sv-lightbox-wrap img { max-width: 92%; max-height: 78vh; }
+  .sv-lightbox-wrap img { max-width: 90%; max-height: 74vh; }
 }
 .sv-lightbox-wrap.zoomed img { cursor: grab; }
 .sv-lightbox-wrap.zoomed.dragging img { cursor: grabbing; }
@@ -2243,19 +2243,19 @@ const gicleeCatalog = [
     sizes: [ { size: '16 x 11.7"', crc: 61600 }, { size: '21 x 15.3"', crc: 83600 }, { size: '31 x 22.5"', crc: 167200 }, { size: '38 x 27.6"', crc: 243100 } ] },
 
   // ── COSTA RICA (CR) ──────────────────────────────────────
-  { id: 'cr1', series: 'costarica', en: 'Costa Rica Tropical #1', es: 'Costa Rica Tropical #1', image: 'assets/giclee/cr1-costa-rica-tropical-1.jpg',
+  { id: 'cr1', series: 'costarica', en: 'Costa Rica Tropical #1', es: 'Costa Rica Tropical #1', image: 'assets/giclee/cr1-costa-rica-tropical-1.jpg', description: 'La selva cobra vida con cada detalle: guacamayas, quetzales, un ocelote, un perezoso y monos curioseando en Costa Rica. Cada rincón de la selva rebosa de vida exuberante.',
     sizes: [ { size: '16 x 9"', crc: 50600 }, { size: '21 x 11.7"', crc: 71500 } ] },
-  { id: 'cr2', series: 'costarica', en: 'Costa Rica Tropical #2', es: 'Costa Rica Tropical #2', image: 'assets/giclee/cr2-costa-rica-tropical-2.jpg',
+  { id: 'cr2', series: 'costarica', en: 'Costa Rica Tropical #2', es: 'Costa Rica Tropical #2', image: 'assets/giclee/cr2-costa-rica-tropical-2.jpg', description: 'En esta segunda escena, los ocelotes contemplan una cascada entre mariposas, tucanes y monos cariblancos. La selva se llena de vida con cada mirada, continuando el viaje por Costa Rica Tropical.',
     sizes: [ { size: '16 x 10.2"', crc: 55000 }, { size: '21 x 13.4"', crc: 79200 }, { size: '31 x 20"', crc: 159500 } ] },
-  { id: 'cr3', series: 'costarica', en: 'Costa Rica Tropical #3', es: 'Costa Rica Tropical #3', image: 'assets/giclee/cr3-costa-rica-tropical-3.jpg',
+  { id: 'cr3', series: 'costarica', en: 'Costa Rica Tropical #3', es: 'Costa Rica Tropical #3', image: 'assets/giclee/cr3-costa-rica-tropical-3.jpg', description: 'Frente al volcán, entre cascadas y puentes, la selva da la bienvenida a guacamayas, perezosos, tucanes y hasta un cocodrilo. En Costa Rica Tropical 3, el paisaje es pura armonía natural.',
     sizes: [ { size: '16 x 12"', crc: 61600 }, { size: '21 x 15.7"', crc: 88000 }, { size: '31 x 23.3"', crc: 171600 }, { size: '45 x 33.4"', crc: 350900 } ] },
-  { id: 'cr4', series: 'costarica', en: 'Jaguar Face', es: 'Cara de Jaguar', image: 'assets/giclee/cr4-cara-de-jaguar.jpg',
+  { id: 'cr4', series: 'costarica', en: 'Jaguar Face', es: 'Cara de Jaguar', image: 'assets/giclee/cr4-cara-de-jaguar.jpg', description: 'Una mirada serena que impone respeto.',
     sizes: [ { size: '16 x 10.9"', crc: 58300 }, { size: '21 x 14.3"', crc: 80300 } ] },
-  { id: 'cr6', series: 'costarica', en: 'Cloud Forest Waterfall', es: 'Catarata del Bosque Nuboso', image: 'assets/giclee/cr6-catarata-bosque-nuboso.jpg',
+  { id: 'cr6', series: 'costarica', en: 'Cloud Forest Waterfall', es: 'Catarata del Bosque Nuboso', image: 'assets/giclee/cr6-catarata-bosque-nuboso.jpg', description: 'La fuerza del agua y la serenidad del bosque conviven en un paisaje lleno de vida.',
     sizes: [ { size: '16 x 5"', crc: 36300 }, { size: '21 x 6.7"', crc: 49500 }, { size: '31 x 9.8"', crc: 116600 }, { size: '40 x 12.7"', crc: 158400 }, { size: '50 x 15.8"', crc: 220000 } ] },
-  { id: 'cr7', series: 'costarica', en: 'Don Toucan', es: 'Don Tucán', image: 'assets/giclee/cr7-don-tucan.jpg',
+  { id: 'cr7', series: 'costarica', en: 'Don Toucan', es: 'Don Tucán', image: 'assets/giclee/cr7-don-tucan.jpg', description: 'El color cobra vida en la elegancia del tucán Pico Iris, uno de los grandes íconos del bosque tropical.',
     sizes: [ { size: '16 x 11.9"', crc: 61600 }, { size: '21 x 15.6"', crc: 88000 } ] },
-  { id: 'cr8', series: 'costarica', en: 'Flying Over Home', es: 'Sobrevolando al Hogar', image: 'assets/giclee/cr8-sobrevolando-al-hogar.jpg',
+  { id: 'cr8', series: 'costarica', en: 'Flying Over Home', es: 'Sobrevolando al Hogar', image: 'assets/giclee/cr8-sobrevolando-al-hogar.jpg', description: 'Inspirada en los bosques tropicales del Pacífico, donde las lapas encuentran refugio y el cielo forma parte de su hogar.',
     sizes: [ { size: '16 x 5.6"', crc: 38500 }, { size: '21 x 7.3"', crc: 52800 }, { size: '31 x 10.8"', crc: 121000 }, { size: '40 x 14"', crc: 163900 }, { size: '50 x 17.4"', crc: 228800 } ] },
   { id: 'cr9', series: 'costarica', en: 'Poás Volcano', es: 'Volcán Poás', image: 'assets/giclee/cr9-volcan-poas.jpg',
     sizes: [ { size: '16 x 11"', crc: 59400 }, { size: '21 x 14.6"', crc: 83600 } ] },
@@ -2287,39 +2287,39 @@ const gicleeCatalog = [
     sizes: [ { size: '16 x 5.5"', crc: 37400 }, { size: '21 x 7"', crc: 50600 }, { size: '31 x 10.6"', crc: 119900 }, { size: '44 x 15"', crc: 183700 } ] },
 
   // ── SURREALISM & SPIRIT (S) ───────────────────────────────
-  { id: 's1', series: 'surrealism', en: 'Journey of the Soul', es: 'Viaje del Alma', image: 'assets/giclee/s1-viaje-del-alma.jpg',
+  { id: 's1', series: 'surrealism', en: 'Journey of the Soul', es: 'Viaje del Alma', image: 'assets/giclee/s1-viaje-del-alma.jpg', description: 'Viaje del alma explora el lugar donde el océano y el universo parecen encontrarse. Entre destellos de luz, formas cósmicas y la serenidad del mar, dos caballitos de mar recorren un mismo camino, recordándonos que la inmensidad también puede sentirse en los vínculos más pequeños.',
     sizes: [ { size: '16 x 10.7"', crc: 58300 }, { size: '21 x 14"', crc: 81400 }, { size: '35 x 23.4"', crc: 193600 } ] },
-  { id: 's2', series: 'surrealism', en: 'Ethereal', es: 'Etéreo', image: 'assets/giclee/s2-etereo.jpg',
+  { id: 's2', series: 'surrealism', en: 'Ethereal', es: 'Etéreo', image: 'assets/giclee/s2-etereo.jpg', description: 'La luz, el color y el movimiento se funden en una atmósfera de serenidad entre transparencias y veladuras. La obra sugiere una presencia sutil que trasciende la forma y permanece más allá de lo visible.',
     sizes: [ { size: '16 x 12"', crc: 61600 }, { size: '21 x 16.6"', crc: 88000 }, { size: '31 x 23"', crc: 169400 }, { size: '40 x 30"', crc: 275000 } ] },
-  { id: 's3', series: 'surrealism', en: 'Running Through My Dreams', es: 'Corriendo por mis Sueños', image: 'assets/giclee/s3-corriendo-por-mis-suenos.jpg',
+  { id: 's3', series: 'surrealism', en: 'Running Through My Dreams', es: 'Corriendo por mis Sueños', image: 'assets/giclee/s3-corriendo-por-mis-suenos.jpg', description: 'Entre la realidad y la fantasía, este paisaje invita a seguir adelante. Los caballos avanzan libres por un mundo donde todo es posible, impulsados por la fuerza de los sueños que nos mueven por dentro. Una obra que celebra la imaginación, la libertad y la belleza del camino cuando se recorre con propósito.',
     sizes: [ { size: '16 x 12.3"', crc: 63800 }, { size: '21 x 16.2"', crc: 91300 } ] },
-  { id: 's4', series: 'surrealism', en: 'Whispers at Dawn', es: 'Susurros al Amanecer', image: 'assets/giclee/s4-susurros-al-amanecer.jpg',
+  { id: 's4', series: 'surrealism', en: 'Whispers at Dawn', es: 'Susurros al Amanecer', image: 'assets/giclee/s4-susurros-al-amanecer.jpg', description: 'Entre las últimas estrellas y la primera luz del día, el árbol se convierte en un punto de encuentro entre la tierra y lo infinito. Su presencia transmite calma mientras el paisaje invita a contemplar esa quietud donde nacen los susurros más profundos.',
     sizes: [ { size: '16 x 12"', crc: 61600 }, { size: '21 x 16"', crc: 90200 } ] },
-  { id: 's5', series: 'surrealism', en: 'New World', es: 'Nuevo Mundo', image: 'assets/giclee/s5-nuevo-mundo.jpg',
+  { id: 's5', series: 'surrealism', en: 'New World', es: 'Nuevo Mundo', image: 'assets/giclee/s5-nuevo-mundo.jpg', description: 'Un lugar donde el océano, la tierra y el cielo forman parte de una misma vida. Un mundo donde la naturaleza existe en perfecto equilibrio y la armonía deja de ser un anhelo para convertirse en la esencia de todo lo que nos rodea. Una visión donde la naturaleza recuerda que todo está profundamente conectado.',
     sizes: [ { size: '16 x 11.7"', crc: 57200 }, { size: '21 x 15.4"', crc: 80300 }, { size: '31 x 22.7"', crc: 156200 } ] },
-  { id: 's6', series: 'surrealism', en: 'New World 2', es: 'Nuevo Mundo 2', image: 'assets/giclee/s6-nuevo-mundo-2.jpg',
+  { id: 's6', series: 'surrealism', en: 'New World 2', es: 'Nuevo Mundo 2', image: 'assets/giclee/s6-nuevo-mundo-2.jpg', description: 'Aquí el viaje continúa. Las raíces ya no solo abrazan el océano, sino también un cielo de estrellas que habita bajo la superficie. Entre vida marina y paisajes cósmicos, la naturaleza revela que el universo entero puede respirar como un solo organismo.',
     sizes: [ { size: '16 x 10.5"', crc: 57200 }, { size: '21 x 13.8"', crc: 80300 }, { size: '31 x 20.4"', crc: 156200 } ] },
-  { id: 's8', series: 'surrealism', en: 'Beautiful Infinity', es: 'Hermoso Infinito', image: 'assets/giclee/s8-hermoso-infinito.jpg',
+  { id: 's8', series: 'surrealism', en: 'Beautiful Infinity', es: 'Hermoso Infinito', image: 'assets/giclee/s8-hermoso-infinito.jpg', description: 'El horizonte desaparece y el mar se funde con las estrellas. En ese instante las mantarrayas se convierten en guardianas silenciosas de un paisaje donde la inmensidad se expresa a través de la luz, el color y el movimiento.',
     sizes: [ { size: '16 x 7"', crc: 44000 }, { size: '21 x 9.3"', crc: 61600 }, { size: '31 x 13.7"', crc: 132000 }, { size: '45 x 20"', crc: 213400 } ] },
-  { id: 's9', series: 'surrealism', en: 'The Dreaming Muse', es: 'La Musa Soñadora', image: 'assets/giclee/s9-la-musa-sonadora.jpg',
+  { id: 's9', series: 'surrealism', en: 'The Dreaming Muse', es: 'La Musa Soñadora', image: 'assets/giclee/s9-la-musa-sonadora.jpg', description: 'Sentada sobre una luna creciente, la musa contempla un paisaje donde el bosque y las estrellas parecen compartir el mismo aliento.',
     sizes: [ { size: '16 x 9.7"', crc: 53900 }, { size: '21 x 12.7"', crc: 75900 } ] },
-  { id: 's10', series: 'surrealism', en: 'The Great Master', es: 'El Gran Maestro', image: 'assets/giclee/s10-el-gran-maestro.jpg',
+  { id: 's10', series: 'surrealism', en: 'The Great Master', es: 'El Gran Maestro', image: 'assets/giclee/s10-el-gran-maestro.jpg', description: 'Cuando era niño, miraba el mar, el cielo y los paisajes e imaginaba, como por arte de magia, que Dios estaba haciendo una gran pintura para que todos la vieran. Él iba cambiando los colores y las formas con un enorme pincel de artista, así que un día finalmente encontré la inspiración para crear y reunir mi visión e ideas sobre un lienzo. Siempre estaré inspirado por el gran maestro y su maravillosa creación.',
     sizes: [ { size: '16 x 10.5"', crc: 70400 }, { size: '21 x 19"', crc: 103400 }, { size: '33 x 30"', crc: 229900 } ] },
-  { id: 's11', series: 'surrealism', en: 'Pisces Universe', es: 'Universo Piscis', image: 'assets/giclee/s11-universo-piscis.jpg',
+  { id: 's11', series: 'surrealism', en: 'Pisces Universe', es: 'Universo Piscis', image: 'assets/giclee/s11-universo-piscis.jpg', description: 'Dos peces flotan entre la luna y las profundidades, recordando la dualidad de Piscis, una visión personal donde el universo y el mar se entrelazan en armonía.',
     sizes: [ { size: '16 x 6"', crc: 39600 }, { size: '21 x 8"', crc: 55000 }, { size: '31 x 11.8"', crc: 124300 }, { size: '45 x 17"', crc: 198000 } ] },
-  { id: 's12', series: 'surrealism', en: 'Lucid Dream', es: 'Sueño Lúcido', image: 'assets/giclee/s12-sueno-lucido.jpg',
+  { id: 's12', series: 'surrealism', en: 'Lucid Dream', es: 'Sueño Lúcido', image: 'assets/giclee/s12-sueno-lucido.jpg', description: 'Hay momentos en los que la imaginación se siente más real que la realidad. Sueño lúcido nace de ese espacio donde el océano, el universo y la mente se encuentran sin límites y en perfecta armonía.',
     sizes: [ { size: '16 x 15"', crc: 73700 }, { size: '21 x 19.7"', crc: 105600 }, { size: '31 x 29"', crc: 211200 }, { size: '40 x 37.5"', crc: 341000 } ] },
-  { id: 's13', series: 'surrealism', en: 'Memories', es: 'Memorias', image: 'assets/giclee/s13-memorias.jpg',
+  { id: 's13', series: 'surrealism', en: 'Memories', es: 'Memorias', image: 'assets/giclee/s13-memorias.jpg', description: 'Esta obra evoca memorias que trascienden el tiempo, reflejadas en paisajes que conectan emociones en un instante eterno en cada detalle.',
     sizes: [ { size: '16 x 12.9"', crc: 66000 }, { size: '21 x 16.9"', crc: 93500 }, { size: '35.5 x 29.5"', crc: 242000 } ] },
-  { id: 's14', series: 'surrealism', en: 'Rebirth', es: 'Renacer', image: 'assets/giclee/s14-renacer.jpg',
+  { id: 's14', series: 'surrealism', en: 'Rebirth', es: 'Renacer', image: 'assets/giclee/s14-renacer.jpg', description: 'Como en una metamorfosis, las capas del paisaje se abren al cosmos: un renacer interior que transforma horizonte y alma.',
     sizes: [ { size: '16 x 12.7"', crc: 66000 }, { size: '21 x 16.7"', crc: 92400 }, { size: '29.5 x 23.5"', crc: 165000 } ] },
-  { id: 's15', series: 'surrealism', en: 'Fungi Beach', es: 'Playa Fungi', image: 'assets/giclee/s15-playa-fungi.jpg',
+  { id: 's15', series: 'surrealism', en: 'Fungi Beach', es: 'Playa Fungi', image: 'assets/giclee/s15-playa-fungi.jpg', description: 'Esta playa imaginaria combina atardecer y formas que parecen de otro mundo.',
     sizes: [ { size: '16 x 11.8"', crc: 61600 }, { size: '21 x 15.4"', crc: 90200 }, { size: '31 x 22.8"', crc: 168300 }, { size: '40 x 29.4"', crc: 270600 } ] },
-  { id: 's16', series: 'surrealism', en: 'Cosmic Dance', es: 'Baile Cósmico', image: 'assets/giclee/s16-baile-cosmico.jpg',
+  { id: 's16', series: 'surrealism', en: 'Cosmic Dance', es: 'Baile Cósmico', image: 'assets/giclee/s16-baile-cosmico.jpg', description: 'El salto de las ballenas se convierte en una danza ancestral, donde el océano y el universo parecen moverse al mismo compás.',
     sizes: [ { size: '16 x 5.3"', crc: 37400 }, { size: '21 x 7"', crc: 50600 }, { size: '31 x 10.2"', crc: 118800 }, { size: '45 x 14.8"', crc: 185900 }, { size: '59 x 19.4"', crc: 278300 } ] },
-  { id: 's17', series: 'surrealism', en: 'Fantastic Journey', es: 'Viaje Fantástico', image: 'assets/giclee/s17-viaje-fantastico.jpg',
+  { id: 's17', series: 'surrealism', en: 'Fantastic Journey', es: 'Viaje Fantástico', image: 'assets/giclee/s17-viaje-fantastico.jpg', description: 'Bajo la luna, una medusa recorre el cielo sobre una jungla exuberante, dando vida a un viaje fantástico.',
     sizes: [ { size: '16 x 6.8"', crc: 42900 }, { size: '21 x 9"', crc: 59400 }, { size: '31 x 13.3"', crc: 129800 }, { size: '40 x 17"', crc: 178200 }, { size: '50 x 21.5"', crc: 258500 } ] },
-  { id: 's18', series: 'surrealism', en: 'Beyond Time', es: 'Más Allá del Tiempo', image: 'assets/giclee/s18-mas-alla-del-tiempo.jpg',
+  { id: 's18', series: 'surrealism', en: 'Beyond Time', es: 'Más Allá del Tiempo', image: 'assets/giclee/s18-mas-alla-del-tiempo.jpg', description: 'Bajo un cielo temporal, mantarrayas flotan entre colores cósmicos.',
     sizes: [ { size: '16 x 7.2"', crc: 44000 }, { size: '21 x 9.5"', crc: 61600 }, { size: '31 x 14"', crc: 132000 }, { size: '45 x 20.3"', crc: 215600 } ] },
   { id: 's19', series: 'surrealism', en: 'Dominicalito', es: 'Dominicalito', image: 'assets/giclee/s19-dominicalito.jpg',
     sizes: [ { size: '16 x 10.2"', crc: 55000 }, { size: '21 x 13.4"', crc: 79200 }, { size: '31 x 20"', crc: 154000 }, { size: '40 x 25.6"', crc: 237600 }, { size: '48 x 30.7"', crc: 343200 } ] },
