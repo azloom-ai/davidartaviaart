@@ -1219,10 +1219,11 @@ footer {
   flex: 1 1 55%;
   max-height: none;
   height: 100%;
-  background: var(--cream-2);
+  background: var(--cream);
   position: relative;
   overflow: hidden;
   touch-action: none;
+  transition: flex-basis .28s ease;
 }
 .sv-overlay.pd-mode .sv-img-wrap img {
   max-width: 100%;
@@ -1248,25 +1249,28 @@ footer {
 .sv-zoom-btn:hover { background: var(--gold); }
 .sv-overlay.pd-mode .sv-info {
   flex: 1 1 45%; display: flex; flex-direction: column;
+  justify-content: center; gap: 4px;
   text-align: left; color: var(--text); margin-top: 0;
-  padding: 56px 56px 44px; overflow-y: auto; max-height: 100%;
+  padding: 56px 64px; overflow-y: auto; max-height: 100%;
+  transition: flex-basis .28s ease, opacity .2s ease;
 }
-.sv-overlay.pd-mode .sv-counter { color: var(--gold); order: -2; }
+.sv-overlay.pd-mode .sv-counter { color: var(--gold); order: -2; margin-bottom: 4px; }
 .sv-overlay.pd-mode .sv-series-name {
-  order: -1; color: var(--gold); font-size: .68rem; font-weight: 600;
-  letter-spacing: .18em; text-transform: uppercase; margin-top: 0; margin-bottom: 10px;
+  order: -1; color: var(--gold); font-size: .7rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase; margin-top: 0; margin-bottom: 14px;
 }
-.sv-overlay.pd-mode .sv-title { color: var(--text); font-size: 2rem; }
+.sv-overlay.pd-mode .sv-title { color: var(--text); font-size: 2.1rem; margin-bottom: 6px; }
 .sv-overlay.pd-mode #svTecnica,
-.sv-overlay.pd-mode #svMedidas { color: var(--muted) !important; font-size: .85rem !important; }
-.sv-overlay.pd-mode #svDescription { color: var(--text) !important; font-size: .92rem !important; line-height: 1.75 !important; }
-.sv-overlay.pd-mode #svPrice { color: var(--gold); font-size: 1.4rem; }
-.sv-overlay.pd-mode #svPurchaseBlock { border-top: 1px solid rgba(0,0,0,.12) !important; text-align: left !important; margin-top: auto !important; padding-top: 24px !important; }
+.sv-overlay.pd-mode #svMedidas { color: var(--muted) !important; font-size: .88rem !important; margin-top: 4px !important; }
+.sv-overlay.pd-mode #svDescription { color: var(--text) !important; font-size: 1rem !important; line-height: 1.85 !important; margin-top: 22px !important; max-width: 46ch; }
+.sv-overlay.pd-mode #svPrice { color: var(--gold); font-size: 1.5rem; }
+.sv-overlay.pd-mode #svPurchaseBlock { border-top: 1px solid rgba(0,0,0,.12) !important; text-align: left !important; margin-top: 30px !important; padding-top: 26px !important; }
 .sv-overlay.pd-mode #svPriceRow { color: var(--text) !important; text-align: left !important; }
+.sv-overlay.pd-mode #svSizes { margin-top: 18px !important; }
 .sv-overlay.pd-mode .sv-size-btn { border-color: rgba(27,23,32,.28) !important; color: var(--text) !important; background: transparent !important; }
 .sv-overlay.pd-mode .sv-size-btn:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
 .sv-overlay.pd-mode .sv-size-btn.active { background: var(--gold) !important; border-color: var(--gold) !important; color: #fff !important; }
-.sv-overlay.pd-mode .sv-close { color: var(--text); background: rgba(255,255,255,.5); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; top: 16px; right: 16px; }
+.sv-overlay.pd-mode .sv-close { color: var(--text); background: rgba(255,255,255,.5); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; top: 16px; right: 16px; z-index: 20; }
 .sv-overlay.pd-mode .sv-nav {
   position: fixed; top: 50%; transform: translateY(-50%); z-index: 10;
   width: 44px; height: 44px; border-radius: 50%;
@@ -1276,11 +1280,17 @@ footer {
 .sv-overlay.pd-mode .sv-nav:hover { opacity: 1; background: var(--gold); }
 .sv-overlay.pd-mode .sv-prev { left: 16px; }
 .sv-overlay.pd-mode .sv-next { right: 16px; }
+/* Cuando la imagen está ampliada, la foto ocupa casi toda la pantalla */
+.sv-overlay.pd-mode.sv-zoomed .sv-img-wrap { flex: 1 1 88%; }
+.sv-overlay.pd-mode.sv-zoomed .sv-info { flex: 0 0 12%; opacity: 0; pointer-events: none; overflow: hidden; padding-left: 0; padding-right: 0; }
+.sv-overlay.pd-mode.sv-zoomed .sv-nav { opacity: 0; pointer-events: none; }
 @media (max-width: 900px) {
   .sv-overlay.pd-mode .sv-content { flex-direction: column; overflow-y: auto; }
-  .sv-overlay.pd-mode .sv-img-wrap { flex: none; height: 46vh; width: 100%; }
+  .sv-overlay.pd-mode .sv-img-wrap { flex: none; height: 46vh; width: 100%; transition: height .28s ease; }
   .sv-overlay.pd-mode .sv-info { padding: 28px 22px 40px; overflow-y: visible; max-height: none; }
   .sv-overlay.pd-mode .sv-nav { display: none; }
+  .sv-overlay.pd-mode.sv-zoomed .sv-img-wrap { height: 92vh; }
+  .sv-overlay.pd-mode.sv-zoomed .sv-info { flex: 0 0 auto; height: 0; opacity: 0; overflow: hidden; padding: 0; }
   .sv-zoom-controls { display: none !important; }
 }
 </style>
@@ -2025,6 +2035,7 @@ function openOriginalViewer(startIndex) {
   seriesItems = buildOriginalsItems();
   seriesIndex = startIndex;
   seriesKeyActive = 'originals';
+  svReturnToCollection = null;
   renderSeriesImage();
   document.getElementById('seriesViewer').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -2223,6 +2234,7 @@ const gicleeCatalog = [
 let seriesItems = [];
 let seriesIndex = 0;
 let seriesKeyActive = '';
+let svReturnToCollection = null; // guarda el "kind" si el visor se abrió desde la colección completa
 let currentPrice = 0;
 let currentArtwork = {};
 let currentSizeIndex = 0;
@@ -2232,6 +2244,7 @@ function openSeriesViewer(seriesKey) {
   if (!seriesItems.length) return;
   seriesIndex = 0;
   seriesKeyActive = seriesKey;
+  svReturnToCollection = null;
   renderSeriesImage();
   document.getElementById('seriesViewer').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -2397,8 +2410,15 @@ function navSeries(dir) {
 
 function closeSeriesViewer() {
   document.getElementById('seriesViewer').classList.remove('active');
+  document.getElementById('seriesViewer').classList.remove('sv-zoomed');
   document.body.style.overflow = '';
   document.documentElement.style.overflow = '';
+  if (svReturnToCollection) {
+    const kind = svReturnToCollection;
+    const lastIndex = seriesIndex;
+    svReturnToCollection = null;
+    openCollectionModal(kind, lastIndex);
+  }
 }
 
 document.addEventListener('keydown', e => {
@@ -2410,13 +2430,12 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// Mouse wheel scroll navigation
+// El scroll ya no cambia de foto (se quitó para evitar cambios accidentales).
+// Solo se bloquea que la rueda del mouse mueva la página de fondo.
 document.addEventListener('wheel', e => {
   const sv = document.getElementById('seriesViewer');
   if (sv && sv.classList.contains('active')) {
     e.preventDefault();
-    if (e.deltaY > 0) navSeries(1); // Scroll down
-    if (e.deltaY < 0) navSeries(-1); // Scroll up
   }
 }, { passive: false });
 
@@ -2434,6 +2453,9 @@ document.addEventListener('touchmove', e => {
 // Touch swipe navigation + pinch/pan zoom (vista de producto)
 let touchStartY = 0;
 let svPinchActive = false;
+let svPinchMidX = 0, svPinchMidY = 0;
+let svTouchMoved = false;
+let svTouchStartX = 0;
 
 document.addEventListener('touchstart', e => {
   const sv = document.getElementById('seriesViewer');
@@ -2442,8 +2464,12 @@ document.addEventListener('touchstart', e => {
       svPinchActive = true;
       svPinchStartDist = svTouchDistance(e.touches);
       svPinchStartZoom = svZoom;
+      svPinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      svPinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
     } else if (e.touches.length === 1) {
       touchStartY = e.touches[0].clientY;
+      svTouchStartX = e.touches[0].clientX;
+      svTouchMoved = false;
       if (svZoom > 1) {
         svIsPanning = true;
         svPanStartX = e.touches[0].clientX - svPanX * svZoom;
@@ -2460,10 +2486,13 @@ document.addEventListener('touchmove', e => {
       e.preventDefault();
       const dist = svTouchDistance(e.touches);
       if (svPinchStartDist > 0) {
-        svZoom = Math.min(Math.max(svPinchStartZoom * (dist / svPinchStartDist), 1), 4);
+        const newZoom = Math.min(Math.max(svPinchStartZoom * (dist / svPinchStartDist), 1), 4);
+        if (svZoom === 1 && newZoom > 1) svAnchorZoomAt(svPinchMidX, svPinchMidY);
+        svZoom = newZoom;
         svApplyZoom();
       }
     } else if (e.touches.length === 1) {
+      svTouchMoved = true;
       if (svZoom > 1 && svIsPanning) {
         e.preventDefault();
         svPanX = (e.touches[0].clientX - svPanStartX) / svZoom;
@@ -2483,17 +2512,27 @@ document.addEventListener('touchmove', e => {
 }, { passive: false });
 
 document.addEventListener('touchend', e => {
+  const sv = document.getElementById('seriesViewer');
+  if (sv && sv.classList.contains('active') && e.touches.length === 0) {
+    // Toque simple (sin arrastre) sobre la imagen ampliada: no hace nada especial.
+    // Toque simple sobre la imagen sin ampliar: hace zoom justo ahí.
+    const wrap = document.getElementById('svImgWrap');
+    if (wrap && !svTouchMoved && !svPinchActive && svZoom === 1) {
+      svZoomToPoint(svTouchStartX, touchStartY);
+    }
+  }
   if (e.touches.length < 2) svPinchActive = false;
   if (e.touches.length === 0) svIsPanning = false;
 }, { passive: true });
 
-/* ── PRODUCT VIEW ZOOM (botones +/- en desktop, pellizco en móvil) ── */
+/* ── PRODUCT VIEW ZOOM (clic/toque en la foto, botones +/-, pellizco) ── */
 let svZoom = 1;
 let svPanX = 0, svPanY = 0;
 let svIsPanning = false;
 let svPanStartX = 0, svPanStartY = 0;
 let svPinchStartDist = 0;
 let svPinchStartZoom = 1;
+let svDidDrag = false;
 
 function svTouchDistance(touches) {
   const dx = touches[0].clientX - touches[1].clientX;
@@ -2507,6 +2546,8 @@ function svApplyZoom() {
   if (!img) return;
   img.style.transform = `scale(${svZoom}) translate(${svPanX}px, ${svPanY}px)`;
   if (wrap) wrap.classList.toggle('zoomed', svZoom > 1);
+  const overlay = document.getElementById('seriesViewer');
+  if (overlay) overlay.classList.toggle('sv-zoomed', svZoom > 1);
 }
 
 function svResetZoom() {
@@ -2514,7 +2555,25 @@ function svResetZoom() {
   svApplyZoom();
 }
 
+// Ancla el punto (clientX, clientY) para que quede centrado al ampliar
+function svAnchorZoomAt(clientX, clientY) {
+  const wrap = document.getElementById('svImgWrap');
+  if (!wrap) return;
+  const rect = wrap.getBoundingClientRect();
+  svPanX = -(clientX - (rect.left + rect.width / 2));
+  svPanY = -(clientY - (rect.top + rect.height / 2));
+}
+
+// Toque/clic sobre la foto (sin ampliar todavía): amplía justo en ese punto
+function svZoomToPoint(clientX, clientY) {
+  if (svZoom > 1) return;
+  svAnchorZoomAt(clientX, clientY);
+  svZoom = 2.2;
+  svApplyZoom();
+}
+
 function svZoomIn() {
+  if (svZoom === 1) { svZoomToPoint(window.innerWidth * .28, window.innerHeight / 2); return; }
   svZoom = Math.min(svZoom + 0.6, 4);
   svApplyZoom();
 }
@@ -2530,17 +2589,20 @@ function svZoomOut() {
   const wrap = document.getElementById('svImgWrap');
   if (!img || !wrap) return;
 
-  // Clic para alternar zoom (desktop, solo vista de producto)
-  img.addEventListener('click', () => {
+  // Clic sobre la foto: si no está ampliada, amplía justo donde se hizo clic.
+  // Si ya está ampliada, el clic no hace nada (para no perder la posición al arrastrar).
+  img.addEventListener('click', e => {
     const overlay = document.getElementById('seriesViewer');
     if (!overlay || !overlay.classList.contains('pd-mode')) return;
-    if (svZoom === 1) { svZoom = 2; svApplyZoom(); } else { svResetZoom(); }
+    if (svDidDrag) { svDidDrag = false; return; }
+    if (svZoom === 1) svZoomToPoint(e.clientX, e.clientY);
   });
 
-  // Arrastrar con el mouse cuando está ampliada
+  // Arrastrar con el mouse cuando está ampliada — se mantiene donde la dejes
   img.addEventListener('mousedown', e => {
     if (svZoom <= 1) return;
     svIsPanning = true;
+    svDidDrag = false;
     wrap.classList.add('dragging');
     svPanStartX = e.clientX - svPanX * svZoom;
     svPanStartY = e.clientY - svPanY * svZoom;
@@ -2548,6 +2610,7 @@ function svZoomOut() {
   });
   document.addEventListener('mousemove', e => {
     if (!svIsPanning) return;
+    svDidDrag = true;
     svPanX = (e.clientX - svPanStartX) / svZoom;
     svPanY = (e.clientY - svPanStartY) / svZoom;
     svApplyZoom();
@@ -2558,7 +2621,8 @@ function svZoomOut() {
   });
 })();
 
-function openCollectionModal(kind) {
+
+function openCollectionModal(kind, scrollToIndex) {
   const grid = document.getElementById('cmGrid');
   const titleEl = document.getElementById('cmTitle');
   grid.innerHTML = '';
@@ -2597,10 +2661,11 @@ function openCollectionModal(kind) {
       seriesItems = items;
       seriesIndex = idx;
       seriesKeyActive = kind;
+      svReturnToCollection = kind; // al cerrar el visor, vuelve aquí en vez de al inicio
       renderSeriesImage();
       document.getElementById('seriesViewer').classList.add('active');
       document.body.style.overflow = 'hidden';
-  document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     });
     grid.appendChild(div);
   });
@@ -2608,6 +2673,11 @@ function openCollectionModal(kind) {
   document.getElementById('collectionModal').classList.add('active');
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
+
+  if (typeof scrollToIndex === 'number') {
+    const target = grid.children[scrollToIndex];
+    if (target) setTimeout(() => target.scrollIntoView({ block: 'center' }), 50);
+  }
 }
 
 function closeCollectionModal() {
