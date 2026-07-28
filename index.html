@@ -750,8 +750,11 @@ nav.scrolled {
   border-radius: 2px;
   overflow: hidden;
   cursor: pointer;
+  background: #fff;
+  padding: 10px;
+  box-sizing: border-box;
 }
-.comm-sample img { transition: transform .5s ease; }
+.comm-sample img { width: 100%; height: 100%; object-fit: contain; transition: transform .5s ease; }
 .comm-sample:hover img { transform: scale(1.04); }
 .steps-wrap {
   position: relative;
@@ -1150,8 +1153,10 @@ footer {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 22px;
 }
 .cm-item { cursor: pointer; }
-.cm-item-img { aspect-ratio: 4/3; overflow: hidden; border-radius: 2px; box-shadow: 0 2px 14px rgba(0,0,0,.09); }
-.cm-item-img img { width: 100%; min-height: 100%; object-fit: cover; display: block; }
+.cm-item-img { aspect-ratio: 4/3; overflow: hidden; border-radius: 2px; box-shadow: 0 2px 14px rgba(0,0,0,.09); background: #fff; padding: 8px; box-sizing: border-box; }
+.cm-item-img img { width: 100%; min-height: 100%; object-fit: contain; display: block; }
+.cm-item-mural .cm-item-img { background: none; padding: 0; }
+.cm-item-mural .cm-item-img img { object-fit: cover; min-height: 100%; }
 .cm-item-title { font-family: var(--ff-d); font-size: .95rem; margin-top: 10px; color: var(--text); }
 .cm-item-type { font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-top: 3px; }
 @media (max-width: 760px) {
@@ -1224,17 +1229,38 @@ footer {
   overflow: hidden;
   touch-action: none;
   transition: flex-basis .28s ease;
+  padding: 32px;
+  box-sizing: border-box;
+}
+.sv-img-mat { display: contents; }
+.sv-overlay.pd-mode .sv-img-mat {
+  display: inline-flex;
+  background: #fff;
+  padding: 14px;
+  box-sizing: border-box;
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 2px 18px rgba(0,0,0,.08);
 }
 .sv-overlay.pd-mode .sv-img-wrap img {
   max-width: 100%;
-  max-height: 100%;
-  width: 100%;
-  height: 100%;
+  max-height: calc(100vh - 128px);
+  width: auto;
+  height: auto;
   object-fit: contain;
   box-shadow: none;
   border-radius: 0;
   cursor: zoom-in;
   will-change: transform;
+  display: block;
+}
+.sv-overlay.pd-mode.sv-zoomed .sv-img-wrap { padding: 14px; }
+.sv-overlay.sv-white-mat:not(.pd-mode) .sv-img-mat {
+  display: inline-flex;
+  background: #fff;
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 2px;
 }
 .sv-overlay.pd-mode .sv-img-wrap.zoomed img { cursor: grab; }
 .sv-overlay.pd-mode .sv-img-wrap.zoomed.dragging img { cursor: grabbing; }
@@ -1682,7 +1708,9 @@ footer {
   <button class="sv-nav sv-prev" onclick="navSeries(-1)" aria-label="Previous">↑</button>
   <div class="sv-content">
     <div class="sv-img-wrap" id="svImgWrap">
-      <img id="svImage" src="" alt="">
+      <div class="sv-img-mat" id="svImageMat">
+        <img id="svImage" src="" alt="">
+      </div>
       <div class="sv-zoom-controls">
         <button type="button" class="sv-zoom-btn" onclick="svZoomOut()" aria-label="Zoom out">−</button>
         <button type="button" class="sv-zoom-btn" onclick="svZoomIn()" aria-label="Zoom in">+</button>
@@ -2265,6 +2293,7 @@ function renderSeriesImage() {
   const isProductView = seriesKeyActive !== 'murals' && seriesKeyActive !== 'commissions';
   const overlay = document.getElementById('seriesViewer');
   if (overlay) overlay.classList.toggle('pd-mode', isProductView);
+  if (overlay) overlay.classList.toggle('sv-white-mat', seriesKeyActive !== 'murals');
 
   // Etiqueta de categoría (Obra Original / Print Giclée)
   const svSeriesNameEl = document.getElementById('svSeriesName');
@@ -2652,7 +2681,7 @@ function openCollectionModal(kind, scrollToIndex) {
     const imgSrc = it.image || it.src;
     const typeText = currentLang === 'es' ? typeEs : typeEn;
     const div = document.createElement('div');
-    div.className = 'cm-item';
+    div.className = 'cm-item' + (kind === 'murals' ? ' cm-item-mural' : '');
     div.innerHTML = '<div class="cm-item-img"><img src="' + imgSrc + '" alt="' + titleText.replace(/"/g,'&quot;') + '" loading="lazy"></div>' +
       '<p class="cm-item-title">' + titleText + '</p>' +
       '<p class="cm-item-type">' + typeText + '</p>';
