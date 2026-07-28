@@ -1319,6 +1319,66 @@ footer {
   .sv-overlay.pd-mode.sv-zoomed .sv-info { flex: 0 0 auto; height: 0; opacity: 0; overflow: hidden; padding: 0; }
   .sv-zoom-controls { display: none !important; }
 }
+/* ── LIGHTBOX (foto individual, fondo oscuro suave, zoom libre) ── */
+.sv-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(27,23,32,.92);
+  z-index: 3000;
+  align-items: center;
+  justify-content: center;
+}
+.sv-lightbox.active { display: flex; }
+.sv-lightbox-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+}
+.sv-lightbox-wrap img {
+  max-width: 88%;
+  max-height: 88%;
+  object-fit: contain;
+  cursor: zoom-in;
+  will-change: transform;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+  border-radius: 2px;
+}
+.sv-lightbox-wrap.zoomed img { cursor: grab; }
+.sv-lightbox-wrap.zoomed.dragging img { cursor: grabbing; }
+.sv-lightbox-close {
+  position: fixed;
+  top: 20px; right: 20px;
+  z-index: 3010;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.4);
+  color: #fff;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+}
+.sv-lightbox-close:hover { background: var(--gold); }
+.sv-lightbox-zoom-controls {
+  display: flex;
+  gap: 8px;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 3010;
+}
+@media (max-width: 760px) {
+  .sv-lightbox-zoom-controls { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1712,8 +1772,7 @@ footer {
         <img id="svImage" src="" alt="">
       </div>
       <div class="sv-zoom-controls">
-        <button type="button" class="sv-zoom-btn" onclick="svZoomOut()" aria-label="Zoom out">−</button>
-        <button type="button" class="sv-zoom-btn" onclick="svZoomIn()" aria-label="Zoom in">+</button>
+        <button type="button" class="sv-zoom-btn" onclick="openLightbox()" aria-label="Zoom">+</button>
       </div>
     </div>
     <div class="sv-info">
@@ -1733,6 +1792,18 @@ footer {
     </div>
   </div>
   <button class="sv-nav sv-next" onclick="navSeries(1)" aria-label="Next">↓</button>
+</div>
+
+<!-- ── LIGHTBOX: foto individual con fondo oscuro suave para zoom libre ── -->
+<div class="sv-lightbox" id="svLightbox" onclick="if(event.target===this) closeLightbox()">
+  <button class="sv-lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+  <div class="sv-lightbox-wrap" id="svLightboxWrap">
+    <img id="svLightboxImage" src="" alt="">
+  </div>
+  <div class="sv-lightbox-zoom-controls">
+    <button type="button" class="sv-zoom-btn" onclick="lbZoomOut()" aria-label="Zoom out">−</button>
+    <button type="button" class="sv-zoom-btn" onclick="lbZoomIn()" aria-label="Zoom in">+</button>
+  </div>
 </div>
 
 <!-- ── SCRIPTS ─────────────────────────────────────────────────── -->
@@ -2286,7 +2357,7 @@ function renderSeriesImage() {
   document.getElementById('svImage').alt = title;
   document.getElementById('svTitle').textContent = title;
   document.getElementById('svCounter').textContent = (seriesIndex + 1) + ' / ' + seriesItems.length;
-  svResetZoom();
+  closeLightbox();
 
   // Vista de producto (imagen + info lado a lado) para originales y giclée;
   // murales y comisiones mantienen el visor simple de solo imagen.
@@ -2438,6 +2509,7 @@ function navSeries(dir) {
 }
 
 function closeSeriesViewer() {
+  closeLightbox();
   document.getElementById('seriesViewer').classList.remove('active');
   document.getElementById('seriesViewer').classList.remove('sv-zoomed');
   document.body.style.overflow = '';
@@ -2452,7 +2524,9 @@ function closeSeriesViewer() {
 
 document.addEventListener('keydown', e => {
   const sv = document.getElementById('seriesViewer');
-  if (sv.classList.contains('active')) {
+  const lb = document.getElementById('svLightbox');
+  const lbOpen = lb && lb.classList.contains('active');
+  if (sv.classList.contains('active') && !lbOpen) {
     if (e.key === 'Escape') closeSeriesViewer();
     if (e.key === 'ArrowUp') navSeries(-1);
     if (e.key === 'ArrowDown') navSeries(1);
@@ -2479,176 +2553,214 @@ document.addEventListener('touchmove', e => {
   if (e.touches.length > 1 && !modalOpen) e.preventDefault();
 }, { passive: false });
 
-// Touch swipe navigation + pinch/pan zoom (vista de producto)
+// Swipe para navegar entre obras (arriba/abajo) dentro de la vista de producto
 let touchStartY = 0;
-let svPinchActive = false;
-let svPinchMidX = 0, svPinchMidY = 0;
-let svTouchMoved = false;
 let svTouchStartX = 0;
 
 document.addEventListener('touchstart', e => {
   const sv = document.getElementById('seriesViewer');
-  if (sv && sv.classList.contains('active')) {
-    if (e.touches.length === 2) {
-      svPinchActive = true;
-      svPinchStartDist = svTouchDistance(e.touches);
-      svPinchStartZoom = svZoom;
-      svPinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-      svPinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-    } else if (e.touches.length === 1) {
-      touchStartY = e.touches[0].clientY;
-      svTouchStartX = e.touches[0].clientX;
-      svTouchMoved = false;
-      if (svZoom > 1) {
-        svIsPanning = true;
-        svPanStartX = e.touches[0].clientX - svPanX * svZoom;
-        svPanStartY = e.touches[0].clientY - svPanY * svZoom;
-      }
-    }
+  if (sv && sv.classList.contains('active') && e.touches.length === 1) {
+    touchStartY = e.touches[0].clientY;
+    svTouchStartX = e.touches[0].clientX;
   }
 }, { passive: true });
 
 document.addEventListener('touchmove', e => {
+  const lb = document.getElementById('svLightbox');
+  const lbActive = lb && lb.classList.contains('active');
   const sv = document.getElementById('seriesViewer');
-  if (sv && sv.classList.contains('active')) {
-    if (e.touches.length === 2 && svPinchActive) {
-      e.preventDefault();
-      const dist = svTouchDistance(e.touches);
-      if (svPinchStartDist > 0) {
-        const newZoom = Math.min(Math.max(svPinchStartZoom * (dist / svPinchStartDist), 1), 4);
-        if (svZoom === 1 && newZoom > 1) svAnchorZoomAt(svPinchMidX, svPinchMidY);
-        svZoom = newZoom;
-        svApplyZoom();
-      }
-    } else if (e.touches.length === 1) {
-      svTouchMoved = true;
-      if (svZoom > 1 && svIsPanning) {
-        e.preventDefault();
-        svPanX = (e.touches[0].clientX - svPanStartX) / svZoom;
-        svPanY = (e.touches[0].clientY - svPanStartY) / svZoom;
-        svApplyZoom();
-      } else if (svZoom === 1) {
-        const touchEndY = e.touches[0].clientY;
-        const diff = touchStartY - touchEndY;
-        if (Math.abs(diff) > 50) {
-          if (diff > 0) navSeries(1); // Swipe up
-          if (diff < 0) navSeries(-1); // Swipe down
-          touchStartY = touchEndY;
-        }
-      }
+  if (sv && sv.classList.contains('active') && !lbActive && e.touches.length === 1) {
+    const touchEndY = e.touches[0].clientY;
+    const diff = touchStartY - touchEndY;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) navSeries(1); // Swipe up
+      if (diff < 0) navSeries(-1); // Swipe down
+      touchStartY = touchEndY;
     }
   }
-}, { passive: false });
-
-document.addEventListener('touchend', e => {
-  const sv = document.getElementById('seriesViewer');
-  if (sv && sv.classList.contains('active') && e.touches.length === 0) {
-    // Toque simple (sin arrastre) sobre la imagen ampliada: no hace nada especial.
-    // Toque simple sobre la imagen sin ampliar: hace zoom justo ahí.
-    const wrap = document.getElementById('svImgWrap');
-    if (wrap && !svTouchMoved && !svPinchActive && svZoom === 1) {
-      svZoomToPoint(svTouchStartX, touchStartY);
-    }
-  }
-  if (e.touches.length < 2) svPinchActive = false;
-  if (e.touches.length === 0) svIsPanning = false;
 }, { passive: true });
 
-/* ── PRODUCT VIEW ZOOM (clic/toque en la foto, botones +/-, pellizco) ── */
-let svZoom = 1;
-let svPanX = 0, svPanY = 0;
-let svIsPanning = false;
-let svPanStartX = 0, svPanStartY = 0;
-let svPinchStartDist = 0;
-let svPinchStartZoom = 1;
-let svDidDrag = false;
+/* ── LIGHTBOX (foto individual con fondo oscuro, zoom y pellizco libres) ── */
+let lbZoom = 1, lbPanX = 0, lbPanY = 0;
+let lbIsPanning = false, lbPanStartX = 0, lbPanStartY = 0;
+let lbPinchActive = false, lbPinchStartDist = 0, lbPinchStartZoom = 1;
+let lbPinchMidX = 0, lbPinchMidY = 0;
+let lbDidDrag = false;
+let lbTouchMoved = false, lbTouchStartX = 0, lbTouchStartY = 0;
 
-function svTouchDistance(touches) {
+function lbTouchDistance(touches) {
   const dx = touches[0].clientX - touches[1].clientX;
   const dy = touches[0].clientY - touches[1].clientY;
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-function svApplyZoom() {
-  const img = document.getElementById('svImage');
-  const wrap = document.getElementById('svImgWrap');
+function lbApplyZoom() {
+  const img = document.getElementById('svLightboxImage');
   if (!img) return;
-  img.style.transform = `scale(${svZoom}) translate(${svPanX}px, ${svPanY}px)`;
-  if (wrap) wrap.classList.toggle('zoomed', svZoom > 1);
-  const overlay = document.getElementById('seriesViewer');
-  if (overlay) overlay.classList.toggle('sv-zoomed', svZoom > 1);
+  img.style.transform = `scale(${lbZoom}) translate(${lbPanX}px, ${lbPanY}px)`;
+  const wrap = document.getElementById('svLightboxWrap');
+  if (wrap) wrap.classList.toggle('zoomed', lbZoom > 1);
 }
 
-function svResetZoom() {
-  svZoom = 1; svPanX = 0; svPanY = 0;
-  svApplyZoom();
-}
-
-// Ancla el punto (clientX, clientY) para que quede centrado al ampliar
-function svAnchorZoomAt(clientX, clientY) {
-  const wrap = document.getElementById('svImgWrap');
+function lbAnchorZoomAt(clientX, clientY) {
+  const wrap = document.getElementById('svLightboxWrap');
   if (!wrap) return;
   const rect = wrap.getBoundingClientRect();
-  svPanX = -(clientX - (rect.left + rect.width / 2));
-  svPanY = -(clientY - (rect.top + rect.height / 2));
+  lbPanX = -(clientX - (rect.left + rect.width / 2));
+  lbPanY = -(clientY - (rect.top + rect.height / 2));
 }
 
-// Toque/clic sobre la foto (sin ampliar todavía): amplía justo en ese punto
-function svZoomToPoint(clientX, clientY) {
-  if (svZoom > 1) return;
-  svAnchorZoomAt(clientX, clientY);
-  svZoom = 2.2;
-  svApplyZoom();
+function lbZoomToPoint(clientX, clientY) {
+  if (lbZoom > 1) return;
+  lbAnchorZoomAt(clientX, clientY);
+  lbZoom = 2.2;
+  lbApplyZoom();
 }
 
-function svZoomIn() {
-  if (svZoom === 1) { svZoomToPoint(window.innerWidth * .28, window.innerHeight / 2); return; }
-  svZoom = Math.min(svZoom + 0.6, 4);
-  svApplyZoom();
+function lbZoomIn() {
+  if (lbZoom === 1) { lbZoomToPoint(window.innerWidth / 2, window.innerHeight / 2); return; }
+  lbZoom = Math.min(lbZoom + 0.6, 4);
+  lbApplyZoom();
 }
 
-function svZoomOut() {
-  svZoom = Math.max(svZoom - 0.6, 1);
-  if (svZoom === 1) { svPanX = 0; svPanY = 0; }
-  svApplyZoom();
+function lbZoomOut() {
+  lbZoom = Math.max(lbZoom - 0.6, 1);
+  if (lbZoom === 1) { lbPanX = 0; lbPanY = 0; }
+  lbApplyZoom();
 }
 
-(function initSvImageZoom() {
+// Abre la foto sola, con fondo oscuro suave, para poder ampliarla libremente.
+// Si se pasa un punto (clic/toque sobre la foto), abre ya ampliada en ese punto.
+function openLightbox(clientX, clientY) {
   const img = document.getElementById('svImage');
-  const wrap = document.getElementById('svImgWrap');
-  if (!img || !wrap) return;
+  const lbImg = document.getElementById('svLightboxImage');
+  if (!img || !lbImg) return;
+  lbImg.src = img.src;
+  lbImg.alt = img.alt;
+  lbZoom = 1; lbPanX = 0; lbPanY = 0;
+  lbApplyZoom();
+  document.getElementById('svLightbox').classList.add('active');
+  if (typeof clientX === 'number') {
+    requestAnimationFrame(() => lbZoomToPoint(clientX, clientY));
+  }
+}
 
-  // Clic sobre la foto: si no está ampliada, amplía justo donde se hizo clic.
-  // Si ya está ampliada, el clic no hace nada (para no perder la posición al arrastrar).
+function closeLightbox() {
+  const lb = document.getElementById('svLightbox');
+  if (lb) lb.classList.remove('active');
+  lbZoom = 1; lbPanX = 0; lbPanY = 0;
+  lbApplyZoom();
+}
+
+document.addEventListener('keydown', e => {
+  const lb = document.getElementById('svLightbox');
+  if (lb && lb.classList.contains('active') && e.key === 'Escape') closeLightbox();
+});
+
+(function initSvImageOpensLightbox() {
+  const img = document.getElementById('svImage');
+  if (!img) return;
+
+  // Clic sobre la foto en la vista de producto: abre la foto sola para hacer zoom ahí
   img.addEventListener('click', e => {
     const overlay = document.getElementById('seriesViewer');
     if (!overlay || !overlay.classList.contains('pd-mode')) return;
-    if (svDidDrag) { svDidDrag = false; return; }
-    if (svZoom === 1) svZoomToPoint(e.clientX, e.clientY);
+    openLightbox(e.clientX, e.clientY);
+  });
+})();
+
+(function initLightboxZoom() {
+  const img = document.getElementById('svLightboxImage');
+  const wrap = document.getElementById('svLightboxWrap');
+  if (!img || !wrap) return;
+
+  // Clic sobre la foto ampliada: si no está ampliada, amplía ahí; si ya lo está, vuelve a tamaño normal
+  img.addEventListener('click', e => {
+    if (lbDidDrag) { lbDidDrag = false; return; }
+    if (lbZoom === 1) { lbZoomToPoint(e.clientX, e.clientY); }
+    else { lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom(); }
   });
 
-  // Arrastrar con el mouse cuando está ampliada — se mantiene donde la dejes
+  // Arrastrar con el mouse cuando está ampliada
   img.addEventListener('mousedown', e => {
-    if (svZoom <= 1) return;
-    svIsPanning = true;
-    svDidDrag = false;
+    if (lbZoom <= 1) return;
+    lbIsPanning = true;
+    lbDidDrag = false;
     wrap.classList.add('dragging');
-    svPanStartX = e.clientX - svPanX * svZoom;
-    svPanStartY = e.clientY - svPanY * svZoom;
+    lbPanStartX = e.clientX - lbPanX * lbZoom;
+    lbPanStartY = e.clientY - lbPanY * lbZoom;
     e.preventDefault();
   });
   document.addEventListener('mousemove', e => {
-    if (!svIsPanning) return;
-    svDidDrag = true;
-    svPanX = (e.clientX - svPanStartX) / svZoom;
-    svPanY = (e.clientY - svPanStartY) / svZoom;
-    svApplyZoom();
+    if (!lbIsPanning) return;
+    lbDidDrag = true;
+    lbPanX = (e.clientX - lbPanStartX) / lbZoom;
+    lbPanY = (e.clientY - lbPanStartY) / lbZoom;
+    lbApplyZoom();
   });
   document.addEventListener('mouseup', () => {
-    svIsPanning = false;
+    lbIsPanning = false;
     wrap.classList.remove('dragging');
   });
+
+  // Toque simple abre/amplía; pellizco con dos dedos amplía en cualquier parte; un dedo arrastra si ya está ampliada
+  document.addEventListener('touchstart', e => {
+    const lb = document.getElementById('svLightbox');
+    if (!lb || !lb.classList.contains('active')) return;
+    if (e.touches.length === 2) {
+      lbPinchActive = true;
+      lbPinchStartDist = lbTouchDistance(e.touches);
+      lbPinchStartZoom = lbZoom;
+      lbPinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      lbPinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    } else if (e.touches.length === 1) {
+      lbTouchStartX = e.touches[0].clientX;
+      lbTouchStartY = e.touches[0].clientY;
+      lbTouchMoved = false;
+      if (lbZoom > 1) {
+        lbIsPanning = true;
+        lbPanStartX = e.touches[0].clientX - lbPanX * lbZoom;
+        lbPanStartY = e.touches[0].clientY - lbPanY * lbZoom;
+      }
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', e => {
+    const lb = document.getElementById('svLightbox');
+    if (!lb || !lb.classList.contains('active')) return;
+    if (e.touches.length === 2 && lbPinchActive) {
+      e.preventDefault();
+      const dist = lbTouchDistance(e.touches);
+      if (lbPinchStartDist > 0) {
+        const newZoom = Math.min(Math.max(lbPinchStartZoom * (dist / lbPinchStartDist), 1), 4);
+        if (lbZoom === 1 && newZoom > 1) lbAnchorZoomAt(lbPinchMidX, lbPinchMidY);
+        lbZoom = newZoom;
+        lbApplyZoom();
+      }
+    } else if (e.touches.length === 1) {
+      lbTouchMoved = true;
+      if (lbZoom > 1 && lbIsPanning) {
+        e.preventDefault();
+        lbPanX = (e.touches[0].clientX - lbPanStartX) / lbZoom;
+        lbPanY = (e.touches[0].clientY - lbPanStartY) / lbZoom;
+        lbApplyZoom();
+      }
+    }
+  }, { passive: false });
+
+  document.addEventListener('touchend', e => {
+    const lb = document.getElementById('svLightbox');
+    if (lb && lb.classList.contains('active') && e.touches.length === 0) {
+      if (!lbTouchMoved && !lbPinchActive) {
+        if (lbZoom === 1) lbZoomToPoint(lbTouchStartX, lbTouchStartY);
+        else { lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom(); }
+      }
+    }
+    if (e.touches.length < 2) lbPinchActive = false;
+    if (e.touches.length === 0) lbIsPanning = false;
+  }, { passive: true });
 })();
+
 
 
 function openCollectionModal(kind, scrollToIndex) {
