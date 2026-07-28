@@ -1338,10 +1338,12 @@ footer {
   justify-content: center;
   overflow: hidden;
   touch-action: none;
+  padding: 70px 30px;
+  box-sizing: border-box;
 }
 .sv-lightbox-wrap img {
-  max-width: 92%;
-  max-height: 78vh;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   cursor: zoom-in;
   will-change: transform;
@@ -1349,7 +1351,7 @@ footer {
   border-radius: 2px;
 }
 @media (max-width: 760px) {
-  .sv-lightbox-wrap img { max-width: 90%; max-height: 74vh; }
+  .sv-lightbox-wrap { padding: 54px 16px; }
 }
 .sv-lightbox-wrap.zoomed img { cursor: grab; }
 .sv-lightbox-wrap.zoomed.dragging img { cursor: grabbing; }
@@ -1538,7 +1540,7 @@ footer {
       <div class="series-card reveal d4" onclick="openSeriesViewer('surrealism')" style="cursor: pointer;">
         <div class="series-icon" onclick="openSeriesViewer('surrealism')" style="cursor: pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3z"/></svg></div>
         <p class="series-code">Series S</p>
-        <h3 class="series-name" data-en="Surrealism &amp; <em>Spirit</em>" data-es="Surrealismo y <em>Fantasía</em>" onclick="openSeriesViewer('surrealism')" style="cursor: pointer;">Surrealism &amp; <em>Spirit</em></h3>
+        <h3 class="series-name" data-en="Surrealism &amp; <em>Fantasy</em>" data-es="Surrealismo y <em>Fantasía</em>" onclick="openSeriesViewer('surrealism')" style="cursor: pointer;">Surrealism &amp; <em>Fantasy</em></h3>
         <p class="series-desc" data-en="Dreamlike, ethereal compositions exploring surrealist landscapes, spiritual themes, and the border between imagination and reality." data-es="Composiciones oníricas y etéreas que exploran paisajes surrealistas, temas espirituales y la frontera entre la imaginación y la realidad.">Dreamlike, ethereal compositions exploring surrealist landscapes, spiritual themes, and the border between imagination and reality.</p>
         <p class="series-hint" data-en="Click to view & purchase →" data-es="Haz clic para ver y comprar →" onclick="openSeriesViewer('surrealism')" style="cursor: pointer;">Click to view & purchase →</p>
       </div>
@@ -2212,7 +2214,7 @@ const seriesNames = {
   ocean: { en: 'Ocean & Marine Life', es: 'Océano & Vida Marina' },
   costarica: { en: 'Costa Rica', es: 'Costa Rica' },
   beaches: { en: 'Beaches & Landscapes', es: 'Playas & Paisajes' },
-  surrealism: { en: 'Surrealism & Spirit', es: 'Surrealismo & Espíritu' },
+  surrealism: { en: 'Surrealism & Fantasy', es: 'Surrealismo y Fantasía' },
   originals: { en: 'Original · Oil on Canvas', es: 'Original · Óleo sobre Lienzo' },
   murals: { en: 'Custom Mural', es: 'Mural Personalizado' },
   commissions: { en: 'Custom Commission', es: 'Comisión Personalizada' },
