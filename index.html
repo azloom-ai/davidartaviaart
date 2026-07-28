@@ -1340,13 +1340,16 @@ footer {
   touch-action: none;
 }
 .sv-lightbox-wrap img {
-  max-width: 88%;
-  max-height: 88%;
+  max-width: 94%;
+  max-height: 84vh;
   object-fit: contain;
   cursor: zoom-in;
   will-change: transform;
   box-shadow: 0 20px 60px rgba(0,0,0,.4);
   border-radius: 2px;
+}
+@media (max-width: 760px) {
+  .sv-lightbox-wrap img { max-width: 92%; max-height: 78vh; }
 }
 .sv-lightbox-wrap.zoomed img { cursor: grab; }
 .sv-lightbox-wrap.zoomed.dragging img { cursor: grabbing; }
@@ -2631,7 +2634,7 @@ function lbZoomOut() {
 
 // Abre la foto sola, con fondo oscuro suave, para poder ampliarla libremente.
 // Si se pasa un punto (clic/toque sobre la foto), abre ya ampliada en ese punto.
-function openLightbox(clientX, clientY) {
+function openLightbox() {
   const img = document.getElementById('svImage');
   const lbImg = document.getElementById('svLightboxImage');
   if (!img || !lbImg) return;
@@ -2640,9 +2643,6 @@ function openLightbox(clientX, clientY) {
   lbZoom = 1; lbPanX = 0; lbPanY = 0;
   lbApplyZoom();
   document.getElementById('svLightbox').classList.add('active');
-  if (typeof clientX === 'number') {
-    requestAnimationFrame(() => lbZoomToPoint(clientX, clientY));
-  }
 }
 
 function closeLightbox() {
@@ -2665,7 +2665,7 @@ document.addEventListener('keydown', e => {
   img.addEventListener('click', e => {
     const overlay = document.getElementById('seriesViewer');
     if (!overlay || !overlay.classList.contains('pd-mode')) return;
-    openLightbox(e.clientX, e.clientY);
+    openLightbox();
   });
 })();
 
@@ -2752,13 +2752,14 @@ document.addEventListener('keydown', e => {
     const lb = document.getElementById('svLightbox');
     if (lb && lb.classList.contains('active') && e.touches.length === 0) {
       if (!lbTouchMoved && !lbPinchActive) {
+        e.preventDefault(); // evita que el clic sintético posterior deshaga este toque
         if (lbZoom === 1) lbZoomToPoint(lbTouchStartX, lbTouchStartY);
         else { lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom(); }
       }
     }
     if (e.touches.length < 2) lbPinchActive = false;
     if (e.touches.length === 0) lbIsPanning = false;
-  }, { passive: true });
+  }, { passive: false });
 })();
 
 
