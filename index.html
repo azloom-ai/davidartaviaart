@@ -1201,22 +1201,24 @@ footer {
   .sv-title { font-size: 1.25rem; }
 }
 
-/* ── PRODUCT VIEW (Obras Originales & Giclée) ──────────────────── */
-.sv-overlay.pd-mode { background: rgba(27,23,32,.9); }
+/* ── PRODUCT VIEW (Obras Originales & Giclée) — pantalla completa ── */
+.sv-overlay.pd-mode { background: var(--cream); padding: 0; }
 .sv-overlay.pd-mode .sv-content {
-  max-width: 1080px;
-  max-height: 88vh;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
   background: var(--cream);
-  border-radius: 4px;
+  border-radius: 0;
   flex-direction: row;
   align-items: stretch;
   overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  box-shadow: none;
 }
 .sv-overlay.pd-mode .sv-img-wrap {
-  flex: 1 1 52%;
+  flex: 1 1 55%;
   max-height: none;
-  height: auto;
+  height: 100%;
   background: var(--cream-2);
   position: relative;
   overflow: hidden;
@@ -1224,7 +1226,7 @@ footer {
 }
 .sv-overlay.pd-mode .sv-img-wrap img {
   max-width: 100%;
-  max-height: 88vh;
+  max-height: 100%;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -1245,27 +1247,40 @@ footer {
 }
 .sv-zoom-btn:hover { background: var(--gold); }
 .sv-overlay.pd-mode .sv-info {
-  flex: 1 1 48%; display: flex; flex-direction: column;
+  flex: 1 1 45%; display: flex; flex-direction: column;
   text-align: left; color: var(--text); margin-top: 0;
-  padding: 44px 44px 36px; overflow-y: auto; max-height: 88vh;
+  padding: 56px 56px 44px; overflow-y: auto; max-height: 100%;
 }
 .sv-overlay.pd-mode .sv-counter { color: var(--gold); order: -2; }
 .sv-overlay.pd-mode .sv-series-name {
-  order: -1; color: var(--gold); font-size: .66rem; font-weight: 600;
+  order: -1; color: var(--gold); font-size: .68rem; font-weight: 600;
   letter-spacing: .18em; text-transform: uppercase; margin-top: 0; margin-bottom: 10px;
 }
-.sv-overlay.pd-mode .sv-title { color: var(--text); }
+.sv-overlay.pd-mode .sv-title { color: var(--text); font-size: 2rem; }
 .sv-overlay.pd-mode #svTecnica,
-.sv-overlay.pd-mode #svMedidas { color: var(--muted) !important; font-size: .82rem !important; }
-.sv-overlay.pd-mode #svDescription { color: var(--text) !important; font-size: .88rem !important; line-height: 1.75 !important; }
-.sv-overlay.pd-mode #svPrice { color: var(--gold); font-size: 1.3rem; }
+.sv-overlay.pd-mode #svMedidas { color: var(--muted) !important; font-size: .85rem !important; }
+.sv-overlay.pd-mode #svDescription { color: var(--text) !important; font-size: .92rem !important; line-height: 1.75 !important; }
+.sv-overlay.pd-mode #svPrice { color: var(--gold); font-size: 1.4rem; }
 .sv-overlay.pd-mode #svPurchaseBlock { border-top: 1px solid rgba(0,0,0,.12) !important; text-align: left !important; margin-top: auto !important; padding-top: 24px !important; }
 .sv-overlay.pd-mode #svPriceRow { color: var(--text) !important; text-align: left !important; }
+.sv-overlay.pd-mode .sv-size-btn { border-color: rgba(27,23,32,.28) !important; color: var(--text) !important; background: transparent !important; }
+.sv-overlay.pd-mode .sv-size-btn:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
+.sv-overlay.pd-mode .sv-size-btn.active { background: var(--gold) !important; border-color: var(--gold) !important; color: #fff !important; }
+.sv-overlay.pd-mode .sv-close { color: var(--text); background: rgba(255,255,255,.5); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; top: 16px; right: 16px; }
+.sv-overlay.pd-mode .sv-nav {
+  position: fixed; top: 50%; transform: translateY(-50%); z-index: 10;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(27,23,32,.55); color: #fff; opacity: .85;
+  display: flex; align-items: center; justify-content: center; padding: 0; font-size: 1.4rem;
+}
+.sv-overlay.pd-mode .sv-nav:hover { opacity: 1; background: var(--gold); }
+.sv-overlay.pd-mode .sv-prev { left: 16px; }
+.sv-overlay.pd-mode .sv-next { right: 16px; }
 @media (max-width: 900px) {
-  .sv-overlay.pd-mode { padding: 0; }
-  .sv-overlay.pd-mode .sv-content { flex-direction: column; max-height: 94vh; width: 94%; overflow-y: auto; }
-  .sv-overlay.pd-mode .sv-img-wrap { flex: none; height: 42vh; }
-  .sv-overlay.pd-mode .sv-info { padding: 26px 22px 30px; overflow-y: visible; max-height: none; }
+  .sv-overlay.pd-mode .sv-content { flex-direction: column; overflow-y: auto; }
+  .sv-overlay.pd-mode .sv-img-wrap { flex: none; height: 46vh; width: 100%; }
+  .sv-overlay.pd-mode .sv-info { padding: 28px 22px 40px; overflow-y: visible; max-height: none; }
+  .sv-overlay.pd-mode .sv-nav { display: none; }
   .sv-zoom-controls { display: none !important; }
 }
 </style>
@@ -2403,6 +2418,17 @@ document.addEventListener('wheel', e => {
     if (e.deltaY > 0) navSeries(1); // Scroll down
     if (e.deltaY < 0) navSeries(-1); // Scroll up
   }
+}, { passive: false });
+
+/* ── Bloquear el zoom nativo de la página (fuera del visor de producto) ──
+   iOS Safari ignora "user-scalable=no" del viewport, así que se refuerza con JS. */
+document.addEventListener('gesturestart', e => e.preventDefault());
+document.addEventListener('gesturechange', e => e.preventDefault());
+document.addEventListener('gestureend', e => e.preventDefault());
+document.addEventListener('touchmove', e => {
+  const sv = document.getElementById('seriesViewer');
+  const modalOpen = sv && sv.classList.contains('active');
+  if (e.touches.length > 1 && !modalOpen) e.preventDefault();
 }, { passive: false });
 
 // Touch swipe navigation + pinch/pan zoom (vista de producto)
