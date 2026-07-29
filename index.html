@@ -1822,6 +1822,7 @@ footer {
       <div id="svDescription" style="font-size: 0.9rem; color: #ddd; margin-top: 16px; line-height: 1.5; display: none;"></div>
       <div id="svPurchaseBlock" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.2); text-align: center;">
         <div id="svPriceRow" style="font-size: 1.3rem; color: #fff; margin-bottom: 16px; font-weight: 600; text-align: center;">
+          <div id="svSelectedSize" style="font-size: .8rem; font-weight: 400; letter-spacing: .04em; margin-bottom: 4px; display: none;"></div>
           <span id="svPrice"></span>
         </div>
         <button class="btn-add" id="svAddToCart" onclick="addArtworkToCart()" style="width: 100%; background: var(--gold); color: #fff; border: none; padding: 12px; border-radius: 2px; font-weight: 600; cursor: pointer;" data-en="Add to Cart" data-es="Agregar al carrito">Add to Cart</button>
@@ -2561,6 +2562,16 @@ function updateSeriesPrice() {
   currentPrice = priceUSD;
   currentArtwork = { title, series: seriesKeyActive, index: seriesIndex, priceUSD, priceCRC, size: sizeLabel };
 
+  const sizeEl = document.getElementById('svSelectedSize');
+  if (sizeEl) {
+    if (sizeLabel) {
+      sizeEl.textContent = sizeLabel;
+      sizeEl.style.display = 'block';
+    } else {
+      sizeEl.style.display = 'none';
+    }
+  }
+
   const priceEl = document.getElementById('svPrice');
   if (currentLang === 'es' && priceCRC) {
     priceEl.textContent = '₡' + priceCRC.toLocaleString();
@@ -2793,7 +2804,8 @@ function svZoomOutBtnClick() {
   const wrap = document.getElementById('svImgWrap');
   if (!img || !wrap) return;
 
-  // Clic sobre la foto: en originales/Giclée abre el visor aparte; en murales/comisiones amplía ahí mismo
+  // Clic sobre la foto: en originales/Giclée abre el visor aparte; en murales/comisiones,
+  // sin zoom un toque vuelve atrás (cierra); con zoom activo, resetea el zoom.
   img.addEventListener('click', e => {
     const overlay = document.getElementById('seriesViewer');
     if (!overlay) return;
@@ -2803,8 +2815,8 @@ function svZoomOutBtnClick() {
     }
     if (!overlay.classList.contains('sv-big-view')) return;
     if (mcDidDrag) { mcDidDrag = false; return; }
-    if (mcZoom === 1) { mcZoomToPoint(e.clientX, e.clientY); }
-    else { mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom(); }
+    if (mcZoom === 1) { closeSeriesViewer(); return; }
+    mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom();
   });
 
   // Arrastrar con el mouse cuando está ampliada (murales/comisiones)
@@ -2883,7 +2895,7 @@ function svZoomOutBtnClick() {
     if (e.touches.length === 0 && e.target === img) {
       if (!mcTouchMoved && !mcPinchActive) {
         e.preventDefault();
-        if (mcZoom === 1) mcZoomToPoint(mcTouchStartX, mcTouchStartY);
+        if (mcZoom === 1) { closeSeriesViewer(); }
         else { mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom(); }
       }
     }
@@ -2897,11 +2909,11 @@ function svZoomOutBtnClick() {
   const wrap = document.getElementById('svLightboxWrap');
   if (!img || !wrap) return;
 
-  // Clic sobre la foto ampliada: si no está ampliada, amplía ahí; si ya lo está, vuelve a tamaño normal
+  // Clic sobre la foto ampliada: sin zoom, un toque cierra y vuelve a la obra; con zoom activo, resetea
   img.addEventListener('click', e => {
     if (lbDidDrag) { lbDidDrag = false; return; }
-    if (lbZoom === 1) { lbZoomToPoint(e.clientX, e.clientY); }
-    else { lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom(); }
+    if (lbZoom === 1) { closeLightbox(); return; }
+    lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom();
   });
 
   // Arrastrar con el mouse cuando está ampliada
@@ -2979,7 +2991,7 @@ function svZoomOutBtnClick() {
     if (lb && lb.classList.contains('active') && e.touches.length === 0 && e.target === img) {
       if (!lbTouchMoved && !lbPinchActive) {
         e.preventDefault(); // evita que el clic sintético posterior deshaga este toque
-        if (lbZoom === 1) lbZoomToPoint(lbTouchStartX, lbTouchStartY);
+        if (lbZoom === 1) { closeLightbox(); }
         else { lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom(); }
       }
     }
