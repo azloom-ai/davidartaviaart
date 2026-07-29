@@ -1199,6 +1199,43 @@ footer {
 .sv-size-btn { background: transparent; border: 1px solid rgba(255,255,255,.35); color: #eee; font-size: .8rem; padding: 7px 14px; border-radius: 2px; cursor: pointer; transition: all .2s ease; }
 .sv-size-btn:hover { border-color: var(--gold); color: var(--gold-l); }
 .sv-size-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+/* ── VISTA GRANDE simple para MURALES y COMISIONES (sin marco, sin panel, zoom directo) ── */
+.sv-overlay.sv-big-view .sv-content {
+  max-width: 100%; width: 100%; height: 100%; max-height: 100%; overflow: visible;
+}
+.sv-overlay.sv-big-view .sv-img-wrap {
+  max-height: none; height: 100%; width: 100%;
+  padding: 70px 30px; box-sizing: border-box; touch-action: none;
+}
+.sv-overlay.sv-big-view .sv-img-wrap img {
+  max-width: 100%; max-height: 100%; width: auto; height: auto;
+  cursor: zoom-in; will-change: transform;
+}
+.sv-overlay.sv-big-view .sv-img-wrap.zoomed img { cursor: grab; }
+.sv-overlay.sv-big-view .sv-img-wrap.zoomed.dragging img { cursor: grabbing; }
+.sv-overlay.sv-big-view .sv-info { display: none; }
+.sv-overlay.sv-big-view .sv-close {
+  position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,.4); border-radius: 50%;
+  width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; opacity: 1;
+}
+.sv-overlay.sv-big-view .sv-close:hover { background: var(--gold); }
+.sv-overlay.sv-big-view .sv-nav {
+  position: fixed; top: 50%; transform: translateY(-50%); z-index: 10;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(0,0,0,.4); opacity: 1;
+  display: flex; align-items: center; justify-content: center; padding: 0; font-size: 1.4rem;
+}
+.sv-overlay.sv-big-view .sv-nav:hover { background: var(--gold); }
+.sv-overlay.sv-big-view .sv-prev { left: 16px; }
+.sv-overlay.sv-big-view .sv-next { right: 16px; }
+.sv-overlay.sv-big-view .sv-zoom-controls { display: flex; position: fixed; bottom: 24px; right: 24px; z-index: 10; }
+@media (max-width: 760px) {
+  .sv-overlay.sv-big-view .sv-img-wrap { padding: 54px 16px; }
+  .sv-overlay.sv-big-view .sv-nav { display: none; }
+  .sv-overlay.sv-big-view .sv-zoom-controls { display: none; }
+}
 @media (max-width: 760px) {
   .sv-nav { font-size: 1.8rem; padding: 6px 8px; }
   .sv-img-wrap, .sv-img-wrap img { max-height: 35vh; }
@@ -1259,6 +1296,7 @@ footer {
 .sv-overlay.pd-mode .sv-img-wrap.zoomed.dragging img { cursor: grabbing; }
 .sv-zoom-controls { display: none; position: absolute; bottom: 16px; right: 16px; gap: 6px; z-index: 3; }
 .sv-overlay.pd-mode .sv-zoom-controls { display: flex; }
+.sv-overlay.pd-mode .sv-zoom-controls .sv-zoom-out-btn { display: none; }
 .sv-zoom-btn {
   width: 34px; height: 34px; border-radius: 50%; border: none;
   background: rgba(27,23,32,.7); color: #fff; font-size: 1.15rem; font-weight: 600;
@@ -1770,7 +1808,8 @@ footer {
         <img id="svImage" src="" alt="">
       </div>
       <div class="sv-zoom-controls">
-        <button type="button" class="sv-zoom-btn" onclick="openLightbox()" aria-label="Zoom">+</button>
+        <button type="button" class="sv-zoom-btn sv-zoom-out-btn" onclick="svZoomOutBtnClick()" aria-label="Zoom out">−</button>
+        <button type="button" class="sv-zoom-btn" onclick="svZoomBtnClick()" aria-label="Zoom">+</button>
       </div>
     </div>
     <div class="sv-info">
@@ -2356,25 +2395,25 @@ function renderSeriesImage() {
   document.getElementById('svTitle').textContent = title;
   document.getElementById('svCounter').textContent = (seriesIndex + 1) + ' / ' + seriesItems.length;
   closeLightbox();
+  mcResetZoom();
 
-  // Vista grande de pantalla completa para TODAS las secciones.
-  // Precio, tamaños, técnica, descripción y carrito solo aplican a originales y Giclée.
-  const isProductView = seriesKeyActive === 'originals' || seriesKeyActive === 'giclee';
+  // Vista de producto (imagen + info) para originales y Giclée.
+  // Murales y comisiones usan el visor grande simple, sin panel de compra ni marco blanco.
+  const isProductView = seriesKeyActive !== 'murals' && seriesKeyActive !== 'commissions';
   const overlay = document.getElementById('seriesViewer');
-  if (overlay) overlay.classList.toggle('pd-mode', true);
-  if (overlay) overlay.classList.toggle('sv-white-mat', seriesKeyActive !== 'murals');
+  if (overlay) overlay.classList.toggle('pd-mode', isProductView);
+  if (overlay) overlay.classList.toggle('sv-white-mat', isProductView);
+  if (overlay) overlay.classList.toggle('sv-big-view', !isProductView);
 
   // Etiqueta de categoría (Obra Original / Print Giclée / Mural / Comisión)
   const svSeriesNameEl = document.getElementById('svSeriesName');
   if (svSeriesNameEl) {
-    const labels = {
-      originals: currentLang === 'es' ? 'Obra Original' : 'Original Artwork',
-      giclee: currentLang === 'es' ? 'Print Giclée' : 'Giclée Print',
-      murals: currentLang === 'es' ? 'Mural' : 'Mural',
-      commissions: currentLang === 'es' ? 'Comisión' : 'Commission',
-    };
-    const key = isProductView ? seriesKeyActive : (seriesKeyActive === 'murals' ? 'murals' : 'commissions');
-    svSeriesNameEl.textContent = labels[key] || labels[isProductView ? 'giclee' : 'commissions'];
+    let label;
+    if (seriesKeyActive === 'originals') label = currentLang === 'es' ? 'Obra Original' : 'Original Artwork';
+    else if (seriesKeyActive === 'murals') label = currentLang === 'es' ? 'Mural' : 'Mural';
+    else if (seriesKeyActive === 'commissions') label = currentLang === 'es' ? 'Comisión' : 'Commission';
+    else label = currentLang === 'es' ? 'Print Giclée' : 'Giclée Print'; // series de Giclée: ocean, costarica, beaches, surrealism
+    svSeriesNameEl.textContent = label;
     svSeriesNameEl.style.display = 'block';
   }
 
@@ -2504,6 +2543,7 @@ function navSeries(dir) {
 
 function closeSeriesViewer() {
   closeLightbox();
+  mcResetZoom();
   document.getElementById('seriesViewer').classList.remove('active');
   document.getElementById('seriesViewer').classList.remove('sv-zoomed');
   document.body.style.overflow = '';
@@ -2648,16 +2688,173 @@ document.addEventListener('keydown', e => {
   if (lb && lb.classList.contains('active') && e.key === 'Escape') closeLightbox();
 });
 
+/* ── ZOOM DIRECTO para MURALES y COMISIONES (misma imagen grande, sin visor aparte) ── */
+let mcZoom = 1, mcPanX = 0, mcPanY = 0;
+let mcIsPanning = false, mcPanStartX = 0, mcPanStartY = 0;
+let mcPinchActive = false, mcPinchStartDist = 0, mcPinchStartZoom = 1;
+let mcPinchMidX = 0, mcPinchMidY = 0;
+let mcDidDrag = false;
+let mcTouchMoved = false, mcTouchStartX = 0, mcTouchStartY = 0;
+
+function mcTouchDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function mcApplyZoom() {
+  const img = document.getElementById('svImage');
+  const wrap = document.getElementById('svImgWrap');
+  if (!img) return;
+  img.style.transform = `scale(${mcZoom}) translate(${mcPanX}px, ${mcPanY}px)`;
+  if (wrap) wrap.classList.toggle('zoomed', mcZoom > 1);
+}
+
+function mcResetZoom() {
+  mcZoom = 1; mcPanX = 0; mcPanY = 0;
+  mcApplyZoom();
+}
+
+function mcAnchorZoomAt(clientX, clientY) {
+  const wrap = document.getElementById('svImgWrap');
+  if (!wrap) return;
+  const rect = wrap.getBoundingClientRect();
+  mcPanX = -(clientX - (rect.left + rect.width / 2));
+  mcPanY = -(clientY - (rect.top + rect.height / 2));
+}
+
+function mcZoomToPoint(clientX, clientY) {
+  if (mcZoom > 1) return;
+  mcAnchorZoomAt(clientX, clientY);
+  mcZoom = 2.2;
+  mcApplyZoom();
+}
+
+function mcZoomIn() {
+  if (mcZoom === 1) { mcZoomToPoint(window.innerWidth / 2, window.innerHeight / 2); return; }
+  mcZoom = Math.min(mcZoom + 0.6, 4);
+  mcApplyZoom();
+}
+
+function mcZoomOut() {
+  mcZoom = Math.max(mcZoom - 0.6, 1);
+  if (mcZoom === 1) { mcPanX = 0; mcPanY = 0; }
+  mcApplyZoom();
+}
+
+// Botón +/-: en originales/Giclée abre el visor aparte; en murales/comisiones amplía la misma foto
+function svZoomBtnClick() {
+  const overlay = document.getElementById('seriesViewer');
+  if (overlay && overlay.classList.contains('pd-mode')) openLightbox();
+  else mcZoomIn();
+}
+function svZoomOutBtnClick() {
+  const overlay = document.getElementById('seriesViewer');
+  if (!overlay || !overlay.classList.contains('pd-mode')) mcZoomOut();
+}
+
 (function initSvImageOpensLightbox() {
   const img = document.getElementById('svImage');
-  if (!img) return;
+  const wrap = document.getElementById('svImgWrap');
+  if (!img || !wrap) return;
 
-  // Clic sobre la foto en la vista de producto: abre la foto sola para hacer zoom ahí
+  // Clic sobre la foto: en originales/Giclée abre el visor aparte; en murales/comisiones amplía ahí mismo
   img.addEventListener('click', e => {
     const overlay = document.getElementById('seriesViewer');
-    if (!overlay || !overlay.classList.contains('pd-mode')) return;
-    openLightbox();
+    if (!overlay) return;
+    if (overlay.classList.contains('pd-mode')) {
+      openLightbox();
+      return;
+    }
+    if (!overlay.classList.contains('sv-big-view')) return;
+    if (mcDidDrag) { mcDidDrag = false; return; }
+    if (mcZoom === 1) { mcZoomToPoint(e.clientX, e.clientY); }
+    else { mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom(); }
   });
+
+  // Arrastrar con el mouse cuando está ampliada (murales/comisiones)
+  img.addEventListener('mousedown', e => {
+    const overlay = document.getElementById('seriesViewer');
+    if (!overlay || overlay.classList.contains('pd-mode') || mcZoom <= 1) return;
+    mcIsPanning = true;
+    mcDidDrag = false;
+    wrap.classList.add('dragging');
+    mcPanStartX = e.clientX - mcPanX * mcZoom;
+    mcPanStartY = e.clientY - mcPanY * mcZoom;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!mcIsPanning) return;
+    mcDidDrag = true;
+    mcPanX = (e.clientX - mcPanStartX) / mcZoom;
+    mcPanY = (e.clientY - mcPanStartY) / mcZoom;
+    mcApplyZoom();
+  });
+  document.addEventListener('mouseup', () => {
+    mcIsPanning = false;
+    wrap.classList.remove('dragging');
+  });
+
+  // Toque en la foto grande de murales/comisiones: toque simple amplía; pellizco amplía en cualquier parte
+  document.addEventListener('touchstart', e => {
+    const overlay = document.getElementById('seriesViewer');
+    if (!overlay || !overlay.classList.contains('active') || !overlay.classList.contains('sv-big-view')) return;
+    if (e.target !== img) return;
+    if (e.touches.length === 2) {
+      mcPinchActive = true;
+      mcPinchStartDist = mcTouchDistance(e.touches);
+      mcPinchStartZoom = mcZoom;
+      mcPinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      mcPinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    } else if (e.touches.length === 1) {
+      mcTouchStartX = e.touches[0].clientX;
+      mcTouchStartY = e.touches[0].clientY;
+      mcTouchMoved = false;
+      if (mcZoom > 1) {
+        mcIsPanning = true;
+        mcPanStartX = e.touches[0].clientX - mcPanX * mcZoom;
+        mcPanStartY = e.touches[0].clientY - mcPanY * mcZoom;
+      }
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', e => {
+    const overlay = document.getElementById('seriesViewer');
+    if (!overlay || !overlay.classList.contains('active') || !overlay.classList.contains('sv-big-view')) return;
+    if (e.target !== img) return;
+    if (e.touches.length === 2 && mcPinchActive) {
+      e.preventDefault();
+      const dist = mcTouchDistance(e.touches);
+      if (mcPinchStartDist > 0) {
+        const newZoom = Math.min(Math.max(mcPinchStartZoom * (dist / mcPinchStartDist), 1), 4);
+        if (mcZoom === 1 && newZoom > 1) mcAnchorZoomAt(mcPinchMidX, mcPinchMidY);
+        mcZoom = newZoom;
+        mcApplyZoom();
+      }
+    } else if (e.touches.length === 1) {
+      mcTouchMoved = true;
+      if (mcZoom > 1 && mcIsPanning) {
+        e.preventDefault();
+        mcPanX = (e.touches[0].clientX - mcPanStartX) / mcZoom;
+        mcPanY = (e.touches[0].clientY - mcPanStartY) / mcZoom;
+        mcApplyZoom();
+      }
+    }
+  }, { passive: false });
+
+  document.addEventListener('touchend', e => {
+    const overlay = document.getElementById('seriesViewer');
+    if (!overlay || !overlay.classList.contains('active') || !overlay.classList.contains('sv-big-view')) return;
+    if (e.touches.length === 0 && e.target === img) {
+      if (!mcTouchMoved && !mcPinchActive) {
+        e.preventDefault();
+        if (mcZoom === 1) mcZoomToPoint(mcTouchStartX, mcTouchStartY);
+        else { mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom(); }
+      }
+    }
+    if (e.touches.length < 2) mcPinchActive = false;
+    if (e.touches.length === 0) mcIsPanning = false;
+  }, { passive: false });
 })();
 
 (function initLightboxZoom() {
