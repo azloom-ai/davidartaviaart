@@ -2620,15 +2620,19 @@ document.addEventListener('touchmove', e => {
   if (e.touches.length > 1 && !modalOpen) e.preventDefault();
 }, { passive: false });
 
-// Swipe para navegar entre obras (arriba/abajo) dentro de la vista de producto
+// Swipe para navegar entre obras (arriba/abajo) dentro de la vista de producto.
+// Solo se activa si el gesto empieza sobre la FOTO (no sobre el texto/precio/
+// descripción), para no interferir con el scroll normal de esa información.
 let touchStartY = 0;
 let svTouchStartX = 0;
+let svTouchStartedOnImage = false;
 
 document.addEventListener('touchstart', e => {
   const sv = document.getElementById('seriesViewer');
   if (sv && sv.classList.contains('active') && e.touches.length === 1) {
     touchStartY = e.touches[0].clientY;
     svTouchStartX = e.touches[0].clientX;
+    svTouchStartedOnImage = !!e.target.closest('#svImgWrap');
   }
 }, { passive: true });
 
@@ -2636,7 +2640,7 @@ document.addEventListener('touchmove', e => {
   const lb = document.getElementById('svLightbox');
   const lbActive = lb && lb.classList.contains('active');
   const sv = document.getElementById('seriesViewer');
-  if (sv && sv.classList.contains('active') && !lbActive && e.touches.length === 1) {
+  if (sv && sv.classList.contains('active') && !lbActive && svTouchStartedOnImage && e.touches.length === 1) {
     const touchEndY = e.touches[0].clientY;
     const diff = touchStartY - touchEndY;
     if (Math.abs(diff) > 50) {
