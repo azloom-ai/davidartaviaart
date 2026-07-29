@@ -1233,7 +1233,7 @@ footer {
   box-sizing: border-box;
 }
 .sv-img-mat { display: contents; }
-.sv-overlay.pd-mode .sv-img-mat {
+.sv-overlay.pd-mode.sv-white-mat .sv-img-mat {
   display: inline-flex;
   background: #fff;
   padding: 16px;
@@ -1255,13 +1255,6 @@ footer {
   display: block;
 }
 .sv-overlay.pd-mode.sv-zoomed .sv-img-wrap { padding: 16px; }
-.sv-overlay.sv-white-mat:not(.pd-mode) .sv-img-mat {
-  display: inline-flex;
-  background: #fff;
-  padding: 16px;
-  box-sizing: border-box;
-  border-radius: 2px;
-}
 .sv-overlay.pd-mode .sv-img-wrap.zoomed img { cursor: grab; }
 .sv-overlay.pd-mode .sv-img-wrap.zoomed.dragging img { cursor: grabbing; }
 .sv-zoom-controls { display: none; position: absolute; bottom: 16px; right: 16px; gap: 6px; z-index: 3; }
@@ -2364,24 +2357,25 @@ function renderSeriesImage() {
   document.getElementById('svCounter').textContent = (seriesIndex + 1) + ' / ' + seriesItems.length;
   closeLightbox();
 
-  // Vista de producto (imagen + info lado a lado) para originales y giclée;
-  // murales y comisiones mantienen el visor simple de solo imagen.
-  const isProductView = seriesKeyActive !== 'murals' && seriesKeyActive !== 'commissions';
+  // Vista grande de pantalla completa para TODAS las secciones.
+  // Precio, tamaños, técnica, descripción y carrito solo aplican a originales y Giclée.
+  const isProductView = seriesKeyActive === 'originals' || seriesKeyActive === 'giclee';
   const overlay = document.getElementById('seriesViewer');
-  if (overlay) overlay.classList.toggle('pd-mode', isProductView);
+  if (overlay) overlay.classList.toggle('pd-mode', true);
   if (overlay) overlay.classList.toggle('sv-white-mat', seriesKeyActive !== 'murals');
 
-  // Etiqueta de categoría (Obra Original / Print Giclée)
+  // Etiqueta de categoría (Obra Original / Print Giclée / Mural / Comisión)
   const svSeriesNameEl = document.getElementById('svSeriesName');
   if (svSeriesNameEl) {
-    if (isProductView) {
-      svSeriesNameEl.textContent = seriesKeyActive === 'originals'
-        ? (currentLang === 'es' ? 'Obra Original' : 'Original Artwork')
-        : (currentLang === 'es' ? 'Print Giclée' : 'Giclée Print');
-      svSeriesNameEl.style.display = 'block';
-    } else {
-      svSeriesNameEl.style.display = 'none';
-    }
+    const labels = {
+      originals: currentLang === 'es' ? 'Obra Original' : 'Original Artwork',
+      giclee: currentLang === 'es' ? 'Print Giclée' : 'Giclée Print',
+      murals: currentLang === 'es' ? 'Mural' : 'Mural',
+      commissions: currentLang === 'es' ? 'Comisión' : 'Commission',
+    };
+    const key = isProductView ? seriesKeyActive : (seriesKeyActive === 'murals' ? 'murals' : 'commissions');
+    svSeriesNameEl.textContent = labels[key] || labels[isProductView ? 'giclee' : 'commissions'];
+    svSeriesNameEl.style.display = 'block';
   }
 
   // Descripción (visible solo en la vista de producto)
@@ -2417,7 +2411,7 @@ function renderSeriesImage() {
 
   // Selector de tamaños (obras Giclée con varias opciones de tamaño/precio)
   const sizesEl = document.getElementById('svSizes');
-  if (it.sizes && it.sizes.length) {
+  if (isProductView && it.sizes && it.sizes.length) {
     currentSizeIndex = 0;
     sizesEl.style.display = 'flex';
     sizesEl.innerHTML = it.sizes.map((s, i) =>
@@ -2433,23 +2427,18 @@ function renderSeriesImage() {
   const addBtn = document.getElementById('svAddToCart');
   const titleEl = document.getElementById('svTitle');
   const priceEl = document.getElementById('svPrice');
+  const purchaseBlock = document.getElementById('svPurchaseBlock');
 
+  // El título se muestra siempre; precio, tamaños y carrito solo en originales/Giclée
+  if (titleEl) titleEl.style.display = 'block';
   if (isProductView) {
-    // Originales y Giclée: vista de producto completa
-    if (titleEl) titleEl.style.display = 'block';
     if (priceEl) priceEl.style.display = 'block';
     if (addBtn) addBtn.style.display = 'block';
+    if (purchaseBlock) purchaseBlock.style.display = 'block';
   } else {
-    // Murales y comisiones: ocultar todo menos imagen y número
-    const contact = document.getElementById('svContactBtn');
-    if (titleEl) titleEl.style.display = 'none';
-    if (contact) contact.style.display = 'none';
-    if (addBtn) addBtn.style.display = 'none';
-    if (tecEl) tecEl.style.display = 'none';
-    if (medEl) medEl.style.display = 'none';
-    if (sizesEl) sizesEl.style.display = 'none';
     if (priceEl) priceEl.style.display = 'none';
-    if (descEl) descEl.style.display = 'none';
+    if (addBtn) addBtn.style.display = 'none';
+    if (purchaseBlock) purchaseBlock.style.display = 'none';
   }
 }
 
@@ -2706,9 +2695,11 @@ document.addEventListener('keydown', e => {
   });
 
   // Toque simple abre/amplía; pellizco con dos dedos amplía en cualquier parte; un dedo arrastra si ya está ampliada
+  // IMPORTANTE: solo si el toque empieza sobre la foto misma, para no interceptar el botón de cerrar ni los de +/-
   document.addEventListener('touchstart', e => {
     const lb = document.getElementById('svLightbox');
     if (!lb || !lb.classList.contains('active')) return;
+    if (e.target !== img) return;
     if (e.touches.length === 2) {
       lbPinchActive = true;
       lbPinchStartDist = lbTouchDistance(e.touches);
@@ -2730,6 +2721,7 @@ document.addEventListener('keydown', e => {
   document.addEventListener('touchmove', e => {
     const lb = document.getElementById('svLightbox');
     if (!lb || !lb.classList.contains('active')) return;
+    if (e.target !== img) return;
     if (e.touches.length === 2 && lbPinchActive) {
       e.preventDefault();
       const dist = lbTouchDistance(e.touches);
@@ -2752,7 +2744,7 @@ document.addEventListener('keydown', e => {
 
   document.addEventListener('touchend', e => {
     const lb = document.getElementById('svLightbox');
-    if (lb && lb.classList.contains('active') && e.touches.length === 0) {
+    if (lb && lb.classList.contains('active') && e.touches.length === 0 && e.target === img) {
       if (!lbTouchMoved && !lbPinchActive) {
         e.preventDefault(); // evita que el clic sintético posterior deshaga este toque
         if (lbZoom === 1) lbZoomToPoint(lbTouchStartX, lbTouchStartY);
