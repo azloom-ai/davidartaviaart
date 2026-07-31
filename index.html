@@ -1339,22 +1339,19 @@ footer {
   cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: background .2s;
 }
-.sv-detail-arrow {
-  display: none; position: absolute; top: 50%; right: 8px; transform: translateY(-50%); z-index: 4;
-  width: 48px !important; height: 48px !important; border-radius: 50%; border: none;
-  background: rgba(27,23,32,.72); cursor: pointer; transition: background .2s;
-  align-items: center; justify-content: center; padding: 0;
+.sv-detail-pill {
+  display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10;
+  align-items: center; gap: 14px;
+  background: rgba(27,23,32,.78); border-radius: 30px; padding: 8px 10px;
 }
-.sv-detail-arrow:hover { background: var(--gold); }
-.sv-detail-arrow-icon { color: #fff; font-size: 1.8rem; line-height: 1; font-weight: 400; }
-.sv-detail-count {
-  display: none; position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 4;
-  color: #fff; font-size: .72rem; letter-spacing: .1em; background: rgba(27,23,32,.6);
-  padding: 4px 12px; border-radius: 20px;
+.sv-detail-pill-btn {
+  width: 34px; height: 34px; border-radius: 50%; border: none; flex-shrink: 0;
+  background: rgba(255,255,255,.12); color: #fff; font-size: 1.3rem; line-height: 1;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
 }
-@media (max-width: 760px) {
-  .sv-detail-arrow { width: 40px !important; height: 40px !important; right: 4px; }
-}
+.sv-detail-pill-btn:hover { background: var(--gold); }
+.sv-detail-count { color: #fff; font-size: .72rem; letter-spacing: .1em; min-width: 34px; text-align: center; }
 .sv-zoom-btn:hover { background: var(--gold); }
 .sv-overlay.pd-mode .sv-info {
   flex: 1 1 45%; display: flex; flex-direction: column;
@@ -1863,10 +1860,11 @@ footer {
         <button type="button" class="sv-zoom-btn sv-zoom-out-btn" onclick="svZoomOutBtnClick()" aria-label="Zoom out">−</button>
         <button type="button" class="sv-zoom-btn" onclick="svZoomBtnClick()" aria-label="Zoom">+</button>
       </div>
-      <button type="button" class="sv-detail-arrow" id="svDetailArrow" onclick="toggleSvDetail(event)" style="display:none;" aria-label="Ver otra foto">
-        <span class="sv-detail-arrow-icon">›</span>
-      </button>
-      <p class="sv-detail-count" id="svDetailCount" style="display:none;"></p>
+    </div>
+    <div class="sv-detail-pill" id="svDetailPill" style="display:none;">
+      <button type="button" class="sv-detail-pill-btn" onclick="toggleSvDetail(event)" aria-label="Foto anterior">‹</button>
+      <span class="sv-detail-count" id="svDetailCount"></span>
+      <button type="button" class="sv-detail-pill-btn" onclick="toggleSvDetail(event)" aria-label="Foto siguiente">›</button>
     </div>
     <div class="sv-info">
       <p class="sv-counter" id="svCounter"></p>
@@ -2495,18 +2493,16 @@ function renderSeriesImage() {
   closeLightbox();
   mcResetZoom();
 
-  // Si la obra tiene una segunda foto (ej. mural: pared completa + detalle), mostrar flecha para pasar a la siguiente
+  // Si la obra tiene una segunda foto (ej. mural: pared completa + detalle), mostrar flechas para pasar entre ambas
   svShowingDetail = false;
-  const detailArrow = document.getElementById('svDetailArrow');
+  const detailPill = document.getElementById('svDetailPill');
   const detailCount = document.getElementById('svDetailCount');
-  if (detailArrow && detailCount) {
+  if (detailPill && detailCount) {
     if (it.detailSrc) {
-      detailArrow.style.display = 'flex';
-      detailCount.style.display = 'block';
+      detailPill.style.display = 'flex';
       detailCount.textContent = '1 / 2';
     } else {
-      detailArrow.style.display = 'none';
-      detailCount.style.display = 'none';
+      detailPill.style.display = 'none';
     }
   }
 
