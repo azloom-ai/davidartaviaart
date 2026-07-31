@@ -1851,7 +1851,7 @@ footer {
 <div class="sv-overlay" id="seriesViewer" onclick="if(event.target===this) closeSeriesViewer()">
   <button class="sv-close" onclick="closeSeriesViewer()" aria-label="Close">&times;</button>
   <button class="sv-nav sv-prev" onclick="navSeries(-1)" aria-label="Previous">↑</button>
-  <div class="sv-content">
+  <div class="sv-content" id="svContent">
     <div class="sv-img-wrap" id="svImgWrap">
       <div class="sv-img-mat" id="svImageMat">
         <img id="svImage" src="" alt="">
@@ -2886,6 +2886,22 @@ function svZoomOutBtnClick() {
     if (mcZoom === 1) { closeSeriesViewer(); return; }
     mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom();
   });
+
+  // En murales/comisiones, tocar cualquier zona oscura alrededor de la foto (no solo el
+  // recuadro de la foto) también debe cerrar el visor — se excluyen los botones reales
+  // (cerrar, navegación, zoom, ver detalle) para no interferir con ellos.
+  const content = document.getElementById('svContent');
+  if (content) {
+    content.addEventListener('click', e => {
+      if (e.target === img) return; // ya lo maneja el listener de arriba
+      if (e.target.closest('.sv-zoom-controls, .sv-detail-pill, .sv-nav, .sv-close, .sv-info')) return;
+      const overlay = document.getElementById('seriesViewer');
+      if (!overlay || !overlay.classList.contains('sv-big-view') || overlay.classList.contains('pd-mode')) return;
+      if (mcDidDrag) { mcDidDrag = false; return; }
+      if (mcZoom === 1) { closeSeriesViewer(); return; }
+      mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom();
+    });
+  }
 
   // Arrastrar con el mouse cuando está ampliada (murales/comisiones)
   img.addEventListener('mousedown', e => {
