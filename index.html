@@ -457,9 +457,9 @@ nav.scrolled {
   margin-bottom: 56px;
 }
 .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  display: block;
+  column-count: 3;
+  column-gap: 18px;
 }
 .art-card {
   background: #fff;
@@ -468,16 +468,20 @@ nav.scrolled {
   box-shadow: 0 2px 18px rgba(0,0,0,.055);
   transition: transform .35s ease, box-shadow .35s ease;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  height: 100%;
+  width: 100%;
+  min-width: 0;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin-bottom: 18px;
 }
 .art-card:hover {
   transform: translateY(-7px);
   box-shadow: 0 14px 40px rgba(0,0,0,.11);
 }
-.art-card-img { aspect-ratio: 5/4; overflow: hidden; position: relative; background: #fff; padding: 16px; box-sizing: border-box; }
-.art-card-img img { object-fit: contain; width: 100%; height: 100%; }
+.art-card-img { aspect-ratio: auto; overflow: hidden; position: relative; background: #fff; padding: 14px; box-sizing: border-box; width: 100%; min-width: 0; }
+.art-card-img img { object-fit: contain; width: 100%; height: auto; max-width: 100%; display: block; }
 .art-card-badge {
   position: absolute;
   top: 14px; left: 14px;
@@ -753,8 +757,9 @@ nav.scrolled {
   background: #fff;
   padding: 16px;
   box-sizing: border-box;
+  min-width: 0;
 }
-.comm-sample img { width: 100%; height: 100%; object-fit: contain; transition: transform .5s ease; }
+.comm-sample img { width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; transition: transform .5s ease; }
 .comm-sample:hover img { transform: scale(1.04); }
 .steps-wrap {
   position: relative;
@@ -1087,7 +1092,7 @@ footer {
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-grid { column-count: 2; }
   .giclee-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-wrap { grid-template-columns: repeat(3, 1fr); gap: 32px; }
   .steps-wrap::before { display: none; }
@@ -1108,7 +1113,8 @@ footer {
   .nav-burger { display: flex; }
   .hero-image { object-position: center center; }
   #gallery, #about, #giclee, #murals, #commissions, #contact { padding: 60px 0; }
-  .gallery-grid, .giclee-grid, .comm-samples { grid-template-columns: 1fr; }
+  .gallery-grid { column-count: 1; }
+  .giclee-grid, .comm-samples { grid-template-columns: 1fr; }
   .murals-grid { grid-template-columns: 1fr; grid-template-rows: none; }
   .mural-cell { height: 240px; }
   .mural-cell.wide { grid-column: span 1; }
@@ -1157,15 +1163,35 @@ footer {
   overflow-y: auto; padding: 28px 34px 40px;
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 22px;
 }
+.cm-grid.cm-grid-masonry {
+  display: block;
+  column-count: 3;
+  column-gap: 22px;
+}
+.cm-grid-masonry .cm-item {
+  display: inline-block;
+  width: 100%;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin-bottom: 24px;
+}
 .cm-item { cursor: pointer; min-width: 0; }
-.cm-item-img { aspect-ratio: 4/3; overflow: hidden; border-radius: 2px; box-shadow: 0 2px 14px rgba(0,0,0,.09); background: #fff; padding: 16px; box-sizing: border-box; width: 100%; min-width: 0; }
+.cm-item-img { aspect-ratio: 1/1; overflow: hidden; border-radius: 2px; box-shadow: 0 2px 14px rgba(0,0,0,.09); background: #fff; padding: 14px; box-sizing: border-box; width: 100%; min-width: 0; }
 .cm-item-img img { width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.cm-grid-masonry .cm-item-img {
+  aspect-ratio: auto; height: auto; box-sizing: border-box; padding: 14px;
+}
+.cm-grid-masonry .cm-item-img img {
+  width: 100%; height: auto; max-height: none; object-fit: contain; display: block;
+}
 .cm-item-mural .cm-item-img { background: none; padding: 0; }
 .cm-item-mural .cm-item-img img { object-fit: cover; min-height: 100%; }
 .cm-item-title { font-family: var(--ff-d); font-size: .95rem; margin-top: 10px; color: var(--text); }
 .cm-item-type { font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-top: 3px; }
 @media (max-width: 760px) {
   .cm-grid { grid-template-columns: repeat(2, 1fr); gap: 18px 14px; padding: 20px; }
+  .cm-grid.cm-grid-masonry { column-count: 2; column-gap: 14px; }
+  .cm-grid-masonry .cm-item { margin-bottom: 18px; }
   .cm-header { padding: 18px 20px; }
   .cm-title { font-size: 1.2rem; }
 }
@@ -3001,6 +3027,7 @@ function openCollectionModal(kind, scrollToIndex) {
   const grid = document.getElementById('cmGrid');
   const titleEl = document.getElementById('cmTitle');
   grid.innerHTML = '';
+  grid.classList.toggle('cm-grid-masonry', kind !== 'murals');
   let items = [];
   let typeEn, typeEs;
 
