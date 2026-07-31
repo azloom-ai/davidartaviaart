@@ -1339,15 +1339,22 @@ footer {
   cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: background .2s;
 }
-.sv-detail-toggle {
-  display: none; position: absolute; bottom: 16px; left: 16px; z-index: 3;
-  align-items: center; gap: 8px;
-  background: rgba(27,23,32,.75); border: 1px solid rgba(255,255,255,.3); border-radius: 30px;
-  padding: 5px 14px 5px 5px; cursor: pointer; transition: background .2s;
+.sv-detail-arrow {
+  display: none; position: absolute; top: 50%; right: 8px; transform: translateY(-50%); z-index: 4;
+  width: 48px !important; height: 48px !important; border-radius: 50%; border: none;
+  background: rgba(27,23,32,.72); cursor: pointer; transition: background .2s;
+  align-items: center; justify-content: center; padding: 0;
 }
-.sv-detail-toggle:hover { background: rgba(27,23,32,.92); }
-.sv-detail-toggle img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; display: block; }
-.sv-detail-toggle span { color: #fff; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; white-space: nowrap; }
+.sv-detail-arrow:hover { background: var(--gold); }
+.sv-detail-arrow-icon { color: #fff; font-size: 1.8rem; line-height: 1; font-weight: 400; }
+.sv-detail-count {
+  display: none; position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 4;
+  color: #fff; font-size: .72rem; letter-spacing: .1em; background: rgba(27,23,32,.6);
+  padding: 4px 12px; border-radius: 20px;
+}
+@media (max-width: 760px) {
+  .sv-detail-arrow { width: 40px !important; height: 40px !important; right: 4px; }
+}
 .sv-zoom-btn:hover { background: var(--gold); }
 .sv-overlay.pd-mode .sv-info {
   flex: 1 1 45%; display: flex; flex-direction: column;
@@ -1856,10 +1863,10 @@ footer {
         <button type="button" class="sv-zoom-btn sv-zoom-out-btn" onclick="svZoomOutBtnClick()" aria-label="Zoom out">−</button>
         <button type="button" class="sv-zoom-btn" onclick="svZoomBtnClick()" aria-label="Zoom">+</button>
       </div>
-      <button type="button" class="sv-detail-toggle" id="svDetailToggle" onclick="toggleSvDetail(event)" style="display:none;">
-        <img id="svDetailThumb" src="" alt="">
-        <span id="svDetailLabel" data-en="View detail" data-es="Ver detalle">Ver detalle</span>
+      <button type="button" class="sv-detail-arrow" id="svDetailArrow" onclick="toggleSvDetail(event)" style="display:none;" aria-label="Ver otra foto">
+        <span class="sv-detail-arrow-icon">›</span>
       </button>
+      <p class="sv-detail-count" id="svDetailCount" style="display:none;"></p>
     </div>
     <div class="sv-info">
       <p class="sv-counter" id="svCounter"></p>
@@ -2471,15 +2478,11 @@ function toggleSvDetail(e) {
   const it = seriesItems[seriesIndex];
   if (!it || !it.detailSrc) return;
   const svImage = document.getElementById('svImage');
-  const thumb = document.getElementById('svDetailThumb');
+  const detailCount = document.getElementById('svDetailCount');
   svShowingDetail = !svShowingDetail;
-  if (svShowingDetail) {
-    svImage.src = it.detailSrc;
-    thumb.src = it.image || it.src;
-  } else {
-    svImage.src = it.image || it.src;
-    thumb.src = it.detailSrc;
-  }
+  svImage.src = svShowingDetail ? it.detailSrc : (it.image || it.src);
+  if (detailCount) detailCount.textContent = svShowingDetail ? '2 / 2' : '1 / 2';
+  mcResetZoom();
 }
 
 function renderSeriesImage() {
@@ -2492,15 +2495,18 @@ function renderSeriesImage() {
   closeLightbox();
   mcResetZoom();
 
-  // Botón "Ver detalle": alterna a una segunda foto de la misma obra (ej. mural visto de lejos / de cerca)
+  // Si la obra tiene una segunda foto (ej. mural: pared completa + detalle), mostrar flecha para pasar a la siguiente
   svShowingDetail = false;
-  const detailToggle = document.getElementById('svDetailToggle');
-  if (detailToggle) {
+  const detailArrow = document.getElementById('svDetailArrow');
+  const detailCount = document.getElementById('svDetailCount');
+  if (detailArrow && detailCount) {
     if (it.detailSrc) {
-      detailToggle.style.display = 'flex';
-      document.getElementById('svDetailThumb').src = it.detailSrc;
+      detailArrow.style.display = 'flex';
+      detailCount.style.display = 'block';
+      detailCount.textContent = '1 / 2';
     } else {
-      detailToggle.style.display = 'none';
+      detailArrow.style.display = 'none';
+      detailCount.style.display = 'none';
     }
   }
 
