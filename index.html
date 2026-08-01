@@ -1339,6 +1339,23 @@ footer {
   cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: background .2s;
 }
+.sv-scroll-hint {
+  position: fixed; top: 22px; left: 50%; transform: translateX(-50%); z-index: 10;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  opacity: .85; pointer-events: none;
+}
+.sv-scroll-hint span {
+  font-size: .58rem; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.55);
+}
+.sv-scroll-hint .scroll-line {
+  width: 1px; height: 26px;
+  background: linear-gradient(to bottom, var(--gold-l), transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@media (max-width: 760px) {
+  .sv-scroll-hint { top: 16px; }
+  .sv-scroll-hint .scroll-line { height: 20px; }
+}
 .sv-detail-pill {
   display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10;
   align-items: center; gap: 14px;
@@ -1851,6 +1868,10 @@ footer {
 <div class="sv-overlay" id="seriesViewer" onclick="if(event.target===this) closeSeriesViewer()">
   <button class="sv-close" onclick="closeSeriesViewer()" aria-label="Close">&times;</button>
   <button class="sv-nav sv-prev" onclick="navSeries(-1)" aria-label="Previous">↑</button>
+  <div class="sv-scroll-hint" id="svScrollHint">
+    <span data-en="Scroll" data-es="Scroll">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
   <div class="sv-content" id="svContent">
     <div class="sv-img-wrap" id="svImgWrap">
       <div class="sv-img-mat" id="svImageMat">
@@ -2493,6 +2514,9 @@ function renderSeriesImage() {
   closeLightbox();
   mcResetZoom();
 
+  const scrollHint = document.getElementById('svScrollHint');
+  if (scrollHint) scrollHint.style.display = seriesItems.length > 1 ? 'flex' : 'none';
+
   // Si la obra tiene una segunda foto (ej. mural: pared completa + detalle), mostrar flechas para pasar entre ambas
   svShowingDetail = false;
   const detailPill = document.getElementById('svDetailPill');
@@ -2871,9 +2895,12 @@ function svZoomOutBtnClick() {
   const img = document.getElementById('svImage');
   const wrap = document.getElementById('svImgWrap');
   if (!img || !wrap) return;
+  const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
-  // Clic sobre la foto: en originales/Giclée abre el visor aparte; en murales/comisiones,
-  // sin zoom un toque vuelve atrás (cierra); con zoom activo, resetea el zoom.
+  // Clic sobre la foto: en originales/Giclée abre el visor aparte; en murales/comisiones
+  // (con mouse, es decir, en computadora), sin zoom un clic vuelve atrás (cierra).
+  // En celulares/tablets NO se cierra al tocar la foto (interfería con el pellizco para
+  // hacer zoom); ahí solo se sale con el botón ×.
   img.addEventListener('click', e => {
     const overlay = document.getElementById('seriesViewer');
     if (!overlay) return;
@@ -2882,16 +2909,15 @@ function svZoomOutBtnClick() {
       return;
     }
     if (!overlay.classList.contains('sv-big-view')) return;
+    if (isTouchDevice) return;
     if (mcDidDrag) { mcDidDrag = false; return; }
     if (mcZoom === 1) { closeSeriesViewer(); return; }
     mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom();
   });
 
-  // En murales/comisiones, tocar cualquier zona oscura alrededor de la foto (no solo el
-  // recuadro de la foto) también debe cerrar el visor — se excluyen los botones reales
-  // (cerrar, navegación, zoom, ver detalle) para no interferir con ellos.
+  // Mismo comportamiento para el margen oscuro alrededor de la foto, solo en computadora.
   const content = document.getElementById('svContent');
-  if (content) {
+  if (content && !isTouchDevice) {
     content.addEventListener('click', e => {
       if (e.target === img) return; // ya lo maneja el listener de arriba
       if (e.target.closest('.sv-zoom-controls, .sv-detail-pill, .sv-nav, .sv-close, .sv-info')) return;
@@ -2977,14 +3003,12 @@ function svZoomOutBtnClick() {
     const overlay = document.getElementById('seriesViewer');
     if (!overlay || !overlay.classList.contains('active') || !overlay.classList.contains('sv-big-view')) return;
     if (e.touches.length === 0 && e.target === img) {
-      if (!mcTouchMoved && !mcPinchActive) {
+      if (!mcTouchMoved && !mcPinchActive && mcZoom > 1) {
         e.preventDefault();
-        if (mcZoom === 1) { closeSeriesViewer(); }
-        else { mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom(); }
+        mcZoom = 1; mcPanX = 0; mcPanY = 0; mcApplyZoom();
       }
     }
-    if (e.touches.length < 2) mcPinchActive = false;
-    if (e.touches.length === 0) mcIsPanning = false;
+    if (e.touches.length === 0) { mcPinchActive = false; mcIsPanning = false; }
   }, { passive: false });
 })();
 
@@ -2992,9 +3016,13 @@ function svZoomOutBtnClick() {
   const img = document.getElementById('svLightboxImage');
   const wrap = document.getElementById('svLightboxWrap');
   if (!img || !wrap) return;
+  const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
-  // Clic sobre la foto ampliada: sin zoom, un toque cierra y vuelve a la obra; con zoom activo, resetea
+  // Clic sobre la foto ampliada (en computadora): sin zoom, un clic cierra y vuelve a la obra;
+  // con zoom activo, resetea. En celulares/tablets no se cierra al tocar (interfería con el
+  // pellizco para hacer zoom); ahí solo se sale con el botón ×.
   img.addEventListener('click', e => {
+    if (isTouchDevice) return;
     if (lbDidDrag) { lbDidDrag = false; return; }
     if (lbZoom === 1) { closeLightbox(); return; }
     lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom();
@@ -3073,14 +3101,12 @@ function svZoomOutBtnClick() {
   document.addEventListener('touchend', e => {
     const lb = document.getElementById('svLightbox');
     if (lb && lb.classList.contains('active') && e.touches.length === 0 && e.target === img) {
-      if (!lbTouchMoved && !lbPinchActive) {
-        e.preventDefault(); // evita que el clic sintético posterior deshaga este toque
-        if (lbZoom === 1) { closeLightbox(); }
-        else { lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom(); }
+      if (!lbTouchMoved && !lbPinchActive && lbZoom > 1) {
+        e.preventDefault();
+        lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApplyZoom();
       }
     }
-    if (e.touches.length < 2) lbPinchActive = false;
-    if (e.touches.length === 0) lbIsPanning = false;
+    if (e.touches.length === 0) { lbPinchActive = false; lbIsPanning = false; }
   }, { passive: false });
 })();
 
