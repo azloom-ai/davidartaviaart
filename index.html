@@ -1225,7 +1225,7 @@ footer {
 }
 .sv-nav:hover { opacity: 1; }
 .sv-content { max-width: 880px; width: 100%; display: flex; flex-direction: column; align-items: center; min-width: 0; max-height: 90vh; overflow-y: auto; }
-.sv-img-wrap { max-height: 45vh; display: flex; align-items: center; justify-content: center; width: 100%; flex-shrink: 0; }
+.sv-img-wrap { position: relative; max-height: 45vh; display: flex; align-items: center; justify-content: center; width: 100%; flex-shrink: 0; }
 .sv-img-wrap img { max-width: 100%; max-height: 45vh; object-fit: contain; border-radius: 2px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
 .sv-info { text-align: center; margin-top: 22px; color: #fff; padding-bottom: 30px; }
 .sv-counter { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-l); margin-bottom: 8px; }
@@ -1340,21 +1340,23 @@ footer {
   transition: background .2s;
 }
 .sv-scroll-hint {
-  position: fixed; top: 22px; left: 50%; transform: translateX(-50%); z-index: 10;
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  opacity: .85; pointer-events: none;
+  position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); z-index: 5;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  opacity: .55; pointer-events: none;
 }
 .sv-scroll-hint span {
-  font-size: .58rem; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.55);
+  font-size: .52rem; letter-spacing: .24em; text-transform: uppercase; color: var(--cream-2);
 }
 .sv-scroll-hint .scroll-line {
-  width: 1px; height: 26px;
-  background: linear-gradient(to bottom, var(--gold-l), transparent);
+  width: 1px; height: 18px;
+  background: linear-gradient(to bottom, var(--cream-2), transparent);
   animation: pulse 2s ease-in-out infinite;
 }
+.sv-overlay.pd-mode .sv-scroll-hint span { color: var(--text); }
+.sv-overlay.pd-mode .sv-scroll-hint .scroll-line { background: linear-gradient(to bottom, var(--text), transparent); }
 @media (max-width: 760px) {
-  .sv-scroll-hint { top: 16px; }
-  .sv-scroll-hint .scroll-line { height: 20px; }
+  .sv-scroll-hint { bottom: 4px; }
+  .sv-scroll-hint .scroll-line { height: 14px; }
 }
 .sv-detail-pill {
   display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10;
@@ -1868,10 +1870,6 @@ footer {
 <div class="sv-overlay" id="seriesViewer" onclick="if(event.target===this) closeSeriesViewer()">
   <button class="sv-close" onclick="closeSeriesViewer()" aria-label="Close">&times;</button>
   <button class="sv-nav sv-prev" onclick="navSeries(-1)" aria-label="Previous">↑</button>
-  <div class="sv-scroll-hint" id="svScrollHint">
-    <span data-en="Scroll" data-es="Scroll">Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
   <div class="sv-content" id="svContent">
     <div class="sv-img-wrap" id="svImgWrap">
       <div class="sv-img-mat" id="svImageMat">
@@ -1880,6 +1878,10 @@ footer {
       <div class="sv-zoom-controls">
         <button type="button" class="sv-zoom-btn sv-zoom-out-btn" onclick="svZoomOutBtnClick()" aria-label="Zoom out">−</button>
         <button type="button" class="sv-zoom-btn" onclick="svZoomBtnClick()" aria-label="Zoom">+</button>
+      </div>
+      <div class="sv-scroll-hint" id="svScrollHint">
+        <span data-en="Scroll" data-es="Scroll">Scroll</span>
+        <div class="scroll-line"></div>
       </div>
     </div>
     <div class="sv-detail-pill" id="svDetailPill" style="display:none;">
@@ -2515,7 +2517,7 @@ function renderSeriesImage() {
   mcResetZoom();
 
   const scrollHint = document.getElementById('svScrollHint');
-  if (scrollHint) scrollHint.style.display = seriesItems.length > 1 ? 'flex' : 'none';
+  if (scrollHint) scrollHint.style.display = (seriesItems.length > 1 && !it.detailSrc) ? 'flex' : 'none';
 
   // Si la obra tiene una segunda foto (ej. mural: pared completa + detalle), mostrar flechas para pasar entre ambas
   svShowingDetail = false;
@@ -2724,9 +2726,12 @@ document.addEventListener('touchmove', e => {
 // Swipe para navegar entre obras (arriba/abajo) dentro de la vista de producto.
 // Solo se activa si el gesto empieza sobre la FOTO (no sobre el texto/precio/
 // descripción), para no interferir con el scroll normal de esa información.
+// Se dispara una sola vez, al soltar el dedo (no mientras se arrastra), para que
+// se sienta más suave y menos sensible al toque.
 let touchStartY = 0;
 let svTouchStartX = 0;
 let svTouchStartedOnImage = false;
+const SV_SWIPE_THRESHOLD = 90;
 
 document.addEventListener('touchstart', e => {
   const sv = document.getElementById('seriesViewer');
@@ -2737,19 +2742,22 @@ document.addEventListener('touchstart', e => {
   }
 }, { passive: true });
 
-document.addEventListener('touchmove', e => {
+document.addEventListener('touchend', e => {
   const lb = document.getElementById('svLightbox');
   const lbActive = lb && lb.classList.contains('active');
   const sv = document.getElementById('seriesViewer');
-  if (sv && sv.classList.contains('active') && !lbActive && svTouchStartedOnImage && e.touches.length === 1) {
-    const touchEndY = e.touches[0].clientY;
-    const diff = touchStartY - touchEndY;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) navSeries(1); // Swipe up
-      if (diff < 0) navSeries(-1); // Swipe down
-      touchStartY = touchEndY;
-    }
+  if (!sv || !sv.classList.contains('active') || lbActive || !svTouchStartedOnImage) return;
+  if (mcZoom > 1) return; // no navegar mientras está con zoom (ahí el gesto es para desplazar la imagen)
+  const touch = e.changedTouches && e.changedTouches[0];
+  if (!touch) return;
+  const diffY = touchStartY - touch.clientY;
+  const diffX = svTouchStartX - touch.clientX;
+  // Debe ser un gesto mayormente vertical y superar el umbral para contar como swipe
+  if (Math.abs(diffY) > SV_SWIPE_THRESHOLD && Math.abs(diffY) > Math.abs(diffX)) {
+    if (diffY > 0) navSeries(1); // Swipe up
+    else navSeries(-1); // Swipe down
   }
+  svTouchStartedOnImage = false;
 }, { passive: true });
 
 /* ── LIGHTBOX (foto individual con fondo oscuro, zoom y pellizco libres) ── */
