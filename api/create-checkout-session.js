@@ -40,6 +40,7 @@ module.exports = async (req, res) => {
     const metadata = {};
     if (shipping && typeof shipping === 'object') {
       if (shipping.name) metadata.shippingName = String(shipping.name).slice(0, 200);
+      if (shipping.email) metadata.shippingEmail = String(shipping.email).slice(0, 200);
       if (shipping.phone) metadata.shippingPhone = String(shipping.phone).slice(0, 100);
       if (shipping.address) metadata.shippingAddress = String(shipping.address).slice(0, 300);
       if (shipping.city) metadata.shippingCity = String(shipping.city).slice(0, 200);
