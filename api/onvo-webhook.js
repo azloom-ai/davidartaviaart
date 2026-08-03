@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
     const emailBody = {
       _subject: `🎨 Nueva venta en davidartaviaart.vercel.app — ${totalFormatted}`,
       Cliente: customer.name || metadata.shippingName || 'No proporcionado',
-      Correo: customer.email || 'No proporcionado',
+      Correo: customer.email || metadata.shippingEmail || 'No proporcionado',
       Teléfono: customer.phone || metadata.shippingPhone || 'No proporcionado',
       'Dirección de envío': metadata.shippingAddress || 'No proporcionada',
       'Ciudad / Provincia / País': metadata.shippingCity || 'No proporcionada',
