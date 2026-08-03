@@ -3219,10 +3219,11 @@ document.addEventListener('keydown', e => {
       <div class="ship-form" id="shipForm">
         <p class="ship-form-title" data-en="Shipping details" data-es="Datos de envío">Datos de envío</p>
         <input type="text" id="shipName" class="ship-input" data-en="Full name" data-es="Nombre completo" placeholder="Nombre completo" autocomplete="name">
+        <input type="email" id="shipEmail" class="ship-input" data-en="Email" data-es="Correo electrónico" placeholder="Correo electrónico" autocomplete="email">
         <input type="tel" id="shipPhone" class="ship-input" data-en="Phone" data-es="Teléfono" placeholder="Teléfono" autocomplete="tel">
         <input type="text" id="shipAddress" class="ship-input" data-en="Address (street, house/apt.)" data-es="Dirección (calle, casa/apto.)" placeholder="Dirección (calle, casa/apto.)" autocomplete="street-address">
         <input type="text" id="shipCity" class="ship-input" data-en="City / Province / Country" data-es="Ciudad / Provincia / País" placeholder="Ciudad / Provincia / País" autocomplete="address-level2">
-        <p class="ship-form-error" id="shipFormError" style="display:none;" data-en="Please complete all shipping fields before continuing." data-es="Completá todos los datos de envío antes de continuar.">Completá todos los datos de envío antes de continuar.</p>
+        <p class="ship-form-error" id="shipFormError" style="display:none;" data-en="Please complete all shipping fields with a valid email before continuing." data-es="Completá todos los datos de envío con un correo válido antes de continuar.">Completá todos los datos de envío con un correo válido antes de continuar.</p>
       </div>
       <button class="checkout-btn" onclick="processCheckout()" data-en="Proceed to Checkout" data-es="Ir al Pago">Proceed to Checkout</button>
     </div>
@@ -3466,12 +3467,14 @@ async function processCheckout() {
   }
 
   const shipName = document.getElementById('shipName').value.trim();
+  const shipEmail = document.getElementById('shipEmail').value.trim();
   const shipPhone = document.getElementById('shipPhone').value.trim();
   const shipAddress = document.getElementById('shipAddress').value.trim();
   const shipCity = document.getElementById('shipCity').value.trim();
   const shipError = document.getElementById('shipFormError');
 
-  if (!shipName || !shipPhone || !shipAddress || !shipCity) {
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shipEmail);
+  if (!shipName || !shipEmail || !emailValid || !shipPhone || !shipAddress || !shipCity) {
     if (shipError) shipError.style.display = 'block';
     document.getElementById('shipForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
@@ -3489,7 +3492,7 @@ async function processCheckout() {
       qty: item.qty
     }));
 
-    const shipping = { name: shipName, phone: shipPhone, address: shipAddress, city: shipCity };
+    const shipping = { name: shipName, email: shipEmail, phone: shipPhone, address: shipAddress, city: shipCity };
 
     const response = await fetch('/api/create-checkout-session', {
       method: 'POST',
