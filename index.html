@@ -3243,6 +3243,13 @@ const shopProducts = [
 // CART FUNCTIONS
 let cart = [];
 
+// Formatea precios en dólares: separador de miles, y sin ".00" cuando el monto es un número redondo
+function formatUSD(amount) {
+  const n = Number(amount) || 0;
+  const hasCents = Math.round(n * 100) % 100 !== 0;
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: hasCents ? 2 : 0, maximumFractionDigits: 2 }) + ' USD';
+}
+
 function initShop() {
   loadCart();
   renderShop();
@@ -3258,7 +3265,7 @@ function renderShop() {
     const name = currentLang === 'es' ? p.name_es : p.name_en;
     const desc = currentLang === 'es' ? p.description_es : p.description_en;
     const addLabel = currentLang === 'es' ? 'Agregar' : 'Add to Cart';
-    const priceStr = p.price.toFixed(2);
+    const priceStr = formatUSD(p.price);
 
     const card = document.createElement('div');
     card.className = 'shop-card reveal d' + (idx % 4 + 1);
@@ -3267,7 +3274,7 @@ function renderShop() {
       '<div class="shop-body">' +
       '<p class="shop-name">' + name + '</p>' +
       '<p class="shop-desc">' + desc + '</p>' +
-      '<p class="shop-price">$' + priceStr + ' USD</p>' +
+      '<p class="shop-price">' + priceStr + '</p>' +
       '<div class="shop-qty">' +
       '<button class="qty-btn" onclick="adjustQty(this, -1)">−</button>' +
       '<input type="number" class="qty-input qty-' + p.id + '" value="1" min="1" max="10">' +
@@ -3370,14 +3377,14 @@ function renderCart() {
     if (item.priceCRC && currentLang === 'es') {
       priceDisplay = '₡' + item.priceCRC.toLocaleString();
     } else if (item.price) {
-      priceDisplay = '$' + item.price.toFixed(2) + ' USD';
+      priceDisplay = formatUSD(item.price);
     } else if (item.priceCRC) {
-      priceDisplay = currentLang === 'es' ? '₡' + item.priceCRC.toLocaleString() : '$' + (item.priceCRC / 500).toFixed(2) + ' USD';
+      priceDisplay = currentLang === 'es' ? '₡' + item.priceCRC.toLocaleString() : formatUSD(item.priceCRC / 500);
     } else {
       priceDisplay = currentLang === 'es' ? 'Consultar' : 'Contact';
     }
 
-    const subtotalDisplay = subtotal > 0 ? '$' + subtotal.toFixed(2) + ' USD' : priceDisplay;
+    const subtotalDisplay = subtotal > 0 ? formatUSD(subtotal) : priceDisplay;
 
     const row = document.createElement('div');
     row.className = 'cart-item';
@@ -3407,7 +3414,7 @@ function renderCart() {
   });
 
   const totalDisplay = currentLang === 'es' ? 'Total:' : 'Total:';
-  document.getElementById('cartTotal').innerHTML = '<span>' + totalDisplay + '</span><span>$' + total.toFixed(2) + ' USD</span>';
+  document.getElementById('cartTotal').innerHTML = '<span>' + totalDisplay + '</span><span>' + formatUSD(total) + '</span>';
 }
 
 function changeCartQty(idx, delta) {
