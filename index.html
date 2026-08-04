@@ -3477,7 +3477,19 @@ function toggleCart() {
 }
 
 function saveCart() {
-  localStorage.setItem('davidArtCart', JSON.stringify(cart));
+  try {
+    // No guardamos la imagen completa en localStorage: en las obras originales es
+    // una imagen incrustada muy pesada (base64) y varias juntas superan el límite
+    // que permite el navegador. Se guarda todo excepto eso; la imagen se sigue
+    // viendo bien mientras dure la sesión actual (queda en memoria).
+    const lightCart = cart.map(item => {
+      const { image, ...rest } = item;
+      return rest;
+    });
+    localStorage.setItem('davidArtCart', JSON.stringify(lightCart));
+  } catch (e) {
+    console.warn('No se pudo guardar el carrito en el navegador:', e);
+  }
 }
 
 function loadCart() {
