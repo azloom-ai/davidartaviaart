@@ -1072,14 +1072,15 @@ footer {
 .cart-item-remove { background: none; border: none; color: var(--muted); cursor: pointer; text-align: right; position: relative; z-index: 2; padding: 6px; font-size: 1rem; }
 .cart-item-remove:hover { color: var(--gold); }
 .cart-toast {
-  position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-20px);
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
   background: var(--dark); color: #fff; padding: 14px 24px; border-radius: 30px;
   font-family: var(--ff-b); font-size: .88rem; font-weight: 500;
   box-shadow: 0 8px 24px rgba(0,0,0,.25);
-  z-index: 9999; opacity: 0; pointer-events: none;
+  z-index: 99999; opacity: 0; pointer-events: none;
   transition: opacity .3s ease, transform .3s ease;
+  max-width: 90vw; text-align: center;
 }
-.cart-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.cart-toast.show { opacity: 1 !important; transform: translateX(-50%) translateY(0) !important; }
 .cart-toast::before { content: '✓ '; color: var(--gold-l); font-weight: 700; }
 .cart-empty { padding: 40px 20px; text-align: center; color: var(--muted); }
 .cart-foot { padding: 20px; border-top: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 12px; }
@@ -3267,10 +3268,12 @@ let cartToastTimer = null;
 function showToast(message) {
   const toast = document.getElementById('cartToast');
   if (!toast) return;
+  toast.classList.remove('show');
   toast.textContent = message;
+  void toast.offsetWidth; // fuerza un reflow para que la transición siempre se dispare
   toast.classList.add('show');
   if (cartToastTimer) clearTimeout(cartToastTimer);
-  cartToastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2600);
+  cartToastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2800);
 }
 
 function initShop() {
