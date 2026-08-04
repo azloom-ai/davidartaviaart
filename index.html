@@ -3487,7 +3487,7 @@ async function processCheckout() {
 
   try {
     const items = cart.map(item => ({
-      name: currentLang === 'es' ? item.name_es : item.name_en,
+      name: (currentLang === 'es' ? item.name_es : item.name_en) || item.title || item.name || 'Obra de arte',
       price: item.price,
       qty: item.qty
     }));
