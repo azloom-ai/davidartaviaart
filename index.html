@@ -3462,7 +3462,7 @@ function updateCartBadge() {
   const cartCount = document.getElementById('cartCount');
 
   if (total > 0) {
-    cartCount.textContent = cart.length;
+    cartCount.textContent = total;
     floatingCart.style.display = 'flex';
   } else {
     floatingCart.style.display = 'none';
