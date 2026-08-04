@@ -1069,7 +1069,18 @@ footer {
 .cart-item-name { font-weight: 600; color: var(--text); margin-bottom: 4px; }
 .cart-item-price { font-size: .9rem; color: var(--gold); margin-bottom: 8px; }
 .cart-item-qty { font-size: .85rem; color: var(--muted); }
-.cart-item-remove { background: none; border: none; color: var(--muted); cursor: pointer; text-align: right; }
+.cart-item-remove { background: none; border: none; color: var(--muted); cursor: pointer; text-align: right; position: relative; z-index: 2; padding: 6px; font-size: 1rem; }
+.cart-item-remove:hover { color: var(--gold); }
+.cart-toast {
+  position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-20px);
+  background: var(--dark); color: #fff; padding: 14px 24px; border-radius: 30px;
+  font-family: var(--ff-b); font-size: .88rem; font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  z-index: 9999; opacity: 0; pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.cart-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.cart-toast::before { content: '✓ '; color: var(--gold-l); font-weight: 700; }
 .cart-empty { padding: 40px 20px; text-align: center; color: var(--muted); }
 .cart-foot { padding: 20px; border-top: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 12px; }
 .cart-total { display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 600; color: var(--text); }
@@ -1507,7 +1518,7 @@ footer {
   </a>
   <ul class="nav-links">
     <li><a href="#gallery" data-en="Original Paintings" data-es="Pinturas Originales">Original Paintings</a></li>
-    <li><a href="#giclee" data-en="Giclée Prints" data-es="Giclée">Giclée Prints</a></li>
+    <li><a href="#giclee" data-en="Giclée Prints" data-es="Giclées">Giclée Prints</a></li>
     <li><a href="#murals" data-en="Murals" data-es="Murales">Murals</a></li>
     <li><a href="#commissions" data-en="Commissions" data-es="Comisiones">Commissions</a></li>
     <li><a href="#about" data-en="About" data-es="El Artista">About</a></li>
@@ -1617,7 +1628,7 @@ footer {
 <section id="giclee">
   <div class="container">
     <div class="giclee-head">
-      <p class="eyebrow reveal" data-en="Giclée Collection" data-es="Colección Giclée">Giclée Collection</p>
+      <p class="eyebrow reveal" data-en="Giclée Collection" data-es="Colección Giclées">Giclée Collection</p>
       <h2 class="section-title reveal d1" data-en="Museum-Quality <em>Prints</em>" data-es="Prints de <em>Calidad Museística</em>">Museum-Quality <em>Prints</em></h2>
       <p class="section-lead reveal d2" data-en="From private residences to hotels and commercial spaces, each artwork is designed to transform spaces into unique visual experiences. Hand-designed and hand-painted." data-es="Desde residencias privadas, hasta hoteles y espacios comerciales, cada obra es diseñada para transformar el espacio en una experiencia visual única. Diseñado y pintado a mano.">From private residences to hotels and commercial spaces, each artwork is designed to transform spaces into unique visual experiences. Hand-designed and hand-painted.</p>
     </div>
@@ -1847,7 +1858,7 @@ footer {
       <div class="footer-brand">David Artavia Art</div>
       <ul class="footer-links">
         <li><a href="#gallery" data-en="Original Paintings" data-es="Pinturas Originales">Original Paintings</a></li>
-        <li><a href="#giclee">Giclée</a></li>
+        <li><a href="#giclee">Giclées</a></li>
         <li><a href="#murals" data-en="Murals" data-es="Murales">Murals</a></li>
         <li><a href="#commissions" data-en="Commissions" data-es="Comisiones">Commissions</a></li>
         <li><a href="#about" data-en="About" data-es="El Artista">About</a></li>
@@ -3251,6 +3262,17 @@ function formatUSD(amount) {
   return '$' + n.toLocaleString('en-US', { minimumFractionDigits: hasCents ? 2 : 0, maximumFractionDigits: 2 }) + ' USD';
 }
 
+// Muestra un aviso breve (ej. "Obra agregada al carrito") sin bloquear la pantalla como alert()
+let cartToastTimer = null;
+function showToast(message) {
+  const toast = document.getElementById('cartToast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  if (cartToastTimer) clearTimeout(cartToastTimer);
+  cartToastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2600);
+}
+
 function initShop() {
   loadCart();
   renderShop();
@@ -3316,14 +3338,14 @@ function addArtworkToCart() {
   cart.push(item);
   saveCart();
   updateCartBadge();
-  alert(currentLang === 'es' ? '¡' + displayTitle + ' agregado al carrito!' : displayTitle + ' added to cart!');
+  showToast(currentLang === 'es' ? displayTitle + ' agregado al carrito' : displayTitle + ' added to cart');
 }
 
 function addGiclee(id, name, price) {
   cart.push({ id, name, price, qty: 1, type: 'giclee' });
   saveCart();
   updateCartBadge();
-  alert(currentLang === 'es' ? '¡Agregado al carrito!' : 'Added to cart!');
+  showToast(currentLang === 'es' ? 'Agregado al carrito' : 'Added to cart');
 }
 
 function addToCart(productId) {
@@ -3341,7 +3363,7 @@ function addToCart(productId) {
   saveCart();
   updateCartBadge();
   input.value = 1;
-  alert(currentLang === 'es' ? 'Agregado al carrito!' : 'Added to cart!');
+  showToast(currentLang === 'es' ? 'Agregado al carrito' : 'Added to cart');
 }
 
 function openCart() {
@@ -3614,7 +3636,7 @@ function addOriginalToCart(title, index) {
   cart.push(item);
   saveCart();
   updateCartBadge();
-  alert(currentLang === 'es' ? '¡' + item.title + ' agregado al carrito!' : item.title + ' added to cart!');
+  showToast(currentLang === 'es' ? item.title + ' agregado al carrito' : item.title + ' added to cart');
 }
 
 // Initialize on page load
@@ -3625,6 +3647,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
+<div id="cartToast" class="cart-toast"></div>
 </body>
 </html>
 
