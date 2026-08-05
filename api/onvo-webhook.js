@@ -59,7 +59,7 @@ module.exports = async (req, res) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'David Artavia Art <onboarding@resend.dev>',
+       from: 'David Artavia Art <ventas@davidartaviastudio.com>',
         to: ['estudioarte.da@gmail.com'],
         subject: `🎨 Nueva venta — ${totalFormatted}`,
         html: emailHtml,
