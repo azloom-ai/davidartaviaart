@@ -32,36 +32,45 @@ module.exports = async (req, res) => {
 
     const totalFormatted = `${data.currency || 'CRC'} ${((data.amountTotal || 0) / 100).toLocaleString()}`;
 
-    const emailBody = {
-      _subject: `🎨 Nueva venta en davidartaviaart.vercel.app — ${totalFormatted}`,
-      Cliente: customer.name || metadata.shippingName || 'No proporcionado',
-      Correo: customer.email || metadata.shippingEmail || 'No proporcionado',
-      Teléfono: customer.phone || metadata.shippingPhone || 'No proporcionado',
-      'Dirección de envío': metadata.shippingAddress || 'No proporcionada',
-      'Ciudad / Provincia / País': metadata.shippingCity || 'No proporcionada',
-      Obras: itemsList || 'No especificado',
-      Total: totalFormatted,
-      'ID de la sesión': data.id || '',
-    };
+    const emailHtml = `
+      <h2>🎨 Nueva venta en davidartaviaart.vercel.app</h2>
+      <p><strong>Cliente:</strong> ${customer.name || metadata.shippingName || 'No proporcionado'}</p>
+      <p><strong>Correo:</strong> ${customer.email || metadata.shippingEmail || 'No proporcionado'}</p>
+      <p><strong>Teléfono:</strong> ${customer.phone || metadata.shippingPhone || 'No proporcionado'}</p>
+      <p><strong>Dirección de envío:</strong> ${metadata.shippingAddress || 'No proporcionada'}</p>
+      <p><strong>Ciudad / Provincia / País:</strong> ${metadata.shippingCity || 'No proporcionada'}</p>
+      <p><strong>Obras:</strong><br>${(itemsList || 'No especificado').replace(/\n/g, '<br>')}</p>
+      <p><strong>Total:</strong> ${totalFormatted}</p>
+      <p><strong>ID de la sesión:</strong> ${data.id || ''}</p>
+    `;
 
-    // Reutiliza el mismo servicio de FormSubmit ya verificado para el formulario de contacto.
-    // Se agrega _url y el header Referer porque FormSubmit puede rechazar en silencio
-    // los envíos que no vienen desde un navegador con esos datos.
-    const formResponse = await fetch('https://formsubmit.co/ajax/Estudioarte.da@gmail.com', {
+    if (!process.env.RESEND_API_KEY) {
+      console.error('Falta la variable de entorno RESEND_API_KEY en Vercel');
+      res.status(200).json({ received: true, error: 'RESEND_API_KEY missing' });
+      return;
+    }
+
+    // Resend está pensado para que un servidor mande correos (a diferencia de FormSubmit,
+    // que espera un envío real desde un navegador y bloquea los pedidos de servidor).
+    const emailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Referer: 'https://davidartaviaart.vercel.app/',
       },
-      body: JSON.stringify({ ...emailBody, _url: 'https://davidartaviaart.vercel.app/' }),
+      body: JSON.stringify({
+        from: 'David Artavia Art <onboarding@resend.dev>',
+        to: ['estudioarte.da@gmail.com'],
+        subject: `🎨 Nueva venta — ${totalFormatted}`,
+        html: emailHtml,
+      }),
     });
 
-    const formResultText = await formResponse.text();
-    if (!formResponse.ok) {
-      console.error('Error enviando el correo de notificación de venta. Respuesta de FormSubmit:', formResultText);
+    const emailResultText = await emailResponse.text();
+    if (!emailResponse.ok) {
+      console.error('Error enviando el correo de notificación de venta. Respuesta de Resend:', emailResultText);
     } else {
-      console.log('Correo de venta enviado. Respuesta de FormSubmit:', formResultText);
+      console.log('Correo de venta enviado. Respuesta de Resend:', emailResultText);
     }
 
     res.status(200).json({ received: true });
