@@ -44,18 +44,24 @@ module.exports = async (req, res) => {
       'ID de la sesión': data.id || '',
     };
 
-    // Reutiliza el mismo servicio de FormSubmit ya verificado para el formulario de contacto
+    // Reutiliza el mismo servicio de FormSubmit ya verificado para el formulario de contacto.
+    // Se agrega _url y el header Referer porque FormSubmit puede rechazar en silencio
+    // los envíos que no vienen desde un navegador con esos datos.
     const formResponse = await fetch('https://formsubmit.co/ajax/Estudioarte.da@gmail.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
+        Referer: 'https://davidartaviaart.vercel.app/',
       },
-      body: JSON.stringify(emailBody),
+      body: JSON.stringify({ ...emailBody, _url: 'https://davidartaviaart.vercel.app/' }),
     });
 
+    const formResultText = await formResponse.text();
     if (!formResponse.ok) {
-      console.error('Error enviando el correo de notificación de venta');
+      console.error('Error enviando el correo de notificación de venta. Respuesta de FormSubmit:', formResultText);
+    } else {
+      console.log('Correo de venta enviado. Respuesta de FormSubmit:', formResultText);
     }
 
     res.status(200).json({ received: true });
