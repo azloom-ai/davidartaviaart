@@ -457,9 +457,9 @@ nav.scrolled {
   margin-bottom: 56px;
 }
 .gallery-grid {
-  display: block;
-  column-count: 3;
-  column-gap: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
 }
 .art-card {
   background: #fff;
@@ -468,20 +468,17 @@ nav.scrolled {
   box-shadow: 0 2px 18px rgba(0,0,0,.055);
   transition: transform .35s ease, box-shadow .35s ease;
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
-  width: 100%;
+  height: 100%;
   min-width: 0;
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  margin-bottom: 18px;
 }
 .art-card:hover {
   transform: translateY(-7px);
   box-shadow: 0 14px 40px rgba(0,0,0,.11);
 }
-.art-card-img { aspect-ratio: auto; overflow: hidden; position: relative; background: #fff; padding: 14px; box-sizing: border-box; width: 100%; min-width: 0; }
-.art-card-img img { object-fit: contain; width: 100%; height: auto; max-width: 100%; display: block; }
+.art-card-img { aspect-ratio: 1/1; overflow: hidden; position: relative; background: #fff; padding: 14px; box-sizing: border-box; width: 100%; min-width: 0; }
+.art-card-img img { object-fit: contain; width: 100%; height: 100%; max-width: 100%; max-height: 100%; display: block; }
 .art-card-badge {
   position: absolute;
   top: 14px; left: 14px;
@@ -1116,7 +1113,7 @@ footer {
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .gallery-grid { column-count: 2; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .giclee-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-wrap { grid-template-columns: repeat(3, 1fr); gap: 32px; }
   .steps-wrap::before { display: none; }
@@ -1137,7 +1134,7 @@ footer {
   .nav-burger { display: flex; }
   .hero-image { object-position: center center; }
   #gallery, #about, #giclee, #murals, #commissions, #contact { padding: 60px 0; }
-  .gallery-grid { column-count: 1; }
+  .gallery-grid { grid-template-columns: 1fr; }
   .giclee-grid { grid-template-columns: 1fr; }
   .comm-samples { column-count: 1; }
   .murals-grid { grid-template-columns: 1fr; grid-template-rows: none; }
@@ -1518,7 +1515,7 @@ footer {
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#gallery" data-en="Original Paintings" data-es="Pinturas Originales">Original Paintings</a></li>
+    <li><a href="#gallery" data-en="Original Paintings" data-es="Pinturas">Original Paintings</a></li>
     <li><a href="#giclee" data-en="Giclée Prints" data-es="Giclées">Giclée Prints</a></li>
     <li><a href="#murals" data-en="Murals" data-es="Murales">Murals</a></li>
     <li><a href="#commissions" data-en="Commissions" data-es="Comisiones">Commissions</a></li>
@@ -1570,7 +1567,7 @@ footer {
   <div class="container">
     <div class="gallery-head">
       <div>
-        <p class="eyebrow reveal" data-en="Original Works" data-es="Obras Originales">Original Works</p>
+        <p class="eyebrow reveal" data-en="Original Works" data-es="Originales">Original Works</p>
         <h2 class="section-title reveal d1" data-en="Paintings Originals" data-es="Pinturas Originales">Paintings Originals</h2>
         <p class="section-lead reveal d2" data-en="Each piece is a one-of-a-kind original. Oil and acrylic on canvas, infused with the tropical landscapes and ocean life of Costa Rica's Pacific coast." data-es="Cada obra es un original único. Óleo y acrílico sobre lienzo, impregnado de los paisajes tropicales y la vida marina de la costa Pacífica de Costa Rica.">Each piece is a one-of-a-kind original. Oil and acrylic on canvas, infused with the tropical landscapes and ocean life of Costa Rica's Pacific coast.</p>
       </div>
