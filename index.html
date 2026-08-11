@@ -166,6 +166,14 @@ nav.scrolled {
   overflow: hidden;
   background: var(--dark);
 }
+#heroVideoWrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: heroZoom 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
 #heroVideo {
   position: absolute;
   inset: 0;
@@ -173,12 +181,13 @@ nav.scrolled {
   min-height: 100%;
   object-fit: cover;
   object-position: center center;
-  animation: heroZoom 16s ease-in-out infinite alternate;
 }
 @media (max-width: 768px) {
+  #heroVideoWrap {
+    animation: none;
+  }
   #heroVideo {
     object-position: center center;
-    animation: none;
   }
 }
 @keyframes heroZoom {
@@ -1538,7 +1547,9 @@ footer {
 <!-- ── HERO ────────────────────────────────────────────────── -->
 <section class="hero-wrap" id="hero-wrap">
   <div class="hero-sticky">
-    <video id="heroVideo" autoplay playsinline preload="auto" muted volume="0" style="volume: 0;"><source src="ballena.mp4" type="video/mp4"></video>
+    <div id="heroVideoWrap">
+      <video id="heroVideo" autoplay playsinline preload="auto" muted volume="0" style="volume: 0;"><source src="ballena.mp4" type="video/mp4"></video>
+    </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div id="hero-logo-container">
