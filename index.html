@@ -2100,7 +2100,12 @@ function setLang(lang) {
   // Simple text elements
   document.querySelectorAll('[data-en]').forEach(el => {
     const key = lang === 'es' ? el.dataset.es : el.dataset.en;
-    if (key !== undefined) el.textContent = key;
+    if (key === undefined) return;
+    if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.hasAttribute('placeholder')) {
+      el.placeholder = key;
+    } else {
+      el.textContent = key;
+    }
   });
 
   // Elements that need innerHTML (for <em> tags)
@@ -3238,6 +3243,7 @@ document.addEventListener('keydown', e => {
         <span data-en="Total:" data-es="Total:">Total:</span>
         <span id="cartTotal">$0.00</span>
       </div>
+      <div class="cart-shipping-row" id="cartShippingRow" style="font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between;margin:-8px 0 10px;"></div>
       <div class="ship-form" id="shipForm">
         <p class="ship-form-title" data-en="Shipping details" data-es="Datos de envío">Datos de envío</p>
         <input type="text" id="shipName" class="ship-input" data-en="Full name" data-es="Nombre completo" placeholder="Nombre completo" autocomplete="name">
@@ -3250,6 +3256,201 @@ document.addEventListener('keydown', e => {
           <option value="CR" data-en="Costa Rica" data-es="Costa Rica">Costa Rica</option>
           <option value="US" data-en="United States" data-es="Estados Unidos">United States</option>
           <option value="CA" data-en="Canada" data-es="Canadá">Canada</option>
+          <option value="MX" data-en="Mexico" data-es="México">Mexico</option>
+          <option value="GT" data-en="Guatemala" data-es="Guatemala">Guatemala</option>
+          <option value="BZ" data-en="Belize" data-es="Belice">Belize</option>
+          <option value="HN" data-en="Honduras" data-es="Honduras">Honduras</option>
+          <option value="SV" data-en="El Salvador" data-es="El Salvador">El Salvador</option>
+          <option value="NI" data-en="Nicaragua" data-es="Nicaragua">Nicaragua</option>
+          <option value="PA" data-en="Panama" data-es="Panamá">Panama</option>
+          <option value="CU" data-en="Cuba" data-es="Cuba">Cuba</option>
+          <option value="DO" data-en="Dominican Republic" data-es="República Dominicana">Dominican Republic</option>
+          <option value="HT" data-en="Haiti" data-es="Haití">Haiti</option>
+          <option value="JM" data-en="Jamaica" data-es="Jamaica">Jamaica</option>
+          <option value="PR" data-en="Puerto Rico" data-es="Puerto Rico">Puerto Rico</option>
+          <option value="TT" data-en="Trinidad and Tobago" data-es="Trinidad y Tobago">Trinidad and Tobago</option>
+          <option value="BS" data-en="Bahamas" data-es="Bahamas">Bahamas</option>
+          <option value="BB" data-en="Barbados" data-es="Barbados">Barbados</option>
+          <option value="AG" data-en="Antigua and Barbuda" data-es="Antigua y Barbuda">Antigua and Barbuda</option>
+          <option value="DM" data-en="Dominica" data-es="Dominica">Dominica</option>
+          <option value="GD" data-en="Grenada" data-es="Granada">Grenada</option>
+          <option value="KN" data-en="Saint Kitts and Nevis" data-es="San Cristóbal y Nieves">Saint Kitts and Nevis</option>
+          <option value="LC" data-en="Saint Lucia" data-es="Santa Lucía">Saint Lucia</option>
+          <option value="VC" data-en="Saint Vincent and the Grenadines" data-es="San Vicente y las Granadinas">Saint Vincent and the Grenadines</option>
+          <option value="AR" data-en="Argentina" data-es="Argentina">Argentina</option>
+          <option value="BO" data-en="Bolivia" data-es="Bolivia">Bolivia</option>
+          <option value="BR" data-en="Brazil" data-es="Brasil">Brazil</option>
+          <option value="CL" data-en="Chile" data-es="Chile">Chile</option>
+          <option value="CO" data-en="Colombia" data-es="Colombia">Colombia</option>
+          <option value="EC" data-en="Ecuador" data-es="Ecuador">Ecuador</option>
+          <option value="GY" data-en="Guyana" data-es="Guyana">Guyana</option>
+          <option value="PY" data-en="Paraguay" data-es="Paraguay">Paraguay</option>
+          <option value="PE" data-en="Peru" data-es="Perú">Peru</option>
+          <option value="SR" data-en="Suriname" data-es="Surinam">Suriname</option>
+          <option value="UY" data-en="Uruguay" data-es="Uruguay">Uruguay</option>
+          <option value="VE" data-en="Venezuela" data-es="Venezuela">Venezuela</option>
+          <option value="ES" data-en="Spain" data-es="España">Spain</option>
+          <option value="PT" data-en="Portugal" data-es="Portugal">Portugal</option>
+          <option value="FR" data-en="France" data-es="Francia">France</option>
+          <option value="DE" data-en="Germany" data-es="Alemania">Germany</option>
+          <option value="IT" data-en="Italy" data-es="Italia">Italy</option>
+          <option value="GB" data-en="United Kingdom" data-es="Reino Unido">United Kingdom</option>
+          <option value="IE" data-en="Ireland" data-es="Irlanda">Ireland</option>
+          <option value="NL" data-en="Netherlands" data-es="Países Bajos">Netherlands</option>
+          <option value="BE" data-en="Belgium" data-es="Bélgica">Belgium</option>
+          <option value="LU" data-en="Luxembourg" data-es="Luxemburgo">Luxembourg</option>
+          <option value="CH" data-en="Switzerland" data-es="Suiza">Switzerland</option>
+          <option value="AT" data-en="Austria" data-es="Austria">Austria</option>
+          <option value="SE" data-en="Sweden" data-es="Suecia">Sweden</option>
+          <option value="NO" data-en="Norway" data-es="Noruega">Norway</option>
+          <option value="DK" data-en="Denmark" data-es="Dinamarca">Denmark</option>
+          <option value="FI" data-en="Finland" data-es="Finlandia">Finland</option>
+          <option value="IS" data-en="Iceland" data-es="Islandia">Iceland</option>
+          <option value="PL" data-en="Poland" data-es="Polonia">Poland</option>
+          <option value="CZ" data-en="Czech Republic" data-es="República Checa">Czech Republic</option>
+          <option value="SK" data-en="Slovakia" data-es="Eslovaquia">Slovakia</option>
+          <option value="HU" data-en="Hungary" data-es="Hungría">Hungary</option>
+          <option value="RO" data-en="Romania" data-es="Rumania">Romania</option>
+          <option value="BG" data-en="Bulgaria" data-es="Bulgaria">Bulgaria</option>
+          <option value="GR" data-en="Greece" data-es="Grecia">Greece</option>
+          <option value="HR" data-en="Croatia" data-es="Croacia">Croatia</option>
+          <option value="SI" data-en="Slovenia" data-es="Eslovenia">Slovenia</option>
+          <option value="RS" data-en="Serbia" data-es="Serbia">Serbia</option>
+          <option value="BA" data-en="Bosnia and Herzegovina" data-es="Bosnia y Herzegovina">Bosnia and Herzegovina</option>
+          <option value="ME" data-en="Montenegro" data-es="Montenegro">Montenegro</option>
+          <option value="MK" data-en="North Macedonia" data-es="Macedonia del Norte">North Macedonia</option>
+          <option value="AL" data-en="Albania" data-es="Albania">Albania</option>
+          <option value="XK" data-en="Kosovo" data-es="Kosovo">Kosovo</option>
+          <option value="EE" data-en="Estonia" data-es="Estonia">Estonia</option>
+          <option value="LV" data-en="Latvia" data-es="Letonia">Latvia</option>
+          <option value="LT" data-en="Lithuania" data-es="Lituania">Lithuania</option>
+          <option value="UA" data-en="Ukraine" data-es="Ucrania">Ukraine</option>
+          <option value="BY" data-en="Belarus" data-es="Bielorrusia">Belarus</option>
+          <option value="MD" data-en="Moldova" data-es="Moldavia">Moldova</option>
+          <option value="RU" data-en="Russia" data-es="Rusia">Russia</option>
+          <option value="MT" data-en="Malta" data-es="Malta">Malta</option>
+          <option value="CY" data-en="Cyprus" data-es="Chipre">Cyprus</option>
+          <option value="AD" data-en="Andorra" data-es="Andorra">Andorra</option>
+          <option value="MC" data-en="Monaco" data-es="Mónaco">Monaco</option>
+          <option value="LI" data-en="Liechtenstein" data-es="Liechtenstein">Liechtenstein</option>
+          <option value="SM" data-en="San Marino" data-es="San Marino">San Marino</option>
+          <option value="VA" data-en="Vatican City" data-es="Ciudad del Vaticano">Vatican City</option>
+          <option value="TR" data-en="Turkey" data-es="Turquía">Turkey</option>
+          <option value="IL" data-en="Israel" data-es="Israel">Israel</option>
+          <option value="PS" data-en="Palestine" data-es="Palestina">Palestine</option>
+          <option value="JO" data-en="Jordan" data-es="Jordania">Jordan</option>
+          <option value="LB" data-en="Lebanon" data-es="Líbano">Lebanon</option>
+          <option value="SY" data-en="Syria" data-es="Siria">Syria</option>
+          <option value="IQ" data-en="Iraq" data-es="Irak">Iraq</option>
+          <option value="IR" data-en="Iran" data-es="Irán">Iran</option>
+          <option value="SA" data-en="Saudi Arabia" data-es="Arabia Saudita">Saudi Arabia</option>
+          <option value="AE" data-en="United Arab Emirates" data-es="Emiratos Árabes Unidos">United Arab Emirates</option>
+          <option value="QA" data-en="Qatar" data-es="Catar">Qatar</option>
+          <option value="KW" data-en="Kuwait" data-es="Kuwait">Kuwait</option>
+          <option value="BH" data-en="Bahrain" data-es="Baréin">Bahrain</option>
+          <option value="OM" data-en="Oman" data-es="Omán">Oman</option>
+          <option value="YE" data-en="Yemen" data-es="Yemen">Yemen</option>
+          <option value="EG" data-en="Egypt" data-es="Egipto">Egypt</option>
+          <option value="MA" data-en="Morocco" data-es="Marruecos">Morocco</option>
+          <option value="DZ" data-en="Algeria" data-es="Argelia">Algeria</option>
+          <option value="TN" data-en="Tunisia" data-es="Túnez">Tunisia</option>
+          <option value="LY" data-en="Libya" data-es="Libia">Libya</option>
+          <option value="SD" data-en="Sudan" data-es="Sudán">Sudan</option>
+          <option value="SS" data-en="South Sudan" data-es="Sudán del Sur">South Sudan</option>
+          <option value="ET" data-en="Ethiopia" data-es="Etiopía">Ethiopia</option>
+          <option value="ER" data-en="Eritrea" data-es="Eritrea">Eritrea</option>
+          <option value="DJ" data-en="Djibouti" data-es="Yibuti">Djibouti</option>
+          <option value="SO" data-en="Somalia" data-es="Somalia">Somalia</option>
+          <option value="KE" data-en="Kenya" data-es="Kenia">Kenya</option>
+          <option value="UG" data-en="Uganda" data-es="Uganda">Uganda</option>
+          <option value="TZ" data-en="Tanzania" data-es="Tanzania">Tanzania</option>
+          <option value="RW" data-en="Rwanda" data-es="Ruanda">Rwanda</option>
+          <option value="BI" data-en="Burundi" data-es="Burundi">Burundi</option>
+          <option value="CD" data-en="DR Congo" data-es="RD Congo">DR Congo</option>
+          <option value="CG" data-en="Congo" data-es="Congo">Congo</option>
+          <option value="CM" data-en="Cameroon" data-es="Camerún">Cameroon</option>
+          <option value="CF" data-en="Central African Republic" data-es="República Centroafricana">Central African Republic</option>
+          <option value="TD" data-en="Chad" data-es="Chad">Chad</option>
+          <option value="NE" data-en="Niger" data-es="Níger">Niger</option>
+          <option value="NG" data-en="Nigeria" data-es="Nigeria">Nigeria</option>
+          <option value="BJ" data-en="Benin" data-es="Benín">Benin</option>
+          <option value="TG" data-en="Togo" data-es="Togo">Togo</option>
+          <option value="GH" data-en="Ghana" data-es="Ghana">Ghana</option>
+          <option value="CI" data-en="Ivory Coast" data-es="Costa de Marfil">Ivory Coast</option>
+          <option value="LR" data-en="Liberia" data-es="Liberia">Liberia</option>
+          <option value="SL" data-en="Sierra Leone" data-es="Sierra Leona">Sierra Leone</option>
+          <option value="GN" data-en="Guinea" data-es="Guinea">Guinea</option>
+          <option value="GW" data-en="Guinea-Bissau" data-es="Guinea-Bisáu">Guinea-Bissau</option>
+          <option value="SN" data-en="Senegal" data-es="Senegal">Senegal</option>
+          <option value="GM" data-en="Gambia" data-es="Gambia">Gambia</option>
+          <option value="ML" data-en="Mali" data-es="Malí">Mali</option>
+          <option value="BF" data-en="Burkina Faso" data-es="Burkina Faso">Burkina Faso</option>
+          <option value="MR" data-en="Mauritania" data-es="Mauritania">Mauritania</option>
+          <option value="CV" data-en="Cabo Verde" data-es="Cabo Verde">Cabo Verde</option>
+          <option value="ST" data-en="São Tomé and Príncipe" data-es="Santo Tomé y Príncipe">São Tomé and Príncipe</option>
+          <option value="GQ" data-en="Equatorial Guinea" data-es="Guinea Ecuatorial">Equatorial Guinea</option>
+          <option value="GA" data-en="Gabon" data-es="Gabón">Gabon</option>
+          <option value="AO" data-en="Angola" data-es="Angola">Angola</option>
+          <option value="ZM" data-en="Zambia" data-es="Zambia">Zambia</option>
+          <option value="MW" data-en="Malawi" data-es="Malaui">Malawi</option>
+          <option value="MZ" data-en="Mozambique" data-es="Mozambique">Mozambique</option>
+          <option value="ZW" data-en="Zimbabwe" data-es="Zimbabue">Zimbabwe</option>
+          <option value="BW" data-en="Botswana" data-es="Botsuana">Botswana</option>
+          <option value="NA" data-en="Namibia" data-es="Namibia">Namibia</option>
+          <option value="ZA" data-en="South Africa" data-es="Sudáfrica">South Africa</option>
+          <option value="SZ" data-en="Eswatini" data-es="Esuatini">Eswatini</option>
+          <option value="LS" data-en="Lesotho" data-es="Lesoto">Lesotho</option>
+          <option value="MG" data-en="Madagascar" data-es="Madagascar">Madagascar</option>
+          <option value="MU" data-en="Mauritius" data-es="Mauricio">Mauritius</option>
+          <option value="SC" data-en="Seychelles" data-es="Seychelles">Seychelles</option>
+          <option value="KM" data-en="Comoros" data-es="Comoras">Comoros</option>
+          <option value="CN" data-en="China" data-es="China">China</option>
+          <option value="JP" data-en="Japan" data-es="Japón">Japan</option>
+          <option value="KR" data-en="South Korea" data-es="Corea del Sur">South Korea</option>
+          <option value="KP" data-en="North Korea" data-es="Corea del Norte">North Korea</option>
+          <option value="MN" data-en="Mongolia" data-es="Mongolia">Mongolia</option>
+          <option value="TW" data-en="Taiwan" data-es="Taiwán">Taiwan</option>
+          <option value="HK" data-en="Hong Kong" data-es="Hong Kong">Hong Kong</option>
+          <option value="IN" data-en="India" data-es="India">India</option>
+          <option value="PK" data-en="Pakistan" data-es="Pakistán">Pakistan</option>
+          <option value="BD" data-en="Bangladesh" data-es="Bangladés">Bangladesh</option>
+          <option value="LK" data-en="Sri Lanka" data-es="Sri Lanka">Sri Lanka</option>
+          <option value="NP" data-en="Nepal" data-es="Nepal">Nepal</option>
+          <option value="BT" data-en="Bhutan" data-es="Bután">Bhutan</option>
+          <option value="MM" data-en="Myanmar" data-es="Myanmar">Myanmar</option>
+          <option value="TH" data-en="Thailand" data-es="Tailandia">Thailand</option>
+          <option value="LA" data-en="Laos" data-es="Laos">Laos</option>
+          <option value="KH" data-en="Cambodia" data-es="Camboya">Cambodia</option>
+          <option value="VN" data-en="Vietnam" data-es="Vietnam">Vietnam</option>
+          <option value="MY" data-en="Malaysia" data-es="Malasia">Malaysia</option>
+          <option value="SG" data-en="Singapore" data-es="Singapur">Singapore</option>
+          <option value="ID" data-en="Indonesia" data-es="Indonesia">Indonesia</option>
+          <option value="PH" data-en="Philippines" data-es="Filipinas">Philippines</option>
+          <option value="BN" data-en="Brunei" data-es="Brunéi">Brunei</option>
+          <option value="TL" data-en="Timor-Leste" data-es="Timor Oriental">Timor-Leste</option>
+          <option value="KZ" data-en="Kazakhstan" data-es="Kazajistán">Kazakhstan</option>
+          <option value="UZ" data-en="Uzbekistan" data-es="Uzbekistán">Uzbekistan</option>
+          <option value="TM" data-en="Turkmenistan" data-es="Turkmenistán">Turkmenistan</option>
+          <option value="TJ" data-en="Tajikistan" data-es="Tayikistán">Tajikistan</option>
+          <option value="KG" data-en="Kyrgyzstan" data-es="Kirguistán">Kyrgyzstan</option>
+          <option value="AF" data-en="Afghanistan" data-es="Afganistán">Afghanistan</option>
+          <option value="AM" data-en="Armenia" data-es="Armenia">Armenia</option>
+          <option value="AZ" data-en="Azerbaijan" data-es="Azerbaiyán">Azerbaijan</option>
+          <option value="GE" data-en="Georgia" data-es="Georgia">Georgia</option>
+          <option value="AU" data-en="Australia" data-es="Australia">Australia</option>
+          <option value="NZ" data-en="New Zealand" data-es="Nueva Zelanda">New Zealand</option>
+          <option value="FJ" data-en="Fiji" data-es="Fiyi">Fiji</option>
+          <option value="PG" data-en="Papua New Guinea" data-es="Papúa Nueva Guinea">Papua New Guinea</option>
+          <option value="SB" data-en="Solomon Islands" data-es="Islas Salomón">Solomon Islands</option>
+          <option value="VU" data-en="Vanuatu" data-es="Vanuatu">Vanuatu</option>
+          <option value="WS" data-en="Samoa" data-es="Samoa">Samoa</option>
+          <option value="TO" data-en="Tonga" data-es="Tonga">Tonga</option>
+          <option value="KI" data-en="Kiribati" data-es="Kiribati">Kiribati</option>
+          <option value="FM" data-en="Micronesia" data-es="Micronesia">Micronesia</option>
+          <option value="MH" data-en="Marshall Islands" data-es="Islas Marshall">Marshall Islands</option>
+          <option value="NR" data-en="Nauru" data-es="Nauru">Nauru</option>
+          <option value="PW" data-en="Palau" data-es="Palaos">Palau</option>
+          <option value="TV" data-en="Tuvalu" data-es="Tuvalu">Tuvalu</option>
           <option value="OTHER" data-en="Other country" data-es="Otro país">Other country</option>
         </select>
         <p class="ship-form-error" id="shipFormError" style="display:none;" data-en="Please complete all shipping fields with a valid email before continuing." data-es="Completá todos los datos de envío con un correo válido antes de continuar.">Completá todos los datos de envío con un correo válido antes de continuar.</p>
@@ -3462,28 +3663,18 @@ function renderCart() {
 
   const shippingFee = getShippingFee();
   const grandTotal = total + shippingFee;
-  const totalDisplay = currentLang === 'es' ? 'Total:' : 'Total:';
   let shipRow = '';
   if (shippingFee > 0) {
-    shipRow = '<div class="cart-shipping-row" style="font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px;">' +
-      '<span>' + (currentLang === 'es' ? 'Envío internacional:' : 'International shipping:') + '</span>' +
-      '<span>' + formatUSD(shippingFee) + '</span></div>';
+    shipRow = '<span>' + (currentLang === 'es' ? 'Envío internacional:' : 'International shipping:') + '</span>' +
+      '<span>' + formatUSD(shippingFee) + '</span>';
   } else if (document.getElementById('shipCountry') && document.getElementById('shipCountry').value === 'CR') {
-    shipRow = '<div class="cart-shipping-row" style="font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px;">' +
-      '<span>' + (currentLang === 'es' ? 'Envío (Costa Rica):' : 'Shipping (Costa Rica):') + '</span>' +
-      '<span>' + (currentLang === 'es' ? 'Gratis' : 'Free') + '</span></div>';
+    shipRow = '<span>' + (currentLang === 'es' ? 'Envío (Costa Rica):' : 'Shipping (Costa Rica):') + '</span>' +
+      '<span>' + (currentLang === 'es' ? 'Gratis' : 'Free') + '</span>';
   }
   const cartTotalEl = document.getElementById('cartTotal');
-  if (cartTotalEl) {
-    cartTotalEl.innerHTML = '<span>' + totalDisplay + '</span><span>' + formatUSD(grandTotal) + '</span>';
-    let shipRowEl = document.getElementById('cartShippingRow');
-    if (!shipRowEl) {
-      shipRowEl = document.createElement('div');
-      shipRowEl.id = 'cartShippingRow';
-      cartTotalEl.parentNode.insertBefore(shipRowEl, cartTotalEl);
-    }
-    shipRowEl.innerHTML = shipRow;
-  }
+  if (cartTotalEl) cartTotalEl.textContent = formatUSD(grandTotal);
+  const shipRowEl = document.getElementById('cartShippingRow');
+  if (shipRowEl) shipRowEl.innerHTML = shipRow;
 }
 
 // Tarifa fija de $25 USD para envíos fuera de Costa Rica; gratis dentro de CR
