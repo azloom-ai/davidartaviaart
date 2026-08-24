@@ -1099,8 +1099,10 @@ footer {
 }
 .ship-input:focus { outline: none; border-color: var(--gold); }
 .ship-form-error { color: var(--gold); font-size: .78rem; margin: 0; }
-.checkout-btn { background: var(--gold); color: #fff; padding: 14px; border: none; border-radius: 2px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; }
+.checkout-btn { background: var(--gold); color: #fff; padding: 14px; border: none; border-radius: 2px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; margin-bottom: 10px; }
 .checkout-btn:hover { background: var(--gold-l); }
+.checkout-btn-paypal { background: #0070ba; margin-bottom: 0; }
+.checkout-btn-paypal:hover { background: #005ea6; }
 
 @media (max-width: 1024px) {
   .shop-grid { grid-template-columns: repeat(2, 1fr); }
@@ -3245,7 +3247,8 @@ document.addEventListener('keydown', e => {
         <input type="text" id="shipCity" class="ship-input" data-en="City / Province / Country" data-es="Ciudad / Provincia / País" placeholder="Ciudad / Provincia / País" autocomplete="address-level2">
         <p class="ship-form-error" id="shipFormError" style="display:none;" data-en="Please complete all shipping fields with a valid email before continuing." data-es="Completá todos los datos de envío con un correo válido antes de continuar.">Completá todos los datos de envío con un correo válido antes de continuar.</p>
       </div>
-      <button class="checkout-btn" onclick="processCheckout()" data-en="Proceed to Checkout" data-es="Ir al Pago">Proceed to Checkout</button>
+      <button class="checkout-btn" onclick="processCheckout('onvo')" data-en="Pay with Card" data-es="Pagar con Tarjeta">Pagar con Tarjeta</button>
+      <button class="checkout-btn checkout-btn-paypal" onclick="processCheckout('paypal')" data-en="Pay with PayPal" data-es="Pagar con PayPal">Pagar con PayPal</button>
     </div>
   </div>
 </div>
@@ -3505,7 +3508,7 @@ function loadCart() {
   cart = saved ? JSON.parse(saved) : [];
 }
 
-async function processCheckout() {
+async function processCheckout(provider) {
   if (cart.length === 0) {
     alert(currentLang === 'es' ? 'El carrito está vacío' : 'Cart is empty');
     return;
@@ -3526,7 +3529,8 @@ async function processCheckout() {
   }
   if (shipError) shipError.style.display = 'none';
 
-  const btn = document.querySelector('.checkout-btn');
+  const btnSelector = provider === 'paypal' ? '.checkout-btn-paypal' : '.checkout-btn:not(.checkout-btn-paypal)';
+  const btn = document.querySelector(btnSelector);
   const originalText = btn ? btn.textContent : '';
   if (btn) { btn.textContent = currentLang === 'es' ? 'Procesando…' : 'Processing…'; btn.disabled = true; }
 
@@ -3539,7 +3543,9 @@ async function processCheckout() {
 
     const shipping = { name: shipName, email: shipEmail, phone: shipPhone, address: shipAddress, city: shipCity };
 
-    const response = await fetch('/api/create-checkout-session', {
+    const endpoint = provider === 'paypal' ? '/api/create-paypal-order' : '/api/create-checkout-session';
+
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ items, shipping })
