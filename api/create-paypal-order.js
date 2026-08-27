@@ -70,6 +70,8 @@ module.exports = async (req, res) => {
       if (shipping.phone) metadata.shippingPhone = String(shipping.phone).slice(0, 100);
       if (shipping.address) metadata.shippingAddress = String(shipping.address).slice(0, 300);
       if (shipping.city) metadata.shippingCity = String(shipping.city).slice(0, 200);
+      if (shipping.zip) metadata.shippingZip = String(shipping.zip).slice(0, 50);
+      if (shipping.country) metadata.shippingCountry = String(shipping.country).slice(0, 100);
     }
 
     const origin = req.headers.origin || 'https://davidartaviaart.vercel.app';

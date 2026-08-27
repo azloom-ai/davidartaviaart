@@ -1,25 +1,20 @@
 const ONVO_CHECKOUT_URL = 'https://api.onvopay.com/v1/checkout/sessions/one-time-link';
-
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
-
   if (!process.env.ONVO_SECRET_KEY) {
     console.error('Falta la variable de entorno ONVO_SECRET_KEY en Vercel');
     res.status(500).json({ error: 'Server not configured' });
     return;
   }
-
   try {
     const { items, shipping } = req.body || {};
-
     if (!Array.isArray(items) || items.length === 0) {
       res.status(400).json({ error: 'Cart is empty' });
       return;
     }
-
     // Validar y sanear cada item, y convertirlo al formato de OnvoPay (montos en centavos)
     const lineItems = items.map((item) => {
       const price = Number(item.price);
@@ -34,7 +29,6 @@ module.exports = async (req, res) => {
         description: String(item.name).slice(0, 200),
       };
     });
-
     // Datos de envío: se guardan como metadata de la sesión para que lleguen
     // completos en el webhook cuando se confirme el pago.
     const metadata = {};
@@ -44,10 +38,10 @@ module.exports = async (req, res) => {
       if (shipping.phone) metadata.shippingPhone = String(shipping.phone).slice(0, 100);
       if (shipping.address) metadata.shippingAddress = String(shipping.address).slice(0, 300);
       if (shipping.city) metadata.shippingCity = String(shipping.city).slice(0, 200);
+      if (shipping.zip) metadata.shippingZip = String(shipping.zip).slice(0, 50);
+      if (shipping.country) metadata.shippingCountry = String(shipping.country).slice(0, 100);
     }
-
     const origin = req.headers.origin || 'https://davidartaviaart.vercel.app';
-
     const onvoResponse = await fetch(ONVO_CHECKOUT_URL, {
       method: 'POST',
       headers: {
@@ -62,15 +56,12 @@ module.exports = async (req, res) => {
         metadata,
       }),
     });
-
     const data = await onvoResponse.json();
-
     if (!onvoResponse.ok || !data.url) {
       console.error('Error de OnvoPay:', data);
       res.status(500).json({ error: 'No se pudo crear la sesión de pago' });
       return;
     }
-
     res.status(200).json({ url: data.url });
   } catch (err) {
     console.error('Error creando sesión de OnvoPay Checkout:', err);

@@ -34,7 +34,9 @@ async function sendSaleEmail({ customerName, customerEmail, metadata, descriptio
     <p><strong>Correo:</strong> ${customerEmail || metadata.shippingEmail || 'No proporcionado'}</p>
     <p><strong>Teléfono:</strong> ${metadata.shippingPhone || 'No proporcionado'}</p>
     <p><strong>Dirección de envío:</strong> ${metadata.shippingAddress || 'No proporcionada'}</p>
-    <p><strong>Ciudad / Provincia / País:</strong> ${metadata.shippingCity || 'No proporcionada'}</p>
+    <p><strong>Ciudad / Provincia:</strong> ${metadata.shippingCity || 'No proporcionada'}</p>
+    <p><strong>Código postal:</strong> ${metadata.shippingZip || 'No proporcionado'}</p>
+    <p><strong>País:</strong> ${metadata.shippingCountry || 'No proporcionado'}</p>
     <p><strong>Obras:</strong><br>${description || 'No especificado'}</p>
     <p><strong>Total:</strong> ${totalFormatted}</p>
     <p><strong>ID de la orden PayPal:</strong> ${orderId || ''}</p>
