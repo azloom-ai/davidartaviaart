@@ -1,0 +1,14 @@
+# David Artavia Art
+
+> Sitio oficial del pintor costarricense David Artavia. Vende pinturas originales tropicales y surrealistas, prints Giclée de alta calidad y murales personalizados. Envíos a Costa Rica, Estados Unidos y Canadá. Sitio bilingüe (español e inglés).
+
+## Páginas principales
+- [Inicio](https://www.davidartaviastudio.com/): catálogo de obras originales, Giclée, murales y comisiones
+- [Sitemap](https://www.davidartaviastudio.com/sitemap.xml)
+
+## Datos clave
+- Artista: David Artavia, pintor de Costa Rica
+- Técnicas: acrílico y óleo sobre canvas, Giclée (prints de alta calidad, producción bajo pedido, entrega en unas 2 semanas), murales
+- Estilo: tropical, surrealista, temas de océano, surf y naturaleza
+- Pagos: tarjeta (OnvoPay) y PayPal
+- Envíos: gratis dentro de Costa Rica; tarifa fija internacional de $25 USD
